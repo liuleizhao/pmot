@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.VehIsFlowInspectionLogDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.VehIsFlowInspectionLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STATION_CODE" property="stationCode" jdbcType="VARCHAR" />
+    <result column="FZJG" property="fzjg" jdbcType="VARCHAR" />
+    <result column="PLAT_NUMBER" property="platNumber" jdbcType="VARCHAR" />
+    <result column="FRAME_NUMBER" property="frameNumber" jdbcType="VARCHAR" />
+    <result column="CAR_TYPE_CODE" property="carTypeCode" jdbcType="VARCHAR" />
+    <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
+    <result column="BOOK_TIME" property="bookTime" jdbcType="VARCHAR" />
+    <result column="RESULT_CODE" property="resultCode" jdbcType="DECIMAL" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="LSH" property="lsh" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, STATION_CODE, FZJG, PLAT_NUMBER, FRAME_NUMBER, CAR_TYPE_CODE, BOOK_NUMBER, BOOK_TIME, 
+    RESULT_CODE, CREATE_DATE, LSH
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_FLOW_INSLOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.VEH_IS_FLOW_INSLOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.VehIsFlowInspectionLog" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>
+    insert into MOT.VEH_IS_FLOW_INSLOG (ID, STATION_CODE, FZJG, PLAT_NUMBER, 
+      FRAME_NUMBER, CAR_TYPE_CODE, BOOK_NUMBER, 
+      BOOK_TIME, RESULT_CODE, CREATE_DATE, LSH
+      )
+    values (#{id,jdbcType=VARCHAR}, #{stationCode,jdbcType=VARCHAR}, #{fzjg,jdbcType=VARCHAR}, #{platNumber,jdbcType=VARCHAR}, 
+      #{frameNumber,jdbcType=VARCHAR}, #{carTypeCode,jdbcType=VARCHAR}, #{bookNumber,jdbcType=VARCHAR}, 
+      #{bookTime,jdbcType=VARCHAR}, #{resultCode,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP},
+      #{lsh,jdbcType=VARCHAR }
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.VehIsFlowInspectionLog" >
+    insert into MOT.VEH_IS_FLOW_INSLOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="stationCode != null" >
+        STATION_CODE,
+      </if>
+      <if test="fzjg != null" >
+        FZJG,
+      </if>
+      <if test="platNumber != null" >
+        PLAT_NUMBER,
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER,
+      </if>
+      <if test="carTypeCode != null" >
+        CAR_TYPE_CODE,
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER,
+      </if>
+      <if test="bookTime != null" >
+        BOOK_TIME,
+      </if>
+      <if test="resultCode != null" >
+        RESULT_CODE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="lsh != null" >
+        LSH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stationCode != null" >
+        #{stationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="platNumber != null" >
+        #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNumber != null" >
+        #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeCode != null" >
+        #{carTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTime != null" >
+        #{bookTime,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        #{resultCode,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lsh != null" >
+        #{lsh,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.VehIsFlowInspectionLog" >
+    update MOT.VEH_IS_FLOW_INSLOG
+    <set >
+      <if test="stationCode != null" >
+        STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        FZJG = #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="platNumber != null" >
+        PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeCode != null" >
+        CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bookTime != null" >
+        BOOK_TIME = #{bookTime,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        RESULT_CODE = #{resultCode,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lsh != null" >
+        LSH = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.VehIsFlowInspectionLog" >
+    update MOT.VEH_IS_FLOW_INSLOG
+    set STATION_CODE = #{stationCode,jdbcType=VARCHAR},
+      FZJG = #{fzjg,jdbcType=VARCHAR},
+      PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR},
+      BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      BOOK_TIME = #{bookTime,jdbcType=VARCHAR},
+      RESULT_CODE = #{resultCode,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      LSH = #{createDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.VEH_IS_FLOW_INSLOG
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.VEH_IS_FLOW_INSLOG
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+</mapper>

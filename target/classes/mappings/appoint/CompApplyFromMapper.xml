@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.CompApplyFromDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.CompApplyFrom" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="COMPANY_NAME" property="companyName" jdbcType="VARCHAR" />
+    <result column="ENTERPRISE_CREDITE_CODE" property="enterpriseCrediteCode" jdbcType="VARCHAR" />
+    <result column="ORGANIZATION_CODE" property="organizationCode" jdbcType="VARCHAR" />
+    <result column="APPLY_COUNT" property="applyCount" jdbcType="DECIMAL" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="DISCRIPTION" property="discription" jdbcType="VARCHAR" />
+    <result column="APPROVER_ID" property="approverId" jdbcType="VARCHAR" />
+    <result column="APPROVE_DATE" property="approveDate" jdbcType="TIMESTAMP" />
+    <result column="APPROVE_REMART" property="approveRemart" jdbcType="DECIMAL" />
+    <result column="APPROVE_DISCRIPTION" property="approveDiscription" jdbcType="VARCHAR" />
+    <result column="CREATE_USER_NAME" property="createUserName" jdbcType="VARCHAR" />
+    <result column="APPROVER_NAME" property="approverName" jdbcType="VARCHAR" />
+    <result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="ADDED_NUM" property="addedNum" jdbcType="DECIMAL" />
+    <result column="BOOKED_NUM" property="bookedNum" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CREATE_USER_ID, CREATE_DATE, COMPANY_NAME, ENTERPRISE_CREDITE_CODE, ORGANIZATION_CODE, 
+    APPLY_COUNT, END_DATE, DISCRIPTION, APPROVER_ID, APPROVE_DATE, APPROVE_REMART, APPROVE_DISCRIPTION, 
+    CREATE_USER_NAME, APPROVER_NAME, START_DATE, ADDED_NUM, BOOKED_NUM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.COMP_APPLY_FORM
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.COMP_APPLY_FORM
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.CompApplyFrom" >
+       <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+   	 </selectKey> 
+    insert into MOT.COMP_APPLY_FORM (ID, CREATE_USER_ID, CREATE_DATE, 
+      COMPANY_NAME, ENTERPRISE_CREDITE_CODE, ORGANIZATION_CODE, 
+      APPLY_COUNT, END_DATE, DISCRIPTION, 
+      APPROVER_ID, APPROVE_DATE, APPROVE_REMART, 
+      APPROVE_DISCRIPTION, CREATE_USER_NAME, APPROVER_NAME, 
+      START_DATE,  ADDED_NUM, 
+      BOOKED_NUM)
+    values (#{id,jdbcType=VARCHAR}, #{createUserId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{companyName,jdbcType=VARCHAR}, #{enterpriseCrediteCode,jdbcType=VARCHAR}, #{organizationCode,jdbcType=VARCHAR}, 
+      #{applyCount,jdbcType=DECIMAL}, #{endDate,jdbcType=TIMESTAMP}, #{discription,jdbcType=VARCHAR}, 
+      #{approverId,jdbcType=VARCHAR}, #{approveDate,jdbcType=TIMESTAMP}, #{approveRemart,jdbcType=DECIMAL}, 
+      #{approveDiscription,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{approverName,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{addedNum,jdbcType=DECIMAL}, 
+      #{bookedNum,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.CompApplyFrom" >
+    insert into MOT.COMP_APPLY_FORM
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="createUserId != null" >
+        CREATE_USER_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="companyName != null" >
+        COMPANY_NAME,
+      </if>
+      <if test="enterpriseCrediteCode != null" >
+        ENTERPRISE_CREDITE_CODE,
+      </if>
+      <if test="organizationCode != null" >
+        ORGANIZATION_CODE,
+      </if>
+      <if test="applyCount != null" >
+        APPLY_COUNT,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="discription != null" >
+        DISCRIPTION,
+      </if>
+      <if test="approverId != null" >
+        APPROVER_ID,
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE,
+      </if>
+      <if test="approveRemart != null" >
+        APPROVE_REMART,
+      </if>
+      <if test="approveDiscription != null" >
+        APPROVE_DISCRIPTION,
+      </if>
+      <if test="createUserName != null" >
+        CREATE_USER_NAME,
+      </if>
+      <if test="approverName != null" >
+        APPROVER_NAME,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="addedNum != null" >
+        ADDED_NUM,
+      </if>
+      <if test="bookedNum != null" >
+        BOOKED_NUM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseCrediteCode != null" >
+        #{enterpriseCrediteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationCode != null" >
+        #{organizationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCount != null" >
+        #{applyCount,jdbcType=DECIMAL},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discription != null" >
+        #{discription,jdbcType=VARCHAR},
+      </if>
+      <if test="approverId != null" >
+        #{approverId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveDate != null" >
+        #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveRemart != null" >
+        #{approveRemart,jdbcType=DECIMAL},
+      </if>
+      <if test="approveDiscription != null" >
+        #{approveDiscription,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null" >
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="approverName != null" >
+        #{approverName,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addedNum != null" >
+        #{addedNum,jdbcType=DECIMAL},
+      </if>
+      <if test="bookedNum != null" >
+        #{bookedNum,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.CompApplyFrom" >
+    update MOT.COMP_APPLY_FORM
+    <set >
+      <if test="createUserId != null" >
+        CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyName != null" >
+        COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseCrediteCode != null" >
+        ENTERPRISE_CREDITE_CODE = #{enterpriseCrediteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationCode != null" >
+        ORGANIZATION_CODE = #{organizationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCount != null" >
+        APPLY_COUNT = #{applyCount,jdbcType=DECIMAL},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discription != null" >
+        DISCRIPTION = #{discription,jdbcType=VARCHAR},
+      </if>
+      <if test="approverId != null" >
+        APPROVER_ID = #{approverId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveDate != null" >
+        APPROVE_DATE = #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveRemart != null" >
+        APPROVE_REMART = #{approveRemart,jdbcType=DECIMAL},
+      </if>
+      <if test="approveDiscription != null" >
+        APPROVE_DISCRIPTION = #{approveDiscription,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null" >
+        CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="approverName != null" >
+        APPROVER_NAME = #{approverName,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addedNum != null" >
+        ADDED_NUM = #{addedNum,jdbcType=DECIMAL},
+      </if>
+      <if test="bookedNum != null" >
+        BOOKED_NUM = #{bookedNum,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.CompApplyFrom" >
+    update MOT.COMP_APPLY_FORM
+    set CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      ENTERPRISE_CREDITE_CODE = #{enterpriseCrediteCode,jdbcType=VARCHAR},
+      ORGANIZATION_CODE = #{organizationCode,jdbcType=VARCHAR},
+      APPLY_COUNT = #{applyCount,jdbcType=DECIMAL},
+      END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      DISCRIPTION = #{discription,jdbcType=VARCHAR},
+      APPROVER_ID = #{approverId,jdbcType=VARCHAR},
+      APPROVE_DATE = #{approveDate,jdbcType=TIMESTAMP},
+      APPROVE_REMART = #{approveRemart,jdbcType=DECIMAL},
+      APPROVE_DISCRIPTION = #{approveDiscription,jdbcType=VARCHAR},
+      CREATE_USER_NAME = #{createUserName,jdbcType=VARCHAR},
+      APPROVER_NAME = #{approverName,jdbcType=VARCHAR},
+      START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      ADDED_NUM = #{addedNum,jdbcType=DECIMAL},
+      BOOKED_NUM = #{bookedNum,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.COMP_APPLY_FORM
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.COMP_APPLY_FORM
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.COMP_APPLY_FORM
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.COMP_APPLY_FORM
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>

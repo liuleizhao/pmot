@@ -1,0 +1,22 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+#top{ width:100%; height:38px; background:url(../images/top_bg.png) repeat-x; _background:none;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=crop, src=’img/bg.png’);}
+#top p{ line-height:38px; color:#ccced1; margin-left:30px;}
+
+#content{ width:678px; margin:135px auto;}
+#content .title{ width:650px; margin:auto;}
+#content .denglu{ width:678px; height:308px; background:url(../images/content_bg.jpg) no-repeat; margin-top:20px; position:relative;}
+.username{ width:303px; height:47px; background:url(../images/name_bg.gif) no-repeat; border:0px; padding-left:40px; position: absolute; left:278px; top:80px; line-height:47px;}
+.password{ width:303px; height:47px; background:url(../images/pwd_bg.gif) no-repeat; border:0px; padding-left:40px; position: absolute; left:278px; top:155px; line-height:47px;}
+.accountMsg{ position:absolute;left:278px;top:130px;color:red;display:none;}
+.passwordMsg{ position:absolute;left:278px;top:205px;color:red;display:none;}
+.subinput{ width:113px; height:34px; background:url(../images/login.gif) no-repeat; border:0px; position:absolute; left:278px; top:230px;}
+.verifycode{ width:80px; height:26px; position:absolute; left:278px; top:220px;}
+.verifyImage{ vertical-align:middle;width:80px; height:26px; position:absolute; left:380px; top:220px;}
+.refreshCode{position:absolute; left:466px; top:228px;color:#ffad33; text-decoration:underline;}
+.text{ position:absolute; top:240px; left:430px;}
+
+#foot{ width:100%; height:43px; background:#1b498f;position: absolute;bottom: 0;}
+#foot p{ text-align:center; color:#fff; line-height:43px;}
+

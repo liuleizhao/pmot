@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+  
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">  
+    <!-- <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>  
+    
+    <service name="PhotoInfoService" provider="java:RPC">  
+        <parameter name="allowedMethods" value="getPhoto"/>  
+        <parameter name="className" value="com.cs.webservice.WebService"/>  
+    </service>  
+    
+    <service name="TmriOutAccess" provider="java:RPC">  
+        <parameter name="allowedMethods" value="searchObjectOut,writeObjectIn"/>  
+        <parameter name="className" value="com.cs.webservice.WebService"/>  
+    </service>
+   
+    <transport name="http">  
+        <requestFlow>  
+            <handler type="URLMapper"/>  
+        </requestFlow>  
+    </transport> -->
+    
+    
+    
+    
+    <globalConfiguration>
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="disablePrettyXML" value="true" />
+		<parameter name="adminPassword" value="admin" />
+		<!-- 设置该属性为true，type类型由soapenc:string转变成xsd:string -->
+		<parameter name="dotNetSoapEncFix" value="true" />
+		<parameter name="enableNamespacePrefixOptimization" value="false" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="sendXsiTypes" value="true" />
+		<parameter name="attachments.implementation"
+			value="org.apache.axis.attachments.AttachmentsImpl" /> 
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="session" />
+			</handler>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="request" />
+				<parameter name="extension" value=".jwr" />
+			</handler>
+		</requestFlow>
+	</globalConfiguration>
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper" />
+	<handler name="LocalResponder"
+		type="java:org.apache.axis.transport.local.LocalResponder" />
+	<handler name="Authenticate"
+		type="java:org.apache.axis.handlers.SimpleAuthenticationHandler" />
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+		</requestFlow>
+	</transport>
+	<transport name="local">
+		<responseFlow>
+			<handler type="LocalResponder" />
+		</responseFlow>
+	</transport>
+	
+	<!-- 提供给警示通的照片接口 -->
+    <service name="PhotoInfoService" provider="java:RPC">  
+        <parameter name="allowedMethods" value="getPhoto"/>  
+        <parameter name="className" value="com.cs.webservice.WebService"/>  
+    </service>  
+    
+    <!-- 提供第三方的接口 -->
+    <service name="TmriOutAccess" provider="java:RPC">  
+        <parameter name="allowedMethods" value="query"/>  
+        <parameter name="className" value="com.cs.webservice.WebService"/>  
+    </service>
+    
+    <!-- 提供给同步系统的接口 -->
+    <service name="SyncAccess" provider="java:RPC">  
+        <parameter name="allowedMethods" value="uniformAccess"/>  
+        <parameter name="className" value="com.cs.webservice.SyncSystemWebService"/>  
+    </service>
+</deployment>  

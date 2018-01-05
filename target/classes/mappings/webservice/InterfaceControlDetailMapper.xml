@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.webservice.dao.InterfaceControlDetailDao" >
+  <resultMap id="BaseResultMap" type="com.cs.webservice.entity.InterfaceControlDetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="GENERAL_ID" property="generalId" jdbcType="VARCHAR" />
+    <result column="INTERFACE_ID" property="interfaceId" jdbcType="VARCHAR" />
+    <result column="TIMES" property="times" jdbcType="DECIMAL" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="STATE" property="state" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, GENERAL_ID, INTERFACE_ID, TIMES, CREATE_DATE, STATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_CONTROL_DETAIL
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.INTERFACE_CONTROL_DETAIL
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.webservice.entity.InterfaceControlDetail" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    insert into MOT.INTERFACE_CONTROL_DETAIL (ID, GENERAL_ID, INTERFACE_ID, 
+      TIMES, CREATE_DATE, STATE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{generalId,jdbcType=VARCHAR}, #{interfaceId,jdbcType=VARCHAR}, 
+      #{times,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, #{state,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.webservice.entity.InterfaceControlDetail" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    insert into MOT.INTERFACE_CONTROL_DETAIL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="generalId != null" >
+        GENERAL_ID,
+      </if>
+      <if test="interfaceId != null" >
+        INTERFACE_ID,
+      </if>
+      <if test="times != null" >
+        TIMES,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="generalId != null" >
+        #{generalId,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceId != null" >
+        #{interfaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.webservice.entity.InterfaceControlDetail" >
+    update MOT.INTERFACE_CONTROL_DETAIL
+    <set >
+      <if test="generalId != null" >
+        GENERAL_ID = #{generalId,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceId != null" >
+        INTERFACE_ID = #{interfaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        TIMES = #{times,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.webservice.entity.InterfaceControlDetail" >
+    update MOT.INTERFACE_CONTROL_DETAIL
+    set GENERAL_ID = #{generalId,jdbcType=VARCHAR},
+      INTERFACE_ID = #{interfaceId,jdbcType=VARCHAR},
+      TIMES = #{times,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      STATE = #{state,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_CONTROL_DETAIL
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_CONTROL_DETAIL
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+    
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.INTERFACE_CONTROL_DETAIL
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.INTERFACE_CONTROL_DETAIL
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <delete id="deleteByGeneralId">
+  	delete from MOT.INTERFACE_CONTROL_DETAIL where GENERAL_ID=#{generalId}
+  </delete>
+  
+  <!-- 批量插入 -->
+  <insert id="batchAdd" parameterType="java.util.List">
+    insert into MOT.INTERFACE_CONTROL_DETAIL (  
+       ID, 
+       GENERAL_ID, 
+       INTERFACE_ID, 
+      TIMES, 
+      CREATE_DATE, 
+      STATE)  
+         select sys_guid(),a.*  
+         From (  
+               <foreach collection="list" item="item" index="index" separator="union all">   
+               (   
+                 select   
+                       #{item.generalId},   
+                       #{item.interfaceId},   
+                       #{item.times},   
+                       #{item.createDate},   
+                       #{item.state}
+                       From dual   
+                   )   
+                </foreach>  
+            )a
+  </insert>
+  
+  <delete id="deleteByInterfaceInfoId">
+  	delete from MOT.INTERFACE_CONTROL_DETAIL where INTERFACE_ID=#{interfaceInfoId}
+  </delete>
+</mapper>

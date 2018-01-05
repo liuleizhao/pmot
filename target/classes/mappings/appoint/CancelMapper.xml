@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.CancelDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.Cancel" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR" />
+    <result column="PLAT_NUMBER" property="platNumber" jdbcType="VARCHAR" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="ID_TYPE" property="idType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BOOK_NUMBER, CREATE_DATE, MOBILE, ID_NUMBER, PLAT_NUMBER, IP, ID_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.CANCEL
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.CANCEL
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.Cancel" >
+  	 <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+   	 </selectKey> 
+    
+    insert into MOT.CANCEL (ID, BOOK_NUMBER, CREATE_DATE, 
+      MOBILE, ID_NUMBER, PLAT_NUMBER, 
+      IP, ID_TYPE)
+    values (#{id,jdbcType=VARCHAR}, #{bookNumber,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{mobile,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{platNumber,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{idType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.Cancel" >
+    insert into MOT.CANCEL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="idNumber != null" >
+        ID_NUMBER,
+      </if>
+      <if test="platNumber != null" >
+        PLAT_NUMBER,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="idType != null" >
+        ID_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null" >
+        #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platNumber != null" >
+        #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        #{idType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.Cancel" >
+    update MOT.CANCEL
+    <set >
+      <if test="bookNumber != null" >
+        BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null" >
+        ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="platNumber != null" >
+        PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        ID_TYPE = #{idType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.Cancel" >
+    update MOT.CANCEL
+    set BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+    <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.CANCEL
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.CANCEL
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.CANCEL
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.CANCEL
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  
+</mapper>

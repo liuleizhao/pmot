@@ -1,0 +1,938 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.VehIsInfDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.VehIsInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="XH" property="xh" jdbcType="CHAR" />
+    <result column="HPZL" property="hpzl" jdbcType="CHAR" />
+    <result column="HPHM" property="hphm" jdbcType="VARCHAR" />
+    <result column="CLPP1" property="clpp1" jdbcType="VARCHAR" />
+    <result column="CLXH" property="clxh" jdbcType="VARCHAR" />
+    <result column="CLPP2" property="clpp2" jdbcType="VARCHAR" />
+    <result column="GCJK" property="gcjk" jdbcType="CHAR" />
+    <result column="ZZG" property="zzg" jdbcType="CHAR" />
+    <result column="ZZCMC" property="zzcmc" jdbcType="VARCHAR" />
+    <result column="CLSBDH" property="clsbdh" jdbcType="VARCHAR" />
+    <result column="FDJH" property="fdjh" jdbcType="VARCHAR" />
+    <result column="CLLX" property="cllx" jdbcType="CHAR" />
+    <result column="CSYS" property="csys" jdbcType="VARCHAR" />
+    <result column="SYXZ" property="syxz" jdbcType="CHAR" />
+    <result column="SFZMHM" property="sfzmhm" jdbcType="VARCHAR" />
+    <result column="SFZMMC" property="sfzmmc" jdbcType="CHAR" />
+    <result column="SYR" property="syr" jdbcType="VARCHAR" />
+    <result column="CCDJRQ" property="ccdjrq" jdbcType="VARCHAR" />
+    <result column="DJRQ" property="djrq" jdbcType="VARCHAR" />
+    <result column="YXQZ" property="yxqz" jdbcType="VARCHAR" />
+    <result column="QZBFQZ" property="qzbfqz" jdbcType="VARCHAR" />
+    <result column="FZJG" property="fzjg" jdbcType="VARCHAR" />
+    <result column="GLBM" property="glbm" jdbcType="VARCHAR" />
+    <result column="BXZZRQ" property="bxzzrq" jdbcType="VARCHAR" />
+    <result column="ZT" property="zt" jdbcType="VARCHAR" />
+    <result column="DYBJ" property="dybj" jdbcType="CHAR" />
+    <result column="FDJXH" property="fdjxh" jdbcType="VARCHAR" />
+    <result column="RLZL" property="rlzl" jdbcType="VARCHAR" />
+    <result column="PL" property="pl" jdbcType="DECIMAL" />
+    <result column="GL" property="gl" jdbcType="DECIMAL" />
+    <result column="ZXXS" property="zxxs" jdbcType="CHAR" />
+    <result column="CWKC" property="cwkc" jdbcType="DECIMAL" />
+    <result column="CWKK" property="cwkk" jdbcType="DECIMAL" />
+    <result column="CWKG" property="cwkg" jdbcType="DECIMAL" />
+    <result column="HXNBCD" property="hxnbcd" jdbcType="DECIMAL" />
+    <result column="HXNBKD" property="hxnbkd" jdbcType="DECIMAL" />
+    <result column="HXNBGD" property="hxnbgd" jdbcType="DECIMAL" />
+    <result column="GBTHPS" property="gbthps" jdbcType="DECIMAL" />
+    <result column="ZS" property="zs" jdbcType="DECIMAL" />
+    <result column="ZJ" property="zj" jdbcType="DECIMAL" />
+    <result column="QLJ" property="qlj" jdbcType="DECIMAL" />
+    <result column="HLJ" property="hlj" jdbcType="DECIMAL" />
+    <result column="LTGG" property="ltgg" jdbcType="VARCHAR" />
+    <result column="LTS" property="lts" jdbcType="DECIMAL" />
+    <result column="ZZL" property="zzl" jdbcType="DECIMAL" />
+    <result column="ZBZL" property="zbzl" jdbcType="DECIMAL" />
+    <result column="HDZZL" property="hdzzl" jdbcType="DECIMAL" />
+    <result column="HDZK" property="hdzk" jdbcType="DECIMAL" />
+    <result column="ZQYZL" property="zqyzl" jdbcType="DECIMAL" />
+    <result column="QPZK" property="qpzk" jdbcType="DECIMAL" />
+    <result column="HPZK" property="hpzk" jdbcType="DECIMAL" />
+    <result column="HBDBQK" property="hbdbqk" jdbcType="VARCHAR" />
+    <result column="CCRQ" property="ccrq" jdbcType="VARCHAR" />
+    <result column="CLYT" property="clyt" jdbcType="CHAR" />
+    <result column="YTSX" property="ytsx" jdbcType="CHAR" />
+    <result column="XSZBH" property="xszbh" jdbcType="VARCHAR" />
+    <result column="JYHGBZBH" property="jyhgbzbh" jdbcType="VARCHAR" />
+    <result column="XZQH" property="xzqh" jdbcType="VARCHAR" />
+    <result column="ZSXZQH" property="zsxzqh" jdbcType="VARCHAR" />
+    <result column="ZZXZQH" property="zzxzqh" jdbcType="VARCHAR" />
+    <result column="SGCSSBWQK" property="sgcssbwqk" jdbcType="VARCHAR" />
+    <result column="SFMJ" property="sfmj" jdbcType="CHAR" />
+    <result column="BMJYY" property="bmjyy" jdbcType="VARCHAR" />
+    <result column="SFXNY" property="sfxny" jdbcType="CHAR" />
+    <result column="XNYZL" property="xnyzl" jdbcType="CHAR" />
+    <result column="BZ" property="bz" jdbcType="VARCHAR" />
+    <result column="DOWNload_TIME" property="downloadTime" jdbcType="TIMESTAMP" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
+    <result column="response_Xml" property="responseXml" jdbcType="VARCHAR" />
+    <result column="full_hphm" property="fullHphm" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, XH, HPZL, HPHM, CLPP1, CLXH, CLPP2, GCJK, ZZG, ZZCMC, CLSBDH, FDJH, CLLX, CSYS, 
+    SYXZ, SFZMHM, SFZMMC, SYR, CCDJRQ, DJRQ, YXQZ, QZBFQZ, FZJG, GLBM, BXZZRQ, ZT, DYBJ, 
+    FDJXH, RLZL, PL, GL, ZXXS, CWKC, CWKK, CWKG, HXNBCD, HXNBKD, HXNBGD, GBTHPS, ZS, 
+    ZJ, QLJ, HLJ, LTGG, LTS, ZZL, ZBZL, HDZZL, HDZK, ZQYZL, QPZK, HPZK, HBDBQK, CCRQ, 
+    CLYT, YTSX, XSZBH, JYHGBZBH, XZQH, ZSXZQH, ZZXZQH, SGCSSBWQK, SFMJ, BMJYY, SFXNY, 
+    XNYZL, BZ, DOWNload_TIME, STATION_ID, BOOK_NUMBER,response_Xml,full_hphm
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.VEH_IS_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.VehIsInfo" >
+  <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey> 
+    insert into MOT.VEH_IS_INFO (ID, XH, HPZL, HPHM, 
+      CLPP1, CLXH, CLPP2, 
+      GCJK, ZZG, ZZCMC, CLSBDH, 
+      FDJH, CLLX, CSYS, SYXZ, 
+      SFZMHM, SFZMMC, SYR, CCDJRQ, 
+      DJRQ, YXQZ, QZBFQZ, FZJG, 
+      GLBM, BXZZRQ, ZT, DYBJ, 
+      FDJXH, RLZL, PL, GL, 
+      ZXXS, CWKC, CWKK, CWKG, 
+      HXNBCD, HXNBKD, HXNBGD, 
+      GBTHPS, ZS, ZJ, QLJ, 
+      HLJ, LTGG, LTS, ZZL, 
+      ZBZL, HDZZL, HDZK, 
+      ZQYZL, QPZK, HPZK, 
+      HBDBQK, CCRQ, CLYT, YTSX, 
+      XSZBH, JYHGBZBH, XZQH, 
+      ZSXZQH, ZZXZQH, SGCSSBWQK, 
+      SFMJ, BMJYY, SFXNY, XNYZL, 
+      BZ, DOWNload_TIME, STATION_ID, 
+      BOOK_NUMBER,response_Xml,full_hphm)
+    values (#{id,jdbcType=VARCHAR}, #{xh,jdbcType=CHAR}, #{hpzl,jdbcType=CHAR}, #{hphm,jdbcType=VARCHAR}, 
+      #{clpp1,jdbcType=VARCHAR}, #{clxh,jdbcType=VARCHAR}, #{clpp2,jdbcType=VARCHAR}, 
+      #{gcjk,jdbcType=CHAR}, #{zzg,jdbcType=CHAR}, #{zzcmc,jdbcType=VARCHAR}, #{clsbdh,jdbcType=VARCHAR}, 
+      #{fdjh,jdbcType=VARCHAR}, #{cllx,jdbcType=CHAR}, #{csys,jdbcType=VARCHAR}, #{syxz,jdbcType=CHAR}, 
+      #{sfzmhm,jdbcType=VARCHAR}, #{sfzmmc,jdbcType=CHAR}, #{syr,jdbcType=VARCHAR}, #{ccdjrq,jdbcType=VARCHAR}, 
+      #{djrq,jdbcType=VARCHAR}, #{yxqz,jdbcType=VARCHAR}, #{qzbfqz,jdbcType=VARCHAR}, #{fzjg,jdbcType=VARCHAR}, 
+      #{glbm,jdbcType=VARCHAR}, #{bxzzrq,jdbcType=VARCHAR}, #{zt,jdbcType=VARCHAR}, #{dybj,jdbcType=CHAR}, 
+      #{fdjxh,jdbcType=VARCHAR}, #{rlzl,jdbcType=VARCHAR}, #{pl,jdbcType=DECIMAL}, #{gl,jdbcType=DECIMAL}, 
+      #{zxxs,jdbcType=CHAR}, #{cwkc,jdbcType=DECIMAL}, #{cwkk,jdbcType=DECIMAL}, #{cwkg,jdbcType=DECIMAL}, 
+      #{hxnbcd,jdbcType=DECIMAL}, #{hxnbkd,jdbcType=DECIMAL}, #{hxnbgd,jdbcType=DECIMAL}, 
+      #{gbthps,jdbcType=DECIMAL}, #{zs,jdbcType=DECIMAL}, #{zj,jdbcType=DECIMAL}, #{qlj,jdbcType=DECIMAL}, 
+      #{hlj,jdbcType=DECIMAL}, #{ltgg,jdbcType=VARCHAR}, #{lts,jdbcType=DECIMAL}, #{zzl,jdbcType=DECIMAL}, 
+      #{zbzl,jdbcType=DECIMAL}, #{hdzzl,jdbcType=DECIMAL}, #{hdzk,jdbcType=DECIMAL}, 
+      #{zqyzl,jdbcType=DECIMAL}, #{qpzk,jdbcType=DECIMAL}, #{hpzk,jdbcType=DECIMAL}, 
+      #{hbdbqk,jdbcType=VARCHAR}, #{ccrq,jdbcType=VARCHAR}, #{clyt,jdbcType=CHAR}, #{ytsx,jdbcType=CHAR}, 
+      #{xszbh,jdbcType=VARCHAR}, #{jyhgbzbh,jdbcType=VARCHAR}, #{xzqh,jdbcType=VARCHAR}, 
+      #{zsxzqh,jdbcType=VARCHAR}, #{zzxzqh,jdbcType=VARCHAR}, #{sgcssbwqk,jdbcType=VARCHAR}, 
+      #{sfmj,jdbcType=CHAR}, #{bmjyy,jdbcType=VARCHAR}, #{sfxny,jdbcType=CHAR}, #{xnyzl,jdbcType=CHAR}, 
+      #{bz,jdbcType=VARCHAR}, #{downloadTime,jdbcType=TIMESTAMP}, #{stationId,jdbcType=VARCHAR}, 
+      #{bookNumber,jdbcType=VARCHAR}, #{responseXml,jdbcType=VARCHAR},#{fullHphm,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.VehIsInfo" >
+    insert into MOT.VEH_IS_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="xh != null" >
+        XH,
+      </if>
+      <if test="hpzl != null" >
+        HPZL,
+      </if>
+      <if test="hphm != null" >
+        HPHM,
+      </if>
+      <if test="clpp1 != null" >
+        CLPP1,
+      </if>
+      <if test="clxh != null" >
+        CLXH,
+      </if>
+      <if test="clpp2 != null" >
+        CLPP2,
+      </if>
+      <if test="gcjk != null" >
+        GCJK,
+      </if>
+      <if test="zzg != null" >
+        ZZG,
+      </if>
+      <if test="zzcmc != null" >
+        ZZCMC,
+      </if>
+      <if test="clsbdh != null" >
+        CLSBDH,
+      </if>
+      <if test="fdjh != null" >
+        FDJH,
+      </if>
+      <if test="cllx != null" >
+        CLLX,
+      </if>
+      <if test="csys != null" >
+        CSYS,
+      </if>
+      <if test="syxz != null" >
+        SYXZ,
+      </if>
+      <if test="sfzmhm != null" >
+        SFZMHM,
+      </if>
+      <if test="sfzmmc != null" >
+        SFZMMC,
+      </if>
+      <if test="syr != null" >
+        SYR,
+      </if>
+      <if test="ccdjrq != null" >
+        CCDJRQ,
+      </if>
+      <if test="djrq != null" >
+        DJRQ,
+      </if>
+      <if test="yxqz != null" >
+        YXQZ,
+      </if>
+      <if test="qzbfqz != null" >
+        QZBFQZ,
+      </if>
+      <if test="fzjg != null" >
+        FZJG,
+      </if>
+      <if test="glbm != null" >
+        GLBM,
+      </if>
+      <if test="bxzzrq != null" >
+        BXZZRQ,
+      </if>
+      <if test="zt != null" >
+        ZT,
+      </if>
+      <if test="dybj != null" >
+        DYBJ,
+      </if>
+      <if test="fdjxh != null" >
+        FDJXH,
+      </if>
+      <if test="rlzl != null" >
+        RLZL,
+      </if>
+      <if test="pl != null" >
+        PL,
+      </if>
+      <if test="gl != null" >
+        GL,
+      </if>
+      <if test="zxxs != null" >
+        ZXXS,
+      </if>
+      <if test="cwkc != null" >
+        CWKC,
+      </if>
+      <if test="cwkk != null" >
+        CWKK,
+      </if>
+      <if test="cwkg != null" >
+        CWKG,
+      </if>
+      <if test="hxnbcd != null" >
+        HXNBCD,
+      </if>
+      <if test="hxnbkd != null" >
+        HXNBKD,
+      </if>
+      <if test="hxnbgd != null" >
+        HXNBGD,
+      </if>
+      <if test="gbthps != null" >
+        GBTHPS,
+      </if>
+      <if test="zs != null" >
+        ZS,
+      </if>
+      <if test="zj != null" >
+        ZJ,
+      </if>
+      <if test="qlj != null" >
+        QLJ,
+      </if>
+      <if test="hlj != null" >
+        HLJ,
+      </if>
+      <if test="ltgg != null" >
+        LTGG,
+      </if>
+      <if test="lts != null" >
+        LTS,
+      </if>
+      <if test="zzl != null" >
+        ZZL,
+      </if>
+      <if test="zbzl != null" >
+        ZBZL,
+      </if>
+      <if test="hdzzl != null" >
+        HDZZL,
+      </if>
+      <if test="hdzk != null" >
+        HDZK,
+      </if>
+      <if test="zqyzl != null" >
+        ZQYZL,
+      </if>
+      <if test="qpzk != null" >
+        QPZK,
+      </if>
+      <if test="hpzk != null" >
+        HPZK,
+      </if>
+      <if test="hbdbqk != null" >
+        HBDBQK,
+      </if>
+      <if test="ccrq != null" >
+        CCRQ,
+      </if>
+      <if test="clyt != null" >
+        CLYT,
+      </if>
+      <if test="ytsx != null" >
+        YTSX,
+      </if>
+      <if test="xszbh != null" >
+        XSZBH,
+      </if>
+      <if test="jyhgbzbh != null" >
+        JYHGBZBH,
+      </if>
+      <if test="xzqh != null" >
+        XZQH,
+      </if>
+      <if test="zsxzqh != null" >
+        ZSXZQH,
+      </if>
+      <if test="zzxzqh != null" >
+        ZZXZQH,
+      </if>
+      <if test="sgcssbwqk != null" >
+        SGCSSBWQK,
+      </if>
+      <if test="sfmj != null" >
+        SFMJ,
+      </if>
+      <if test="bmjyy != null" >
+        BMJYY,
+      </if>
+      <if test="sfxny != null" >
+        SFXNY,
+      </if>
+      <if test="xnyzl != null" >
+        XNYZL,
+      </if>
+      <if test="bz != null" >
+        BZ,
+      </if>
+      <if test="downloadTime != null" >
+        DOWNload_TIME,
+      </if>
+      <if test="stationId != null" >
+        STATION_ID,
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER,
+      </if>
+      <if test="responseXml != null" >
+        response_xml,
+      </if>
+      <if test="fullHphm != null" >
+        full_hphm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="xh != null" >
+        #{xh,jdbcType=CHAR},
+      </if>
+      <if test="hpzl != null" >
+        #{hpzl,jdbcType=CHAR},
+      </if>
+      <if test="hphm != null" >
+        #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp1 != null" >
+        #{clpp1,jdbcType=VARCHAR},
+      </if>
+      <if test="clxh != null" >
+        #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp2 != null" >
+        #{clpp2,jdbcType=VARCHAR},
+      </if>
+      <if test="gcjk != null" >
+        #{gcjk,jdbcType=CHAR},
+      </if>
+      <if test="zzg != null" >
+        #{zzg,jdbcType=CHAR},
+      </if>
+      <if test="zzcmc != null" >
+        #{zzcmc,jdbcType=VARCHAR},
+      </if>
+      <if test="clsbdh != null" >
+        #{clsbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="fdjh != null" >
+        #{fdjh,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null" >
+        #{cllx,jdbcType=CHAR},
+      </if>
+      <if test="csys != null" >
+        #{csys,jdbcType=VARCHAR},
+      </if>
+      <if test="syxz != null" >
+        #{syxz,jdbcType=CHAR},
+      </if>
+      <if test="sfzmhm != null" >
+        #{sfzmhm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfzmmc != null" >
+        #{sfzmmc,jdbcType=CHAR},
+      </if>
+      <if test="syr != null" >
+        #{syr,jdbcType=VARCHAR},
+      </if>
+      <if test="ccdjrq != null" >
+        #{ccdjrq,jdbcType=VARCHAR},
+      </if>
+      <if test="djrq != null" >
+        #{djrq,jdbcType=VARCHAR},
+      </if>
+      <if test="yxqz != null" >
+        #{yxqz,jdbcType=VARCHAR},
+      </if>
+      <if test="qzbfqz != null" >
+        #{qzbfqz,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="glbm != null" >
+        #{glbm,jdbcType=VARCHAR},
+      </if>
+      <if test="bxzzrq != null" >
+        #{bxzzrq,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=VARCHAR},
+      </if>
+      <if test="dybj != null" >
+        #{dybj,jdbcType=CHAR},
+      </if>
+      <if test="fdjxh != null" >
+        #{fdjxh,jdbcType=VARCHAR},
+      </if>
+      <if test="rlzl != null" >
+        #{rlzl,jdbcType=VARCHAR},
+      </if>
+      <if test="pl != null" >
+        #{pl,jdbcType=DECIMAL},
+      </if>
+      <if test="gl != null" >
+        #{gl,jdbcType=DECIMAL},
+      </if>
+      <if test="zxxs != null" >
+        #{zxxs,jdbcType=CHAR},
+      </if>
+      <if test="cwkc != null" >
+        #{cwkc,jdbcType=DECIMAL},
+      </if>
+      <if test="cwkk != null" >
+        #{cwkk,jdbcType=DECIMAL},
+      </if>
+      <if test="cwkg != null" >
+        #{cwkg,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbcd != null" >
+        #{hxnbcd,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbkd != null" >
+        #{hxnbkd,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbgd != null" >
+        #{hxnbgd,jdbcType=DECIMAL},
+      </if>
+      <if test="gbthps != null" >
+        #{gbthps,jdbcType=DECIMAL},
+      </if>
+      <if test="zs != null" >
+        #{zs,jdbcType=DECIMAL},
+      </if>
+      <if test="zj != null" >
+        #{zj,jdbcType=DECIMAL},
+      </if>
+      <if test="qlj != null" >
+        #{qlj,jdbcType=DECIMAL},
+      </if>
+      <if test="hlj != null" >
+        #{hlj,jdbcType=DECIMAL},
+      </if>
+      <if test="ltgg != null" >
+        #{ltgg,jdbcType=VARCHAR},
+      </if>
+      <if test="lts != null" >
+        #{lts,jdbcType=DECIMAL},
+      </if>
+      <if test="zzl != null" >
+        #{zzl,jdbcType=DECIMAL},
+      </if>
+      <if test="zbzl != null" >
+        #{zbzl,jdbcType=DECIMAL},
+      </if>
+      <if test="hdzzl != null" >
+        #{hdzzl,jdbcType=DECIMAL},
+      </if>
+      <if test="hdzk != null" >
+        #{hdzk,jdbcType=DECIMAL},
+      </if>
+      <if test="zqyzl != null" >
+        #{zqyzl,jdbcType=DECIMAL},
+      </if>
+      <if test="qpzk != null" >
+        #{qpzk,jdbcType=DECIMAL},
+      </if>
+      <if test="hpzk != null" >
+        #{hpzk,jdbcType=DECIMAL},
+      </if>
+      <if test="hbdbqk != null" >
+        #{hbdbqk,jdbcType=VARCHAR},
+      </if>
+      <if test="ccrq != null" >
+        #{ccrq,jdbcType=VARCHAR},
+      </if>
+      <if test="clyt != null" >
+        #{clyt,jdbcType=CHAR},
+      </if>
+      <if test="ytsx != null" >
+        #{ytsx,jdbcType=CHAR},
+      </if>
+      <if test="xszbh != null" >
+        #{xszbh,jdbcType=VARCHAR},
+      </if>
+      <if test="jyhgbzbh != null" >
+        #{jyhgbzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="xzqh != null" >
+        #{xzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="zsxzqh != null" >
+        #{zsxzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="zzxzqh != null" >
+        #{zzxzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="sgcssbwqk != null" >
+        #{sgcssbwqk,jdbcType=VARCHAR},
+      </if>
+      <if test="sfmj != null" >
+        #{sfmj,jdbcType=CHAR},
+      </if>
+      <if test="bmjyy != null" >
+        #{bmjyy,jdbcType=VARCHAR},
+      </if>
+      <if test="sfxny != null" >
+        #{sfxny,jdbcType=CHAR},
+      </if>
+      <if test="xnyzl != null" >
+        #{xnyzl,jdbcType=CHAR},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTime != null" >
+        #{downloadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stationId != null" >
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="responseXml != null" >
+        #{responseXml,jdbcType=VARCHAR},
+      </if>
+         <if test="fullHphm != null" >
+        #{fullHphm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.VehIsInfo" >
+    update MOT.VEH_IS_INFO
+    <set >
+      <if test="xh != null" >
+        XH = #{xh,jdbcType=CHAR},
+      </if>
+      <if test="hpzl != null" >
+        HPZL = #{hpzl,jdbcType=CHAR},
+      </if>
+      <if test="hphm != null" >
+        HPHM = #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp1 != null" >
+        CLPP1 = #{clpp1,jdbcType=VARCHAR},
+      </if>
+      <if test="clxh != null" >
+        CLXH = #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp2 != null" >
+        CLPP2 = #{clpp2,jdbcType=VARCHAR},
+      </if>
+      <if test="gcjk != null" >
+        GCJK = #{gcjk,jdbcType=CHAR},
+      </if>
+      <if test="zzg != null" >
+        ZZG = #{zzg,jdbcType=CHAR},
+      </if>
+      <if test="zzcmc != null" >
+        ZZCMC = #{zzcmc,jdbcType=VARCHAR},
+      </if>
+      <if test="clsbdh != null" >
+        CLSBDH = #{clsbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="fdjh != null" >
+        FDJH = #{fdjh,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null" >
+        CLLX = #{cllx,jdbcType=CHAR},
+      </if>
+      <if test="csys != null" >
+        CSYS = #{csys,jdbcType=VARCHAR},
+      </if>
+      <if test="syxz != null" >
+        SYXZ = #{syxz,jdbcType=CHAR},
+      </if>
+      <if test="sfzmhm != null" >
+        SFZMHM = #{sfzmhm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfzmmc != null" >
+        SFZMMC = #{sfzmmc,jdbcType=CHAR},
+      </if>
+      <if test="syr != null" >
+        SYR = #{syr,jdbcType=VARCHAR},
+      </if>
+      <if test="ccdjrq != null" >
+        CCDJRQ = #{ccdjrq,jdbcType=VARCHAR},
+      </if>
+      <if test="djrq != null" >
+        DJRQ = #{djrq,jdbcType=VARCHAR},
+      </if>
+      <if test="yxqz != null" >
+        YXQZ = #{yxqz,jdbcType=VARCHAR},
+      </if>
+      <if test="qzbfqz != null" >
+        QZBFQZ = #{qzbfqz,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        FZJG = #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="glbm != null" >
+        GLBM = #{glbm,jdbcType=VARCHAR},
+      </if>
+      <if test="bxzzrq != null" >
+        BXZZRQ = #{bxzzrq,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        ZT = #{zt,jdbcType=VARCHAR},
+      </if>
+      <if test="dybj != null" >
+        DYBJ = #{dybj,jdbcType=CHAR},
+      </if>
+      <if test="fdjxh != null" >
+        FDJXH = #{fdjxh,jdbcType=VARCHAR},
+      </if>
+      <if test="rlzl != null" >
+        RLZL = #{rlzl,jdbcType=VARCHAR},
+      </if>
+      <if test="pl != null" >
+        PL = #{pl,jdbcType=DECIMAL},
+      </if>
+      <if test="gl != null" >
+        GL = #{gl,jdbcType=DECIMAL},
+      </if>
+      <if test="zxxs != null" >
+        ZXXS = #{zxxs,jdbcType=CHAR},
+      </if>
+      <if test="cwkc != null" >
+        CWKC = #{cwkc,jdbcType=DECIMAL},
+      </if>
+      <if test="cwkk != null" >
+        CWKK = #{cwkk,jdbcType=DECIMAL},
+      </if>
+      <if test="cwkg != null" >
+        CWKG = #{cwkg,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbcd != null" >
+        HXNBCD = #{hxnbcd,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbkd != null" >
+        HXNBKD = #{hxnbkd,jdbcType=DECIMAL},
+      </if>
+      <if test="hxnbgd != null" >
+        HXNBGD = #{hxnbgd,jdbcType=DECIMAL},
+      </if>
+      <if test="gbthps != null" >
+        GBTHPS = #{gbthps,jdbcType=DECIMAL},
+      </if>
+      <if test="zs != null" >
+        ZS = #{zs,jdbcType=DECIMAL},
+      </if>
+      <if test="zj != null" >
+        ZJ = #{zj,jdbcType=DECIMAL},
+      </if>
+      <if test="qlj != null" >
+        QLJ = #{qlj,jdbcType=DECIMAL},
+      </if>
+      <if test="hlj != null" >
+        HLJ = #{hlj,jdbcType=DECIMAL},
+      </if>
+      <if test="ltgg != null" >
+        LTGG = #{ltgg,jdbcType=VARCHAR},
+      </if>
+      <if test="lts != null" >
+        LTS = #{lts,jdbcType=DECIMAL},
+      </if>
+      <if test="zzl != null" >
+        ZZL = #{zzl,jdbcType=DECIMAL},
+      </if>
+      <if test="zbzl != null" >
+        ZBZL = #{zbzl,jdbcType=DECIMAL},
+      </if>
+      <if test="hdzzl != null" >
+        HDZZL = #{hdzzl,jdbcType=DECIMAL},
+      </if>
+      <if test="hdzk != null" >
+        HDZK = #{hdzk,jdbcType=DECIMAL},
+      </if>
+      <if test="zqyzl != null" >
+        ZQYZL = #{zqyzl,jdbcType=DECIMAL},
+      </if>
+      <if test="qpzk != null" >
+        QPZK = #{qpzk,jdbcType=DECIMAL},
+      </if>
+      <if test="hpzk != null" >
+        HPZK = #{hpzk,jdbcType=DECIMAL},
+      </if>
+      <if test="hbdbqk != null" >
+        HBDBQK = #{hbdbqk,jdbcType=VARCHAR},
+      </if>
+      <if test="ccrq != null" >
+        CCRQ = #{ccrq,jdbcType=VARCHAR},
+      </if>
+      <if test="clyt != null" >
+        CLYT = #{clyt,jdbcType=CHAR},
+      </if>
+      <if test="ytsx != null" >
+        YTSX = #{ytsx,jdbcType=CHAR},
+      </if>
+      <if test="xszbh != null" >
+        XSZBH = #{xszbh,jdbcType=VARCHAR},
+      </if>
+      <if test="jyhgbzbh != null" >
+        JYHGBZBH = #{jyhgbzbh,jdbcType=VARCHAR},
+      </if>
+      <if test="xzqh != null" >
+        XZQH = #{xzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="zsxzqh != null" >
+        ZSXZQH = #{zsxzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="zzxzqh != null" >
+        ZZXZQH = #{zzxzqh,jdbcType=VARCHAR},
+      </if>
+      <if test="sgcssbwqk != null" >
+        SGCSSBWQK = #{sgcssbwqk,jdbcType=VARCHAR},
+      </if>
+      <if test="sfmj != null" >
+        SFMJ = #{sfmj,jdbcType=CHAR},
+      </if>
+      <if test="bmjyy != null" >
+        BMJYY = #{bmjyy,jdbcType=VARCHAR},
+      </if>
+      <if test="sfxny != null" >
+        SFXNY = #{sfxny,jdbcType=CHAR},
+      </if>
+      <if test="xnyzl != null" >
+        XNYZL = #{xnyzl,jdbcType=CHAR},
+      </if>
+      <if test="bz != null" >
+        BZ = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTime != null" >
+        DOWNload_TIME = #{downloadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="responseXml != null" >
+        response_xml = #{responseXml,jdbcType=VARCHAR},
+      </if>
+       <if test="fullHphm != null" >
+        full_hphm = #{fullHphm,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.VehIsInfo" >
+    update MOT.VEH_IS_INFO
+    set XH = #{xh,jdbcType=CHAR},
+      HPZL = #{hpzl,jdbcType=CHAR},
+      HPHM = #{hphm,jdbcType=VARCHAR},
+      CLPP1 = #{clpp1,jdbcType=VARCHAR},
+      CLXH = #{clxh,jdbcType=VARCHAR},
+      CLPP2 = #{clpp2,jdbcType=VARCHAR},
+      GCJK = #{gcjk,jdbcType=CHAR},
+      ZZG = #{zzg,jdbcType=CHAR},
+      ZZCMC = #{zzcmc,jdbcType=VARCHAR},
+      CLSBDH = #{clsbdh,jdbcType=VARCHAR},
+      FDJH = #{fdjh,jdbcType=VARCHAR},
+      CLLX = #{cllx,jdbcType=CHAR},
+      CSYS = #{csys,jdbcType=VARCHAR},
+      SYXZ = #{syxz,jdbcType=CHAR},
+      SFZMHM = #{sfzmhm,jdbcType=VARCHAR},
+      SFZMMC = #{sfzmmc,jdbcType=CHAR},
+      SYR = #{syr,jdbcType=VARCHAR},
+      CCDJRQ = #{ccdjrq,jdbcType=VARCHAR},
+      DJRQ = #{djrq,jdbcType=VARCHAR},
+      YXQZ = #{yxqz,jdbcType=VARCHAR},
+      QZBFQZ = #{qzbfqz,jdbcType=VARCHAR},
+      FZJG = #{fzjg,jdbcType=VARCHAR},
+      GLBM = #{glbm,jdbcType=VARCHAR},
+      BXZZRQ = #{bxzzrq,jdbcType=VARCHAR},
+      ZT = #{zt,jdbcType=VARCHAR},
+      DYBJ = #{dybj,jdbcType=CHAR},
+      FDJXH = #{fdjxh,jdbcType=VARCHAR},
+      RLZL = #{rlzl,jdbcType=VARCHAR},
+      PL = #{pl,jdbcType=DECIMAL},
+      GL = #{gl,jdbcType=DECIMAL},
+      ZXXS = #{zxxs,jdbcType=CHAR},
+      CWKC = #{cwkc,jdbcType=DECIMAL},
+      CWKK = #{cwkk,jdbcType=DECIMAL},
+      CWKG = #{cwkg,jdbcType=DECIMAL},
+      HXNBCD = #{hxnbcd,jdbcType=DECIMAL},
+      HXNBKD = #{hxnbkd,jdbcType=DECIMAL},
+      HXNBGD = #{hxnbgd,jdbcType=DECIMAL},
+      GBTHPS = #{gbthps,jdbcType=DECIMAL},
+      ZS = #{zs,jdbcType=DECIMAL},
+      ZJ = #{zj,jdbcType=DECIMAL},
+      QLJ = #{qlj,jdbcType=DECIMAL},
+      HLJ = #{hlj,jdbcType=DECIMAL},
+      LTGG = #{ltgg,jdbcType=VARCHAR},
+      LTS = #{lts,jdbcType=DECIMAL},
+      ZZL = #{zzl,jdbcType=DECIMAL},
+      ZBZL = #{zbzl,jdbcType=DECIMAL},
+      HDZZL = #{hdzzl,jdbcType=DECIMAL},
+      HDZK = #{hdzk,jdbcType=DECIMAL},
+      ZQYZL = #{zqyzl,jdbcType=DECIMAL},
+      QPZK = #{qpzk,jdbcType=DECIMAL},
+      HPZK = #{hpzk,jdbcType=DECIMAL},
+      HBDBQK = #{hbdbqk,jdbcType=VARCHAR},
+      CCRQ = #{ccrq,jdbcType=VARCHAR},
+      CLYT = #{clyt,jdbcType=CHAR},
+      YTSX = #{ytsx,jdbcType=CHAR},
+      XSZBH = #{xszbh,jdbcType=VARCHAR},
+      JYHGBZBH = #{jyhgbzbh,jdbcType=VARCHAR},
+      XZQH = #{xzqh,jdbcType=VARCHAR},
+      ZSXZQH = #{zsxzqh,jdbcType=VARCHAR},
+      ZZXZQH = #{zzxzqh,jdbcType=VARCHAR},
+      SGCSSBWQK = #{sgcssbwqk,jdbcType=VARCHAR},
+      SFMJ = #{sfmj,jdbcType=CHAR},
+      BMJYY = #{bmjyy,jdbcType=VARCHAR},
+      SFXNY = #{sfxny,jdbcType=CHAR},
+      XNYZL = #{xnyzl,jdbcType=CHAR},
+      BZ = #{bz,jdbcType=VARCHAR},
+      DOWNload_TIME = #{downloadTime,jdbcType=TIMESTAMP},
+      STATION_ID = #{stationId,jdbcType=VARCHAR},
+      BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      response_xml = #{responseXml,jdbcType=VARCHAR},
+      full_hphm = #{fullHphm,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_INFO
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_INFO
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.VEH_IS_INFO
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.VEH_IS_INFO
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>

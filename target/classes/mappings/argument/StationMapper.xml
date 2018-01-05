@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.argument.dao.StationDao" >
+  <resultMap id="BaseResultMap" type="com.cs.argument.entity.Station" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="POINT_X" property="pointX" jdbcType="FLOAT" />
+    <result column="POINT_Y" property="pointY" jdbcType="FLOAT" />
+    <result column="STATION_STATE" property="stationState" jdbcType="DECIMAL" />
+    <result column="DISTRICT_ID" property="districtId" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="ORDER_NUM" property="orderNum" jdbcType="DECIMAL" />
+    <result column="SERIAL_NUMBER" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="GREEN_MARK" property="greenMark" jdbcType="DECIMAL" />
+    <result column="VEHICLE_CHARACTERS" property="vehicleCharacters" jdbcType="VARCHAR" />
+    <result column="DRIVER_TYPES" property="driverTypes" jdbcType="VARCHAR" />
+    <result column="FUEL_TYPES" property="fuelTypes" jdbcType="VARCHAR" />
+    <result column="VEHICLE_TYPES" property="vehicleTypes" jdbcType="VARCHAR" />
+    <result column="USE_CHARATERS" property="useCharaters" jdbcType="VARCHAR" />
+    <result column="CAR_TYPES" property="carTypes" jdbcType="VARCHAR" />
+    <result column="VIEW_NAME" property="viewName" jdbcType="VARCHAR" />
+    <result column="LINE_NUMBER" property="lineNumber" jdbcType="DECIMAL" />
+    <result column="MAX_NUMBER" property="maxNumber" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ADDRESS, CODE, CREATE_DATE, EMAIL, MOBILE, NAME, PHONE, POINT_X, POINT_Y, STATION_STATE, 
+    DISTRICT_ID, ORG_ID, ORDER_NUM, SERIAL_NUMBER, GREEN_MARK, VEHICLE_CHARACTERS, DRIVER_TYPES, 
+    FUEL_TYPES, VEHICLE_TYPES, USE_CHARATERS, CAR_TYPES, VIEW_NAME, LINE_NUMBER, MAX_NUMBER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.STATION
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.STATION
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.argument.entity.Station" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    insert into MOT.STATION (ID, ADDRESS, CODE, 
+      CREATE_DATE, EMAIL, MOBILE, 
+      NAME, PHONE, POINT_X, 
+      POINT_Y, STATION_STATE, DISTRICT_ID, 
+      ORG_ID, ORDER_NUM, SERIAL_NUMBER, 
+      GREEN_MARK, VEHICLE_CHARACTERS, DRIVER_TYPES, 
+      FUEL_TYPES, VEHICLE_TYPES, USE_CHARATERS, 
+      CAR_TYPES, VIEW_NAME, LINE_NUMBER, 
+      MAX_NUMBER)
+    values (#{id,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{pointX,jdbcType=FLOAT}, 
+      #{pointY,jdbcType=FLOAT}, #{stationState,jdbcType=DECIMAL}, #{districtId,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=VARCHAR}, #{orderNum,jdbcType=DECIMAL}, #{serialNumber,jdbcType=VARCHAR}, 
+      #{greenMark,jdbcType=DECIMAL}, #{vehicleCharacters,jdbcType=VARCHAR}, #{driverTypes,jdbcType=VARCHAR}, 
+      #{fuelTypes,jdbcType=VARCHAR}, #{vehicleTypes,jdbcType=VARCHAR}, #{useCharaters,jdbcType=VARCHAR}, 
+      #{carTypes,jdbcType=VARCHAR}, #{viewName,jdbcType=VARCHAR}, #{lineNumber,jdbcType=DECIMAL}, 
+      #{maxNumber,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.argument.entity.Station" >
+    insert into MOT.STATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="pointX != null" >
+        POINT_X,
+      </if>
+      <if test="pointY != null" >
+        POINT_Y,
+      </if>
+      <if test="stationState != null" >
+        STATION_STATE,
+      </if>
+      <if test="districtId != null" >
+        DISTRICT_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="orderNum != null" >
+        ORDER_NUM,
+      </if>
+      <if test="serialNumber != null" >
+        SERIAL_NUMBER,
+      </if>
+      <if test="greenMark != null" >
+        GREEN_MARK,
+      </if>
+      <if test="vehicleCharacters != null" >
+        VEHICLE_CHARACTERS,
+      </if>
+      <if test="driverTypes != null" >
+        DRIVER_TYPES,
+      </if>
+      <if test="fuelTypes != null" >
+        FUEL_TYPES,
+      </if>
+      <if test="vehicleTypes != null" >
+        VEHICLE_TYPES,
+      </if>
+      <if test="useCharaters != null" >
+        USE_CHARATERS,
+      </if>
+      <if test="carTypes != null" >
+        CAR_TYPES,
+      </if>
+      <if test="viewName != null" >
+        VIEW_NAME,
+      </if>
+      <if test="lineNumber != null" >
+        LINE_NUMBER,
+      </if>
+      <if test="maxNumber != null" >
+        MAX_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pointX != null" >
+        #{pointX,jdbcType=FLOAT},
+      </if>
+      <if test="pointY != null" >
+        #{pointY,jdbcType=FLOAT},
+      </if>
+      <if test="stationState != null" >
+        #{stationState,jdbcType=DECIMAL},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=DECIMAL},
+      </if>
+      <if test="serialNumber != null" >
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="greenMark != null" >
+        #{greenMark,jdbcType=DECIMAL},
+      </if>
+      <if test="vehicleCharacters != null" >
+        #{vehicleCharacters,jdbcType=VARCHAR},
+      </if>
+      <if test="driverTypes != null" >
+        #{driverTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="fuelTypes != null" >
+        #{fuelTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleTypes != null" >
+        #{vehicleTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="useCharaters != null" >
+        #{useCharaters,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypes != null" >
+        #{carTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="viewName != null" >
+        #{viewName,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNumber != null" >
+        #{lineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="maxNumber != null" >
+        #{maxNumber,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.argument.entity.Station" >
+    update MOT.STATION
+    <set >
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="pointX != null" >
+        POINT_X = #{pointX,jdbcType=FLOAT},
+      </if>
+      <if test="pointY != null" >
+        POINT_Y = #{pointY,jdbcType=FLOAT},
+      </if>
+      <if test="stationState != null" >
+        STATION_STATE = #{stationState,jdbcType=DECIMAL},
+      </if>
+      <if test="districtId != null" >
+        DISTRICT_ID = #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        ORDER_NUM = #{orderNum,jdbcType=DECIMAL},
+      </if>
+      <if test="serialNumber != null" >
+        SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="greenMark != null" >
+        GREEN_MARK = #{greenMark,jdbcType=DECIMAL},
+      </if>
+      <if test="vehicleCharacters != null" >
+        VEHICLE_CHARACTERS = #{vehicleCharacters,jdbcType=VARCHAR},
+      </if>
+      <if test="driverTypes != null" >
+        DRIVER_TYPES = #{driverTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="fuelTypes != null" >
+        FUEL_TYPES = #{fuelTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleTypes != null" >
+        VEHICLE_TYPES = #{vehicleTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="useCharaters != null" >
+        USE_CHARATERS = #{useCharaters,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypes != null" >
+        CAR_TYPES = #{carTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="viewName != null" >
+        VIEW_NAME = #{viewName,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNumber != null" >
+        LINE_NUMBER = #{lineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="maxNumber != null" >
+        MAX_NUMBER = #{maxNumber,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.argument.entity.Station" >
+    update MOT.STATION
+    set ADDRESS = #{address,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      POINT_X = #{pointX,jdbcType=FLOAT},
+      POINT_Y = #{pointY,jdbcType=FLOAT},
+      STATION_STATE = #{stationState,jdbcType=DECIMAL},
+      DISTRICT_ID = #{districtId,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      ORDER_NUM = #{orderNum,jdbcType=DECIMAL},
+      SERIAL_NUMBER = #{serialNumber,jdbcType=VARCHAR},
+      GREEN_MARK = #{greenMark,jdbcType=DECIMAL},
+      VEHICLE_CHARACTERS = #{vehicleCharacters,jdbcType=VARCHAR},
+      DRIVER_TYPES = #{driverTypes,jdbcType=VARCHAR},
+      FUEL_TYPES = #{fuelTypes,jdbcType=VARCHAR},
+      VEHICLE_TYPES = #{vehicleTypes,jdbcType=VARCHAR},
+      USE_CHARATERS = #{useCharaters,jdbcType=VARCHAR},
+      CAR_TYPES = #{carTypes,jdbcType=VARCHAR},
+      VIEW_NAME = #{viewName,jdbcType=VARCHAR},
+      LINE_NUMBER = #{lineNumber,jdbcType=DECIMAL},
+      MAX_NUMBER = #{maxNumber,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.STATION
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.STATION
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.STATION
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.STATION
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <select id="findNotExistInterfaceControl" resultType="com.cs.argument.entity.Station">
+  	select 
+  	<include refid="Base_Column_List" />
+	from MOT.STATION station
+	where not exists (select 1 from MOT.INTERFACE_CONTROL_GENERAL control where control.STATION_ID=station.id )
+  </select>
+  
+  <!-- 根据监测站Id列表，批量修改最大预约量 -->
+  <update id="batchUpdateMaxNumber" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=";end;" separator=";">
+  		update station 
+  		<set>
+  		 MAX_NUMBER = #{item.maxNumber}
+        </set>
+  		where id = #{item.id}
+  		</foreach>
+  </update>
+  
+</mapper>

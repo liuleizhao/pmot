@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs2.veh.dao.IVehIsFlowDao" >
+  <resultMap id="BaseResultMap" type="com.cs2.veh.entity.IVehIsFlow" >
+    <id column="LSH" property="lsh" jdbcType="VARCHAR" />
+    <result column="JYLSH" property="jylsh" jdbcType="VARCHAR" />
+    <result column="JCXDH" property="jcxdh" jdbcType="VARCHAR" />
+    <result column="JYJGBH" property="jyjgbh" jdbcType="VARCHAR" />
+    <result column="JYLB" property="jylb" jdbcType="VARCHAR" />
+    <result column="SXBJ" property="sxbj" jdbcType="CHAR" />
+    <result column="HPHM" property="hphm" jdbcType="VARCHAR" />
+    <result column="HPZL" property="hpzl" jdbcType="VARCHAR" />
+    <result column="CLPP1" property="clpp1" jdbcType="VARCHAR" />
+    <result column="CLXH" property="clxh" jdbcType="VARCHAR" />
+    <result column="CLSBDH" property="clsbdh" jdbcType="VARCHAR" />
+    <result column="CLLX" property="cllx" jdbcType="VARCHAR" />
+    <result column="SYXZ" property="syxz" jdbcType="CHAR" />
+    <result column="GLBM" property="glbm" jdbcType="VARCHAR" />
+    <result column="FZJG" property="fzjg" jdbcType="VARCHAR" />
+    <result column="STJG" property="stjg" jdbcType="VARCHAR" />
+    <result column="JYRQ" property="jyrq" jdbcType="DATE" />
+    <result column="CJSJ" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="SHR" property="shr" jdbcType="VARCHAR" />
+    <result column="SHCS" property="shcs" jdbcType="DECIMAL" />
+    <result column="SHKSSJ" property="shkssj" jdbcType="TIMESTAMP" />
+    <result column="SHJSSJ" property="shjssj" jdbcType="TIMESTAMP" />
+    <result column="DYSJ" property="dysj" jdbcType="TIMESTAMP" />
+    <result column="LSZT" property="lszt" jdbcType="VARCHAR" />
+    <result column="GXSJ" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="JYW" property="jyw" jdbcType="VARCHAR" />
+    <result column="GCXX" property="gcxx" jdbcType="VARCHAR" />
+    <result column="JYCS" property="jycs" jdbcType="DECIMAL" />
+    <result column="SQSHSJ" property="sqshsj" jdbcType="TIMESTAMP" />
+    <result column="JCXLB" property="jcxlb" jdbcType="CHAR" />
+    <result column="WGSHBJ" property="wgshbj" jdbcType="VARCHAR" />
+    <result column="JYSHBJ" property="jyshbj" jdbcType="VARCHAR" />
+    <result column="LCMS" property="lcms" jdbcType="VARCHAR" />
+    <result column="SJXJBJ" property="sjxjbj" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LSH, JYLSH, JCXDH, JYJGBH, JYLB, SXBJ, HPHM, HPZL, CLPP1, CLXH, CLSBDH, CLLX, SYXZ, 
+    GLBM, FZJG, STJG, JYRQ, CJSJ, SHR, SHCS, SHKSSJ, SHJSSJ, DYSJ, LSZT, GXSJ, JYW, GCXX, 
+    JYCS, SQSHSJ, JCXLB, WGSHBJ, JYSHBJ, LCMS, SJXJBJ
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from trffpn_app.VEH_IS_FLOW
+    where LSH = #{lsh,jdbcType=VARCHAR}
+  </select>
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trffpn_app.VEH_IS_FLOW
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trffpn_app.VEH_IS_FLOW
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from trffpn_app.VEH_IS_FLOW
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from trffpn_app.VEH_IS_FLOW
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>

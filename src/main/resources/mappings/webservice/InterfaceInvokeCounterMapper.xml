@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.webservice.dao.InterfaceInvokeCounterDao" >
+  <resultMap id="BaseResultMap" type="com.cs.webservice.entity.InterfaceInvokeCounter" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="INVOKE_DATE" property="invokeDate" jdbcType="VARCHAR" />
+    <result column="INVOKE_COUNT" property="invokeCount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, INVOKE_DATE, INVOKE_COUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_INVOKE_COUNTER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.INTERFACE_INVOKE_COUNTER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.webservice.entity.InterfaceInvokeCounter" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>
+    insert into MOT.INTERFACE_INVOKE_COUNTER (ID, INVOKE_DATE, INVOKE_COUNT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{invokeDate,jdbcType=VARCHAR}, #{invokeCount,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.webservice.entity.InterfaceInvokeCounter" >
+    insert into MOT.INTERFACE_INVOKE_COUNTER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="invokeDate != null" >
+        INVOKE_DATE,
+      </if>
+      <if test="invokeCount != null" >
+        INVOKE_COUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeDate != null" >
+        #{invokeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeCount != null" >
+        #{invokeCount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.webservice.entity.InterfaceInvokeCounter" >
+    update MOT.INTERFACE_INVOKE_COUNTER
+    <set >
+      <if test="invokeDate != null" >
+        INVOKE_DATE = #{invokeDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeCount != null" >
+        INVOKE_COUNT = #{invokeCount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.webservice.entity.InterfaceInvokeCounter" >
+    update MOT.INTERFACE_INVOKE_COUNTER
+    set INVOKE_DATE = #{invokeDate,jdbcType=VARCHAR},
+      INVOKE_COUNT = #{invokeCount,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.INTERFACE_INVOKE_COUNTER
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.INTERFACE_INVOKE_COUNTER
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <update id="plusOneByInvokeDate">
+  	update MOT.INTERFACE_INVOKE_COUNTER set INVOKE_COUNT = INVOKE_COUNT+1 where invoke_date = #{invokeDate}
+  </update>
+</mapper>

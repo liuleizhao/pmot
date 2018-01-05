@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.webservice.dao.InterParamRelationDao" >
+  <resultMap id="BaseResultMap" type="com.cs.webservice.entity.InterParamRelation" >
+    <id column="INTERFACEINFO_ID" property="interfaceInfoId" jdbcType="VARCHAR" />
+    <id column="PARAMETER_ID" property="parameterId" jdbcType="VARCHAR" />
+	<result column="NOT_NULL" property="notNull" jdbcType="DECIMAL" /> 
+    <result column="ORDER_INDEX" property="orderIndex" jdbcType="DECIMAL" />
+    <result column="REQUIRED_ATTRS" property="requiredAttrs" jdbcType="VARCHAR" />
+    <association property="parameter" column="PARAMETER_ID" select="com.cs.webservice.dao.InterfaceParameterDao.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    INTERFACEINFO_ID, PARAMETER_ID, NOT_NULL, ORDER_INDEX, REQUIRED_ATTRS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List" />
+    from MOT.INTER_PARAM_RELATION
+    where INTERFACEINFO_ID = #{interfaceInfoId,jdbcType=VARCHAR}
+    and PARAMETER_ID = #{parameterId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.cs.webservice.entity.InterParamRelation" >
+    delete from MOT.INTER_PARAM_RELATION
+    where INTERFACEINFO_ID = #{interfaceInfoId,jdbcType=VARCHAR}
+      and PARAMETER_ID = #{parameterId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.webservice.entity.InterParamRelation" >
+    insert into MOT.INTER_PARAM_RELATION (INTERFACEINFO_ID, PARAMETER_ID, NOT_NULL, 
+      ORDER_INDEX, REQUIRED_ATTRS)
+    values (#{interfaceInfoId,jdbcType=VARCHAR}, #{parameterId,jdbcType=VARCHAR}, #{notNull,jdbcType=DECIMAL}, 
+      #{orderIndex,jdbcType=DECIMAL}, #{requiredAttrs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.webservice.entity.InterParamRelation" >
+    insert into MOT.INTER_PARAM_RELATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="interfaceinfoId != null" >
+        INTERFACEINFO_ID,
+      </if>
+      <if test="parameterId != null" >
+        PARAMETER_ID,
+      </if>
+      <if test="notNull != null" >
+        NOT_NULL,
+      </if>
+      <if test="orderIndex != null" >
+        ORDER_INDEX,
+      </if>
+      <if test="requiredAttrs != null" >
+        REQUIRED_ATTRS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="interfaceinfoId != null" >
+        #{interfaceInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterId != null" >
+        #{parameterId,jdbcType=VARCHAR},
+      </if>
+      <if test="notNull != null" >
+        #{notNull,jdbcType=DECIMAL},
+      </if>
+      <if test="orderIndex != null" >
+        #{orderIndex,jdbcType=DECIMAL},
+      </if>
+      <if test="requiredAttrs != null" >
+        #{requiredAttrs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.webservice.entity.InterParamRelation" >
+    update MOT.INTER_PARAM_RELATION
+    <set >
+      <if test="notNull != null" >
+        NOT_NULL = #{notNull,jdbcType=DECIMAL},
+      </if>
+      <if test="orderIndex != null" >
+        ORDER_INDEX = #{orderIndex,jdbcType=DECIMAL},
+      </if>
+      <if test="requiredAttrs != null" >
+        REQUIRED_ATTRS = #{requiredAttrs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INTERFACEINFO_ID = #{interfaceInfoId,jdbcType=VARCHAR}
+      and PARAMETER_ID = #{parameterId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.webservice.entity.InterParamRelation" >
+    update MOT.INTER_PARAM_RELATION
+    set NOT_NULL = #{notNull,jdbcType=DECIMAL},
+      ORDER_INDEX = #{orderIndex,jdbcType=DECIMAL},
+      REQUIRED_ATTRS = #{requiredAttrs,jdbcType=VARCHAR}
+    where INTERFACEINFO_ID = #{interfaceInfoId,jdbcType=VARCHAR}
+      and PARAMETER_ID = #{parameterId,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="selectBySelective" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from MOT.INTER_PARAM_RELATION
+    <where>
+    	<if test="interfaceinfoId!=null">
+    		AND INTERFACEINFO_ID = #{interfaceInfoId}
+    	</if>
+    	<if test="parameterId!=null">
+    		AND PARAMETER_ID = #{parameterId}
+    	</if>
+    	<if test="notNull!=null">
+    		AND NOT_NULL = #{notNull}
+    	</if>
+    	<if test="orderIndex!=null">
+    		AND ORDER_INDEX = #{orderIndex}
+    	</if>
+    </where>
+    order by ORDER_INDEX asc
+  </select>
+  
+    <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTER_PARAM_RELATION
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTER_PARAM_RELATION
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.INTER_PARAM_RELATION
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.INTER_PARAM_RELATION
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <!-- 根据接口id删除绑定关系 -->
+   <delete id="deleteByInterfaceinfoId" parameterType="java.lang.String" >
+    delete from MOT.INTER_PARAM_RELATION
+    where INTERFACEINFO_ID = #{interfaceInfoId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

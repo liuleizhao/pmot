@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.BookInfoCompatibleDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.BookInfoCompatible" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="COMPATIBLE_VALUE" property="compatibleValue" jdbcType="DECIMAL" />
+    <result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    BOOK_INFO_COMPATIBLE.ID, 
+    BOOK_INFO_COMPATIBLE.STATION_ID, 
+    BOOK_INFO_COMPATIBLE.COMPATIBLE_VALUE, 
+    BOOK_INFO_COMPATIBLE.START_DATE, 
+    BOOK_INFO_COMPATIBLE.END_DATE, 
+    BOOK_INFO_COMPATIBLE.CREATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />,STATION.NAME AS STATION_NAME
+	  from MOT.BOOK_INFO_COMPATIBLE JOIN MOT.STATION
+	  ON BOOK_INFO_COMPATIBLE.STATION_ID = STATION.ID
+    where BOOK_INFO_COMPATIBLE.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.BOOK_INFO_COMPATIBLE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.BookInfoCompatible" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>
+    insert into MOT.BOOK_INFO_COMPATIBLE (ID, STATION_ID, COMPATIBLE_VALUE, 
+      START_DATE, END_DATE, CREATE_DATE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, #{compatibleValue,jdbcType=DECIMAL}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.BookInfoCompatible" >
+    insert into MOT.BOOK_INFO_COMPATIBLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="stationId != null" >
+        STATION_ID,
+      </if>
+      <if test="compatibleValue != null" >
+        COMPATIBLE_VALUE,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibleValue != null" >
+        #{compatibleValue,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.BookInfoCompatible" >
+    update MOT.BOOK_INFO_COMPATIBLE
+    <set >
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="compatibleValue != null" >
+        COMPATIBLE_VALUE = #{compatibleValue,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.BookInfoCompatible" >
+    update MOT.BOOK_INFO_COMPATIBLE
+    set STATION_ID = #{stationId,jdbcType=VARCHAR},
+      COMPATIBLE_VALUE = #{compatibleValue,jdbcType=DECIMAL},
+      START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />,STATION.NAME AS STATION_NAME
+	  from MOT.BOOK_INFO_COMPATIBLE JOIN MOT.STATION
+	  ON BOOK_INFO_COMPATIBLE.STATION_ID = STATION.ID
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.BOOK_INFO_COMPATIBLE
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <select id="findByStationIdAndDate" resultMap="BaseResultMap">
+  	select 
+	<include refid="Base_Column_List" />
+	from MOT.BOOK_INFO_COMPATIBLE
+	<where>
+		STATION_ID = #{stationId} 
+		AND 
+		#{date} BETWEEN START_DATE and END_DATE
+	</where>
+  </select>
+</mapper>

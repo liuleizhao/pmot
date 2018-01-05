@@ -1,0 +1,144 @@
+body{ font-family:'微软雅黑';}
+.title{ line-height:33px; background:url(../images/righttitlebig.png) repeat-x; border:1px solid #c1d3de; overflow:visible;}
+.title h2{ margin-left:7px; padding-left:22px; font-weight:bold; font-size:14px; font-family:'宋体'; color:#000000; background:url(../images/titleico.png) no-repeat left center;}
+
+/*表单主体*/
+.main{ padding-top:21px;padding-bottom:10px; border:1px solid #c1d3de; border-top:none;}
+.main p{ margin-top:10px; padding-left:31px; line-height:30px;}
+.main p label{ float:left; width:82px; text-align:left;}
+.main p input{ float:left;}
+.main p input[type="text"]{ width:240px; height:28px;line-height:28px\0;*line-height:28px; padding:0 10px; border:1px solid #c5d6e0; outline:none; background:url(../images/inputbg.png) repeat-x;}
+.main p.long-input input[type="text"]{ width:472px;}
+
+.main p span{ float:left; margin-left:15px; color:#959595;}
+.main p span em{ color:#f81212;}
+.main p textarea{ width:472px; padding:10px; height:84px; resize:none; outline:none; border:1px solid #c5d6e0; background:url(../images/inputbg.png) repeat-x left top;}
+.main p textarea{overflow:auto;}
+.main .select{ overflow:visible; margin-top:10px; padding-left:31px; line-height:30px;}
+.main .select label{float:left; width:82px; text-align:left;}
+.main .select .select-wrap{ float:left; position:relative;}
+.main .select .select-wrap .select-title{width:240px; height:28px; padding:0 10px; border:1px solid #c5d6e0; outline:none; background:url(../images/inputbg.png) repeat-x; cursor:pointer;}
+.main .select .select-wrap .select-title span{ float:left;}
+.main .select .select-wrap .select-title .icon{ float:right; margin-right:3px; width:9px; height:28px; background:url(../images/selectxl.png) no-repeat center center;} 
+
+
+/*表单按钮*/
+.btn{ padding:13px 0 53px 113px; border:1px solid #c1d3de; border-top:none;}
+.btn a{ float:left; margin-right:7px; text-align:center; border:none; border-radius:2px; font-size:14px;}
+.btn a.confirm{ width:88px; height:33px; line-height:33px; background:#68b86c; color:#fff; }
+.btn a.clear{ width:98px; height:31px; line-height:31px; color:#000; border:1px solid #c1d3de; background:url(../images/formbtnbg01.png) repeat-x;}
+.btn1{ padding:20px 0 53px 30px; border:1px solid #c1d3de; border-top:none;}
+.btn1 a{ float:left; margin-right:7px; text-align:center; border:none; border-radius:2px; font-size:14px;}
+.btn1 a.confirm{ width:88px; height:33px; line-height:33px; background:#68b86c; color:#fff; }
+.btn1 a.clear{ width:98px; height:31px; line-height:31px; color:#000; border:1px solid #c1d3de; background:url(../images/formbtnbg01.png) repeat-x;}
+
+.main .newstyle{border-bottom:dotted 1px #ccc;}
+.main .newstyle label{font-weight:bold; margin-right:60px; width:200px;}
+
+/*添加用户*/
+		body {
+			background: #FFFFFF;
+		}
+		.classA {
+			width: 100%;
+			border: 1px solid #999;
+		}
+		.classA tr {
+			border: 1px solid #999;
+		}
+		.classA tr .field {
+			height: 40px;
+			background: #E6F4FF;
+			width: 250px;
+			text-align: center;
+			white-space:nowrap;
+			font-size: 13px;
+		}
+		
+		.classA tr .text {
+			border: 1px solid #999;
+			height: 30px;
+			width: 750px;
+			font-size: 13px;
+		}
+		.mui-input-group .mui-input-row:after {
+			position: absolute;
+			right: 10px;
+			bottom: 5px;
+			left: 15px;
+			height: 1px;
+			width: 50%;
+		}
+		.title {
+			height: 33px;
+			padding-top: 10px;
+		}
+		
+		.title_height {
+			height: 100px;
+		}
+		
+		.mui-input-row .lable_l {
+			border: 0px;
+			width: 30%;
+			margin-top: 5px;
+		}
+		
+		.mui-input-row .lable_t {
+			margin-top: 5px;
+			width: 70%;
+		}
+	.select_td{
+	margin: 0;padding: 0;height:40px;
+	}
+	.select_td select{
+	margin: 0;padding: 0;padding-left:17px;font-size: 13px;width: 50%;
+	}
+    .triangle-down {
+	    width: 0;
+	    height: 0;
+	    border-left: 5px solid transparent;
+	    border-right: 5px solid transparent;
+	    border-top: 10px solid #666;
+	    position: absolute;
+	    top: 12px;
+	    right: 50%;
+	    pointer-events: none;
+	}
+input[type="color"], input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select {
+    width:50%;
+}
+.Prompt{
+	margin-left: 20px;
+	color: red;
+}
+.mui-input-group .mui-button-row input{
+	height: 30px;width:80px;background-color: #47adeb;border: 0px;color: #FFF; border-radius: 3px;
+}
+.z_99{
+	position: absolute;z-index: 999;
+}
+.mui-input-row .o_label{
+	width:30%;
+}
+.mui-input-row .o_label div{
+	position: relative;left: -30px;
+}
+.mui-input-row .o_label div input{
+	width: 80px;
+}
+.mui-input-row .o_label span{
+	position: relative;top:-13px;left: 20px;
+}
+	.radio_css{
+		margin-top: 20px
+	}
+	.radio_css input{
+		position: relative;
+		right: 71px;
+	}
+	.radio_css span{
+		position: relative;
+		top: -16px;
+		left: 40px;
+	}

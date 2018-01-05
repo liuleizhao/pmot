@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.webservice.dao.InterfaceLogDao" >
+  <resultMap id="BaseResultMap" type="com.cs.webservice.entity.InterfaceLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="JKID" property="jkid" jdbcType="VARCHAR" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="REQUEST_DATE" property="requestDate" jdbcType="TIMESTAMP" />
+    <result column="REQUEST_XML" property="requestXml" jdbcType="VARCHAR" />
+    <result column="RESPONSE_DATE" property="responseDate" jdbcType="TIMESTAMP" />
+    <result column="RESPONSE_XML" property="responseXml" jdbcType="VARCHAR" />
+    <result column="RUN_TIME" property="runTime" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, JKID, IP, REQUEST_DATE, REQUEST_XML, RESPONSE_DATE, RESPONSE_XML, RUN_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.INTERFACE_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.webservice.entity.InterfaceLog" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    insert into MOT.INTERFACE_LOG (ID, JKID, IP, 
+      REQUEST_DATE, REQUEST_XML, RESPONSE_DATE, 
+      RESPONSE_XML, RUN_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{jkid,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{requestDate,jdbcType=TIMESTAMP}, #{requestXml,jdbcType=VARCHAR}, #{responseDate,jdbcType=TIMESTAMP}, 
+      #{responseXml,jdbcType=VARCHAR}, #{runTime,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.webservice.entity.InterfaceLog" >
+    insert into MOT.INTERFACE_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="jkid != null" >
+        JKID,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="requestDate != null" >
+        REQUEST_DATE,
+      </if>
+      <if test="requestXml != null" >
+        REQUEST_XML,
+      </if>
+      <if test="responseDate != null" >
+        RESPONSE_DATE,
+      </if>
+      <if test="responseXml != null" >
+        RESPONSE_XML,
+      </if>
+      <if test="runTime != null" >
+        RUN_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="jkid != null" >
+        #{jkid,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="requestDate != null" >
+        #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestXml != null" >
+        #{requestXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseDate != null" >
+        #{responseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseXml != null" >
+        #{responseXml,jdbcType=VARCHAR},
+      </if>
+      <if test="runTime != null" >
+        #{runTime,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.webservice.entity.InterfaceLog" >
+    update MOT.INTERFACE_LOG
+    <set >
+      <if test="jkid != null" >
+        JKID = #{jkid,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="requestDate != null" >
+        REQUEST_DATE = #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestXml != null" >
+        REQUEST_XML = #{requestXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseDate != null" >
+        RESPONSE_DATE = #{responseDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responseXml != null" >
+        RESPONSE_XML = #{responseXml,jdbcType=VARCHAR},
+      </if>
+      <if test="runTime != null" >
+        RUN_TIME = #{runTime,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.webservice.entity.InterfaceLog" >
+    update MOT.INTERFACE_LOG
+    set JKID = #{jkid,jdbcType=VARCHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      REQUEST_DATE = #{requestDate,jdbcType=TIMESTAMP},
+      REQUEST_XML = #{requestXml,jdbcType=VARCHAR},
+      RESPONSE_DATE = #{responseDate,jdbcType=TIMESTAMP},
+      RESPONSE_XML = #{responseXml,jdbcType=VARCHAR},
+      RUN_TIME = #{runTime,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   	   <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_LOG
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_LOG
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.INTERFACE_LOG
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+	
+</mapper>

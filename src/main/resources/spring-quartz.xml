@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+	<bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+ 			<ref bean="changeBlackListStatusTimerTrigger" /> 
+			<ref bean="updateApplyInfoScoreTimerTrigger"/>
+			<!-- <ref bean="createQcInfoDataTmpJobTrigger"/>  -->
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 要调用的工作类（满一个月的黑名单进行自动状态改变） -->
+	<bean id="changeBlackListStatusTimer" class="com.rich.admin.web.timer.CopyOfChangeBlackListStatusTimer"></bean>
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="changeBlackListStatusTimerJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="changeBlackListStatusTimer" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>cancel</value>
+		</property>
+	</bean>
+	<!-- 定义触发时间 -->
+	<bean id="changeBlackListStatusTimerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="changeBlackListStatusTimerJob" />
+		</property>
+		<!-- cron表达式 -->
+		<property name="cronExpression">
+			<!-- 每分钟触发一次
+			<value>0 * * * * ?</value> -->
+			<!-- 每天中午12点触发-->
+			<!-- <value>0 0 12 * * ?</value> -->
+			<!-- 开发时将定时任务触发时间设为晚上23点 -->
+			<value>0 0 23 * * ?</value>
+		</property>
+	</bean>
+	
+	
+	<!-- 修改预约信息的评分标准-->
+	<bean id="updateApplyInfoScoreTimerJob"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="updateApplyInfoScoreTimer" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>updateScore</value>
+		</property>
+	</bean>
+	<bean id="updateApplyInfoScoreTimerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="updateApplyInfoScoreTimerJob" />
+		</property>
+		<property name="cronExpression">
+			<!-- <value>0 0/2 * * * ?</value> -->
+			<!-- 开发时将定时任务触发时间设为晚上23点 -->
+			<value>0 0 23 * * ?</value>
+		</property>
+	</bean>
+	
+	
+	<!-- 迁出放号定时任务 -->
+	<!-- <bean id="createQcInfoDataTmpJob"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		调用的类
+		<property name="targetObject">
+			<ref bean="createQcInfoDataTmpTimer" />
+		</property>
+		调用类中的方法
+		<property name="targetMethod">
+			<value>createQcInfoDataTmp</value>
+		</property>
+	</bean>
+	<bean id="createQcInfoDataTmpJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="createQcInfoDataTmpJob" />
+		</property>
+		<property name="cronExpression">
+			<value>* 0/4 * * * ?</value>
+			<value>0 0/30 18-23 * * ?</value>
+			开发时将定时任务触发时间设为晚上23点
+			<value>0 0 23 * * ?</value>
+		</property>
+	</bean> -->
+	
+</beans>

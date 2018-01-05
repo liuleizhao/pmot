@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cs.photo.dao.ServiceStationBusinessDao">
+	<resultMap id="businessBean" type="com.cs.photo.entity.ServiceStationBusiness" >
+		<id column="lsh" property="serialNum" />
+		<result column="hphm" property="plateNumber" />
+		<result column="hpzl" property="plateType" />
+		<result column="shjssj" property="auditEndDate" />
+	</resultMap>
+	
+	<select id="findLatestByCondition" resultMap="businessBean">
+		select * from (select rownum as rn,t.lsh,t.hphm,t.hpzl,t.shjssj from YT_WW.veh_cs_login t
+		<where>
+			t.hphm = #{plateNumber}
+			<if test="plateType!=null and plateType!=''">
+				and t.hpzl=#{plateType}
+			</if>
+		</where>
+		order by t.shjssj desc) where rn=1
+	</select>
+	
+	
+</mapper>

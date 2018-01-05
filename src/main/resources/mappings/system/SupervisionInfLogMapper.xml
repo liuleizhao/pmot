@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.system.dao.SupervisionInfLogDao" >
+  <resultMap id="BaseResultMap" type="com.cs.system.entity.SupervisionInfLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="INTERFACE_NUM" property="interfaceNum" jdbcType="VARCHAR" />
+    <result column="REQUEST_XML" property="requestXml" jdbcType="VARCHAR" />
+    <result column="RESPONSE_XML" property="responseXml" jdbcType="VARCHAR" />
+    <result column="RESPONSE_TIME" property="responseTime" jdbcType="TIMESTAMP" />
+    <result column="REQUEST_TIME" property="requestTime" jdbcType="TIMESTAMP" />
+     <result column="RUN_TIME" property="runTime" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, INTERFACE_NUM, REQUEST_XML, RESPONSE_XML, RESPONSE_TIME,REQUEST_TIME,RUN_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from mot.SUPERVISION_INF_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from mot.SUPERVISION_INF_LOG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.system.entity.SupervisionInfLog" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey> 
+    insert into mot.SUPERVISION_INF_LOG (ID, INTERFACE_NUM, REQUEST_XML, 
+      RESPONSE_XML, RESPONSE_TIME,REQUEST_TIME,RUN_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{interfaceNum,jdbcType=VARCHAR}, #{requestXml,jdbcType=VARCHAR}, 
+      #{responseXml,jdbcType=VARCHAR}, #{responseTime,jdbcType=TIMESTAMP}, #{requestTime,jdbcType=TIMESTAMP},#{runTime,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.system.entity.SupervisionInfLog" >
+    insert into mot.SUPERVISION_INF_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="interfaceNum != null" >
+        INTERFACE_NUM,
+      </if>
+      <if test="requestXml != null" >
+        REQUEST_XML,
+      </if>
+      <if test="responseXml != null" >
+        RESPONSE_XML,
+      </if>
+      <if test="responseTime != null" >
+        RESPONSE_TIME,
+      </if>
+      <if test="requestTime != null" >
+        REQUEST_TIME,
+      </if>
+        <if test="runTime != null" >
+        RUN_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceNum != null" >
+        #{interfaceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="requestXml != null" >
+        #{requestXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseXml != null" >
+        #{responseXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseTime != null" >
+        #{responseTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="requestTime != null" >
+        #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="runTime != null" >
+        #{runTime,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.system.entity.SupervisionInfLog" >
+    update mot.SUPERVISION_INF_LOG
+    <set >
+      <if test="interfaceNum != null" >
+        INTERFACE_NUM = #{interfaceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="requestXml != null" >
+        REQUEST_XML = #{requestXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseXml != null" >
+        RESPONSE_XML = #{responseXml,jdbcType=VARCHAR},
+      </if>
+      <if test="responseTime != null" >
+        RESPONSE_TIME = #{responseTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="requestTime != null" >
+        REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="runTime != null" >
+        RUN_TIME = #{runTime,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.system.entity.SupervisionInfLog" >
+    update mot.SUPERVISION_INF_LOG
+    set INTERFACE_NUM = #{interfaceNum,jdbcType=VARCHAR},
+      REQUEST_XML = #{requestXml,jdbcType=VARCHAR},
+      RESPONSE_XML = #{responseXml,jdbcType=VARCHAR},
+      RESPONSE_TIME = #{responseTime,jdbcType=TIMESTAMP},
+      REQUEST_TIME = #{requestTime,jdbcType=TIMESTAMP},
+      RUN_TIME = #{runTime,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+   <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SUPERVISION_INF_LOG
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mot.SUPERVISION_INF_LOG
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from SUPERVISION_INF_LOG
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from SUPERVISION_INF_LOG
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>

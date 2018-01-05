@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cs.statistic.dao.AuditWorkloadStatisticDao">
+	<resultMap id="statisticBean" type="com.cs.statistic.entity.AuditWorkloadStatistic">
+		<result column="shr" property="auditorId" />
+		<result column="auditCount" property="auditCount" />
+		<result column="shbj" property="auditType" />
+	</resultMap>
+	
+	<select id="list" resultMap="statisticBean">
+		select shr,count(lsh) as auditCount,shbj
+		from veh_is_checkconfirm_log
+		<where>
+			to_char(shkssj,'yyyymmdd')=to_char(#{auditDate},'yyyymmdd') 
+			<if test="auditType!=null and auditType>0">
+				and shbj = #{auditType}
+			</if>
+			group by shr,shbj
+			order by count(lsh)
+		</where>
+	</select>
+	
+	<!-- <select id="list" resultMap="statisticBean">
+		select shr,count(lsh) as auditCount,shbj
+		from trffpn_img.veh_is_checkconfirm_log
+		<where>
+			to_char(shkssj,'yyyymmdd')=to_char(#{auditDate},'yyyymmdd') 
+			<if test="auditType!=null and auditType>0">
+				and shbj = #{auditType}
+			</if>
+			group by shr,shbj
+			order by count(lsh)
+		</where>
+	</select> -->
+</mapper>

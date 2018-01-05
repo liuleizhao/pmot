@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.SyncTaskDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.SyncTask" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="DECIMAL" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="FINISH_DATE" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="DATA_ID" property="dataId" jdbcType="VARCHAR" />
+    <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+    <result column="DATA_XML" property="dataXml" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cs.appoint.entity.SyncTask" extends="BaseResultMap" >
+    <result column="DATA_XML" property="dataXml" jdbcType="CLOB" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, STATE, CREATE_DATE, START_DATE, FINISH_DATE, DATA_ID, TABLE_NAME,DATA_XML
+  </sql>
+  <sql id="Blob_Column_List" >
+    DATA_XML
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MOT.SYNC_TASK
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.SYNC_TASK
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.SyncTask" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">
+			select sys_guid() from dual
+		</selectKey>
+    insert into MOT.SYNC_TASK (ID, STATE, CREATE_DATE, 
+      START_DATE, FINISH_DATE, DATA_ID, 
+      TABLE_NAME, DATA_XML)
+    values (#{id,jdbcType=VARCHAR}, #{state,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{finishDate,jdbcType=TIMESTAMP}, #{dataId,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{dataXml,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.SyncTask" >
+    insert into MOT.SYNC_TASK
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE,
+      </if>
+      <if test="dataId != null" >
+        DATA_ID,
+      </if>
+      <if test="tableName != null" >
+        TABLE_NAME,
+      </if>
+      <if test="dataXml != null" >
+        DATA_XML,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataId != null" >
+        #{dataId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataXml != null" >
+        #{dataXml,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.SyncTask" >
+    update MOT.SYNC_TASK
+    <set >
+      <if test="state != null" >
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null" >
+        FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataId != null" >
+        DATA_ID = #{dataId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataXml != null" >
+        DATA_XML = #{dataXml,jdbcType=CLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cs.appoint.entity.SyncTask" >
+    update MOT.SYNC_TASK
+    set STATE = #{state,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      DATA_ID = #{dataId,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      DATA_XML = #{dataXml,jdbcType=CLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.SyncTask" >
+    update MOT.SYNC_TASK
+    set STATE = #{state,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      FINISH_DATE = #{finishDate,jdbcType=TIMESTAMP},
+      DATA_ID = #{dataId,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 自定义 -->
+	<sql id="conditions">
+		<where>
+			<foreach collection="sqlCriterions" item="criterionItem"
+				separator="and">
+				<choose>
+					<when test="criterionItem.noValue">
+						${criterionItem.condition}
+					</when>
+					<when test="criterionItem.singleValue">
+						${criterionItem.condition} #{criterionItem.value}
+					</when>
+					<when test="criterionItem.betweenValue">
+						${criterionItem.condition} #{criterionItem.value}
+						and #{criterionItem.secondValue}
+					</when>
+					<when test="criterionItem.listValue">
+						${criterionItem.condition}
+						<foreach collection="criterionItem.value" item="listItem"
+							open="(" close=")" separator=",">
+							#{listItem}
+						</foreach>
+					</when>
+				</choose>
+			</foreach>
+		</where>
+	</sql>
+
+	<select id="findAllData" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from MOT.SYNC_TASK
+	</select>
+
+	<select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from MOT.SYNC_TASK
+		<if test="_parameter != null">
+			<include refid="conditions" />
+		</if>
+		<if test="orderbyClause != null and orderby">
+			order by
+			<foreach collection="orderbyClause" item="listItem"
+				separator=",">
+				${listItem}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition"
+		resultType="java.lang.Integer">
+		select count(*) from MOT.SYNC_TASK
+		<if test="_parameter != null">
+			<include refid="conditions" />
+		</if>
+	</select>
+	<!-- 根据根据表明获取没有同步的信息 -->
+	<select id="findNotSyncData" resultType="java.util.HashMap"
+	parameterType="java.lang.String">
+		SELECT A.*
+		FROM ${_parameter} A
+		WHERE NOT EXISTS (SELECT 1
+		FROM SYNC_TASK B
+		WHERE A.ID = B.DATA_ID)
+	</select>
+	
+	<select id="findSyncTaskByState" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from SYNC_TASK
+		where state = #{state,jdbcType=DECIMAL}
+	</select>
+
+	
+	
+	<update id="startSyncTask" parameterType="java.util.List">
+		UPDATE MOT.SYNC_TASK SET START_DATE = SYSTIMESTAMP
+		<where>
+			<if test="list == null" >
+	      		ID = 'null'
+	      	</if>
+	      	<if test="list != null" >
+				<foreach collection="list" item="syncTask" separator=" or ">
+					ID = #{syncTask.id,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+		</where>
+	</update>
+	
+	<!-- 更新同步预约表 状态为完成 -->
+	<update id="finishSyncTask">
+		UPDATE MOT.SYNC_TASK set STATE = 1, FINISH_DATE = SYSTIMESTAMP
+		where ID in
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</update>
+</mapper>

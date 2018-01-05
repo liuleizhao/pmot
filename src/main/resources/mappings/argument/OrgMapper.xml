@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.argument.dao.OrgDao" >
+  <resultMap id="BaseResultMap" type="com.cs.argument.entity.Org" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="POINTX" property="pointx" jdbcType="VARCHAR" />
+    <result column="POINTY" property="pointy" jdbcType="VARCHAR" />
+    <result column="IS_IP_LOCK" property="isIpLock" jdbcType="VARCHAR" />
+    <result column="ORG_IP" property="orgIp" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="BUSINESS_TYPE" property="businessType" jdbcType="VARCHAR" />
+    <result column="DISTRICT" property="district" jdbcType="VARCHAR" />
+    <result column="IMAGE" property="image" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="TRANSACT_WEEKEND_TIME" property="transactWeekendTime" jdbcType="VARCHAR" />
+    <result column="TRANSACT_WORKDAY_TIME" property="transactWorkdayTime" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.cs.argument.entity.Org" extends="BaseResultMap" >
+    <result column="DESCRIPTION" property="description" jdbcType="CLOB" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CODE, NAME, POINTX, POINTY, IS_IP_LOCK, ORG_IP, ADDRESS, BUSINESS_TYPE, DISTRICT, 
+    IMAGE, TELEPHONE, TRANSACT_WEEKEND_TIME, TRANSACT_WORKDAY_TIME, STATUS
+  </sql>
+  <sql id="Blob_Column_List" >
+    DESCRIPTION
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from MOT.ORG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.ORG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.argument.entity.Org" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    
+    insert into MOT.ORG (ID, CODE, NAME, 
+      POINTX, POINTY, IS_IP_LOCK, 
+      ORG_IP, ADDRESS, BUSINESS_TYPE, 
+      DISTRICT, IMAGE, TELEPHONE, 
+      TRANSACT_WEEKEND_TIME, TRANSACT_WORKDAY_TIME, 
+      STATUS, DESCRIPTION)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{pointx,jdbcType=VARCHAR}, #{pointy,jdbcType=VARCHAR}, #{isIpLock,jdbcType=VARCHAR}, 
+      #{orgIp,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{transactWeekendTime,jdbcType=VARCHAR}, #{transactWorkdayTime,jdbcType=VARCHAR}, 
+      #{status,jdbcType=DECIMAL}, #{description,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.argument.entity.Org" >
+    insert into MOT.ORG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="pointx != null" >
+        POINTX,
+      </if>
+      <if test="pointy != null" >
+        POINTY,
+      </if>
+      <if test="isIpLock != null" >
+        IS_IP_LOCK,
+      </if>
+      <if test="orgIp != null" >
+        ORG_IP,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE,
+      </if>
+      <if test="district != null" >
+        DISTRICT,
+      </if>
+      <if test="image != null" >
+        IMAGE,
+      </if>
+      <if test="telephone != null" >
+        TELEPHONE,
+      </if>
+      <if test="transactWeekendTime != null" >
+        TRANSACT_WEEKEND_TIME,
+      </if>
+      <if test="transactWorkdayTime != null" >
+        TRANSACT_WORKDAY_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="description != null" >
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pointx != null" >
+        #{pointx,jdbcType=VARCHAR},
+      </if>
+      <if test="pointy != null" >
+        #{pointy,jdbcType=VARCHAR},
+      </if>
+      <if test="isIpLock != null" >
+        #{isIpLock,jdbcType=VARCHAR},
+      </if>
+      <if test="orgIp != null" >
+        #{orgIp,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="transactWeekendTime != null" >
+        #{transactWeekendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="transactWorkdayTime != null" >
+        #{transactWorkdayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.argument.entity.Org" >
+    update MOT.ORG
+    <set >
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pointx != null" >
+        POINTX = #{pointx,jdbcType=VARCHAR},
+      </if>
+      <if test="pointy != null" >
+        POINTY = #{pointy,jdbcType=VARCHAR},
+      </if>
+      <if test="isIpLock != null" >
+        IS_IP_LOCK = #{isIpLock,jdbcType=VARCHAR},
+      </if>
+      <if test="orgIp != null" >
+        ORG_IP = #{orgIp,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        DISTRICT = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        IMAGE = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="transactWeekendTime != null" >
+        TRANSACT_WEEKEND_TIME = #{transactWeekendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="transactWorkdayTime != null" >
+        TRANSACT_WORKDAY_TIME = #{transactWorkdayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=CLOB},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cs.argument.entity.Org" >
+    update MOT.ORG
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      POINTX = #{pointx,jdbcType=VARCHAR},
+      POINTY = #{pointy,jdbcType=VARCHAR},
+      IS_IP_LOCK = #{isIpLock,jdbcType=VARCHAR},
+      ORG_IP = #{orgIp,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+      DISTRICT = #{district,jdbcType=VARCHAR},
+      IMAGE = #{image,jdbcType=VARCHAR},
+      TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      TRANSACT_WEEKEND_TIME = #{transactWeekendTime,jdbcType=VARCHAR},
+      TRANSACT_WORKDAY_TIME = #{transactWorkdayTime,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL},
+      DESCRIPTION = #{description,jdbcType=CLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.argument.entity.Org" >
+    update MOT.ORG
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      POINTX = #{pointx,jdbcType=VARCHAR},
+      POINTY = #{pointy,jdbcType=VARCHAR},
+      IS_IP_LOCK = #{isIpLock,jdbcType=VARCHAR},
+      ORG_IP = #{orgIp,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      BUSINESS_TYPE = #{businessType,jdbcType=VARCHAR},
+      DISTRICT = #{district,jdbcType=VARCHAR},
+      IMAGE = #{image,jdbcType=VARCHAR},
+      TELEPHONE = #{telephone,jdbcType=VARCHAR},
+      TRANSACT_WEEKEND_TIME = #{transactWeekendTime,jdbcType=VARCHAR},
+      TRANSACT_WORKDAY_TIME = #{transactWorkdayTime,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.ORG
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.ORG
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.ORG
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.ORG
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <!-- 根据业务类型，获取预约单位 -->
+   <select id="findBookOrgs" resultMap="BaseResultMap" parameterType="string">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.ORG where  id in 
+    (select ob.org_id  from ORG_BUSINESS_TYPE ob left join BUSINESS_TYPE b on b.id=ob.business_type_id 
+    where business_type_id=#{businessTypeId} )
+  </select>
+  
+  
+</mapper>

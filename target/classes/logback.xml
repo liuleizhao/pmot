@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->    
+    <property name="LOG_HOME" value="c:/log" />    
+	<!-- 控制台输出器 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%-16(%d{MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{1} - %msg%n</pattern>
+		</layout>
+	</appender>
+	<!-- 按照每天生成错误日志文件 -->
+    <appender name="ERROR_FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">    
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <!--日志文件输出的文件名-->  
+            <FileNamePattern>${LOG_HOME}/pmot/error.%d{yyyy-MM-dd}.log</FileNamePattern>     
+            <MaxHistory>30</MaxHistory>  
+        </rollingPolicy>     
+        <layout class="ch.qos.logback.classic.PatternLayout">    
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n     
+            </pattern>     
+       </layout>   
+       	<!-- 日志过滤器  -->
+       	<filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 --> 
+        	<level>ERROR</level>
+        	<onMatch>ACCEPT</onMatch>  
+        	<onMismatch>DENY</onMismatch>    
+    	</filter>  
+        <!--日志文件最大的大小-->  
+       <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">  
+         <MaxFileSize>10MB</MaxFileSize>
+       </triggeringPolicy>  
+    </appender>
+ 
+	 <!-- 日志输出级别 -->  
+    <root level="ERROR">     
+        <appender-ref ref="STDOUT" />    
+        <appender-ref ref="ERROR_FILE" /> 
+    </root>   
+    
+    <logger name="myBatisDao" level="TRACE"/>
+    
+    <!-- TEST
+ 	<logger name="com.vehi" level="INFO">
+ 		 <appender-ref ref="STDOUT" />
+ 	</logger>
+  	-->
+</configuration>  

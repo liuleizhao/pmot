@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cs.photo.dao.PhotoInfoDao">
+	<resultMap id="photoBean" type="com.cs.photo.entity.PhotoInfo">
+		<id column="lsh" property="serialNum" />
+		<id column="zpxh" property="photoIndex" />
+		<result column="zp" property="photo" jdbcType="BLOB" />
+		<result column="zpzl" property="photoType" />
+		<result column="jyw" property="jyw" />
+		<result column="CSBJ" property="transferMark" />
+	</resultMap>
+	
+	<select id="list" resultMap="photoBean">
+		select t.*
+		<if test="photoInfo.orgType==1">
+			from YT_WW.VEH_IS_PHOTO t LEFT JOIN YT_WW.VEH_IS_FLOW veh ON t.lsh=veh.lsh
+		</if>
+		<if test="photoInfo.orgType==2">
+			from YT_WW.VEH_CS_PHOTO t LEFT JOIN YT_WW.VEH_CS_LOGIN veh ON t.lsh=veh.lsh 
+		</if>
+		<where>
+			<if test="photoInfo.serialNum!=null and photoInfo.serialNum!=''">
+				and t.lsh=#{photoInfo.serialNum}
+			</if>
+			<choose>
+				<when test="photoInfo.photoType!=null and photoInfo.photoType!=''">
+					and t.zpzl=#{photoInfo.photoType}
+				</when>
+				<otherwise>
+					and t.zpzl in
+					<foreach collection="types" item="item" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				</otherwise>
+			</choose>
+		</where> 
+	</select>
+	
+	<!-- <select id="list" resultMap="photoBean">
+		select t.*
+		<if test="photoInfo.orgType.code==1">
+			from trffpn_img.VEH_IS_PHOTO t LEFT JOIN trffpn_img.VEH_IS_FLOW veh ON t.lsh=veh.lsh
+		</if>
+		<if test="photoInfo.orgType.code==2">
+			from trffpn_img.VEH_CS_PHOTO t LEFT JOIN trffpn_img.VEH_CS_LOGIN veh ON t.lsh=veh.lsh 
+		</if>
+		<where>
+			<if test="photoInfo.serialNum!=null and photoInfo.serialNum!=''">
+				and t.lsh=#{photoInfo.serialNum}
+			</if>
+			<choose>
+				<when test="photoInfo.photoType!=null and photoInfo.photoType!=''">
+					and t.zpzl=#{photoInfo.photoType}
+				</when>
+				<otherwise>
+					and t.zpzl in
+					<foreach collection="types" item="item" open="(" close=")" separator=",">
+						#{item}
+					</foreach>
+				</otherwise>
+			</choose>
+		</where> 
+	</select> -->
+</mapper>

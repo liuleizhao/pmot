@@ -1,0 +1,104 @@
+/* CSS Document */
+
+body {
+	text-align: center;
+	margin:0 auto;
+	padding:0;
+	font-size:12px;
+	color:#333333;
+	font-family:"微软雅黑", arial;
+	word-break:break-all;
+	background-image:url(../../images/bg01.jpg);
+	background-color:#C7F1FD;
+	background-repeat:repeat-x;
+	font-style: normal;
+}
+
+.bj1{width:960px; height:540px; margin:0 auto; background-image:url(../../images/bg.jpg);}
+.bj2{width:960px; height:540px; margin:0 auto;}
+.bj3{width:960px; height:540px; margin:0 auto; background-image:url(../../images/bg3.jpg);}
+.bj4{width:960px; height:540px; margin:0 auto; background-image:url(../../images/bg4.jpg);}
+.bj5{width:960px; height:540px; margin:0 auto; background-image:url(../../images/bg5.jpg);}
+.bj6{width:960px; height:540px; margin:0 auto; background-image:url(../../images/bg6.jpg);}
+.dbj{
+	background-image:url(../../images/dbj.jpg);
+	background-position: bottom;
+	background-repeat:no-repeat;
+	font-size: 12px;
+}
+.anni01{width:120px; height:30px; border:1px solid #0033FF; background-image: url(../../images/anbj.jpg); color:#FFFFFF; font-weight:bold;text-align: center;}
+.bj2{width:960px; height:540px; margin:0 auto; background-color:#FFFFFF;}
+.tsk{border:4px solid #4E8EC4;}
+
+
+/* 表格 */
+
+.fycenterbgL {background-image: url(../../images/fy_3.gif);background-repeat: repeat-y;}
+.fyctbgR { margin:0 auto; width:960px;background: #FFFFFF url(../../images/fy_9.gif) repeat-x; background-position: top;}
+.fyctbgR1 {background-image: url(../../images/fy_31.gif);background-repeat: repeat;}
+.biaogebg {background-image: url(../../images/fy_24.gif);color:#0863F9;background-repeat: repeat-x;background-position: bottom;border-top: 1px solid #ACCCF9;border-right: 1px solid #ACCCF9;border-bottom: 0px solid #ACCCF9;border-left: 1px solid #ACCCF9;}
+.srbgebg {background-image: url(../../images/fy_29.gif);color:#15428B;background-repeat: repeat-x;background-position: top;font-weight: bold;font-size: 12px;}
+.FYbg {background-image: url(../../images/fy_38.gif);color:#13428A;background-repeat: repeat-x;background-position: bottom;font-weight: normal;font-size: 12px;}
+
+
+/* 按钮 */
+
+.anbtn02 { height:20px; border:1px solid #87a3c1; background: url(../../images/fy_29.gif); color:#555; font-size:12px; line-height:180%;  text-align:center; cursor:pointer;}
+.anbtn04 { height:20px;border:1px solid #a2904d; background: url(../../images/fy_38.gif); color:#630; font-size:12px;  line-height:180%;text-align:center; cursor:pointer;}
+
+
+.anniu {background-color: #FFFFFF;border-top: 1px solid #0099CC;border-right: 1px solid #0099CC;border-bottom: 0px solid #0099CC;border-left: 1px solid #0099CC;font-size: 12px;text-align: center;margin: 0px 0px 0px 5px;padding: 3px 2px 0px;background-image: url(../../images/fy_25.gif);background-repeat: repeat-x;background-position: bottom;}
+.anniu1 {background-color: #FFFFFF;border-top: 1px solid #0099CC;border-right: 1px solid #0099CC;border-bottom: 0px solid #0099CC;border-left: 1px solid #0099CC;font-size: 12px;text-align: center;margin: 0px 0px 0px 5px;padding: 3px 2px 0px;background-image: url(../../images/fy_25.gif);background-repeat: repeat-x;background-position: bottom;color: #006F00;}
+.anniu2 {background-color: #FFFFFF;font-size: 12px;text-align: center;margin: 0px 0px 0px 0px;padding: 0px;background-image: url(../../images/fy_30.gif);background-repeat: repeat-x;background-position: top;color: #26292C;border: 1px solid #0099CC; }
+
+/*tab */
+a {color:#333; text-decoration:none;}
+a:hover {text-decoration:underline;}
+ul, li {list-style:none;}
+h1 {text-align:center; }
+#hotnews {position:relative; width:100%; margin: 0 auto; height:150px; }
+#hotnews h2 {display:block; float:left;  margin-right:4px; padding:4px 10px 0px 10px; font-size:14px; font-weight:normal; text-align:center; letter-spacing:1px; cursor:pointer; line-height:25px;}
+#hotnews .title_normal {background:#CCC ;}
+#hotnews .title_current {background:#0F319F; color:#FFF;}
+#hotnews ul {
+	position:absolute;
+	left:0px;
+	top:27px;
+	width:99%;
+	padding:8px 0 0 5px;
+	border-top:1px solid #0F319F;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
+	border-bottom:1px solid #CCCCCC;
+	font-size:14px;
+	height: 81px;
+}
+
+.bj2 .mainNavg ul {
+	margin: 0;
+	padding:0;
+	list-style: none;
+	}
+
+.bj2 .mainNavg UL LI {
+	float: left;
+	background-color: #E1E9F8;
+	background: url(../../images/fy_25.gif) no-repeat right to p;
+	margin: 10px 3px;
+	height: 25px;
+	}
+	
+.bj2 .mainNavg UL LI A {
+	display: block;
+	height: 25px;
+	padding: 0 25px;
+	line-height: 24px;
+	background-color: #E1E9F8;
+	background: url(../../images/fy_30.gif) no-repeat left top;
+	text-decoration: none;
+	float: left;
+	text-align:left;
+	color: #fff;
+	font-weight: bold;
+	font-size: 9px;
+	}

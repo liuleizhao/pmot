@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.VehIsFlowDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.VehIsFlow" >
+    <id column="LSH" property="lsh" jdbcType="VARCHAR" />
+    <result column="JYLSH" property="jylsh" jdbcType="VARCHAR" />
+    <result column="JCXDH" property="jcxdh" jdbcType="VARCHAR" />
+    <result column="JYJGBH" property="jyjgbh" jdbcType="VARCHAR" />
+    <result column="JYLB" property="jylb" jdbcType="VARCHAR" />
+    <result column="SXBJ" property="sxbj" jdbcType="CHAR" />
+    <result column="HPHM" property="hphm" jdbcType="VARCHAR" />
+    <result column="HPZL" property="hpzl" jdbcType="VARCHAR" />
+    <result column="CLPP1" property="clpp1" jdbcType="VARCHAR" />
+    <result column="CLXH" property="clxh" jdbcType="VARCHAR" />
+    <result column="CLSBDH" property="clsbdh" jdbcType="VARCHAR" />
+    <result column="CLLX" property="cllx" jdbcType="VARCHAR" />
+    <result column="SYXZ" property="syxz" jdbcType="CHAR" />
+    <result column="GLBM" property="glbm" jdbcType="VARCHAR" />
+    <result column="FZJG" property="fzjg" jdbcType="VARCHAR" />
+    <result column="STJG" property="stjg" jdbcType="VARCHAR" />
+    <result column="JYRQ" property="jyrq" jdbcType="DATE" />
+    <result column="CJSJ" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="SHR" property="shr" jdbcType="VARCHAR" />
+    <result column="SHCS" property="shcs" jdbcType="DECIMAL" />
+    <result column="SHKSSJ" property="shkssj" jdbcType="TIMESTAMP" />
+    <result column="SHJSSJ" property="shjssj" jdbcType="TIMESTAMP" />
+    <result column="DYSJ" property="dysj" jdbcType="TIMESTAMP" />
+    <result column="LSZT" property="lszt" jdbcType="VARCHAR" />
+    <result column="GXSJ" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="JYW" property="jyw" jdbcType="VARCHAR" />
+    <result column="GCXX" property="gcxx" jdbcType="VARCHAR" />
+    <result column="JYCS" property="jycs" jdbcType="DECIMAL" />
+    <result column="SQSHSJ" property="sqshsj" jdbcType="TIMESTAMP" />
+    <result column="JCXLB" property="jcxlb" jdbcType="CHAR" />
+    <result column="WGSHBJ" property="wgshbj" jdbcType="VARCHAR" />
+    <result column="JYSHBJ" property="jyshbj" jdbcType="VARCHAR" />
+    <result column="LCMS" property="lcms" jdbcType="VARCHAR" />
+    <result column="SJXJBJ" property="sjxjbj" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LSH, JYLSH, JCXDH, JYJGBH, JYLB, SXBJ, HPHM, HPZL, CLPP1, CLXH, CLSBDH, CLLX, SYXZ, 
+    GLBM, FZJG, STJG, JYRQ, CJSJ, SHR, SHCS, SHKSSJ, SHJSSJ, DYSJ, LSZT, GXSJ, JYW, GCXX, 
+    JYCS, SQSHSJ, JCXLB, WGSHBJ, JYSHBJ, LCMS, SJXJBJ
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_FLOW
+    where LSH = #{lsh,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.VEH_IS_FLOW
+    where LSH = #{lsh,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.VehIsFlow" >
+    insert into MOT.VEH_IS_FLOW (LSH, JYLSH, JCXDH, 
+      JYJGBH, JYLB, SXBJ, HPHM, 
+      HPZL, CLPP1, CLXH, 
+      CLSBDH, CLLX, SYXZ, GLBM, 
+      FZJG, STJG, JYRQ, CJSJ, 
+      SHR, SHCS, SHKSSJ, SHJSSJ, 
+      DYSJ, LSZT, GXSJ, JYW, 
+      GCXX, JYCS, SQSHSJ, JCXLB, 
+      WGSHBJ, JYSHBJ, LCMS, 
+      SJXJBJ)
+    values (#{lsh,jdbcType=VARCHAR}, #{jylsh,jdbcType=VARCHAR}, #{jcxdh,jdbcType=VARCHAR}, 
+      #{jyjgbh,jdbcType=VARCHAR}, #{jylb,jdbcType=VARCHAR}, #{sxbj,jdbcType=CHAR}, #{hphm,jdbcType=VARCHAR}, 
+      #{hpzl,jdbcType=VARCHAR}, #{clpp1,jdbcType=VARCHAR}, #{clxh,jdbcType=VARCHAR}, 
+      #{clsbdh,jdbcType=VARCHAR}, #{cllx,jdbcType=VARCHAR}, #{syxz,jdbcType=CHAR}, #{glbm,jdbcType=VARCHAR}, 
+      #{fzjg,jdbcType=VARCHAR}, #{stjg,jdbcType=VARCHAR}, #{jyrq,jdbcType=DATE}, #{cjsj,jdbcType=TIMESTAMP}, 
+      #{shr,jdbcType=VARCHAR}, #{shcs,jdbcType=DECIMAL}, #{shkssj,jdbcType=TIMESTAMP}, #{shjssj,jdbcType=TIMESTAMP}, 
+      #{dysj,jdbcType=TIMESTAMP}, #{lszt,jdbcType=VARCHAR}, #{gxsj,jdbcType=TIMESTAMP}, #{jyw,jdbcType=VARCHAR}, 
+      #{gcxx,jdbcType=VARCHAR}, #{jycs,jdbcType=DECIMAL}, #{sqshsj,jdbcType=TIMESTAMP}, #{jcxlb,jdbcType=CHAR}, 
+      #{wgshbj,jdbcType=VARCHAR}, #{jyshbj,jdbcType=VARCHAR}, #{lcms,jdbcType=VARCHAR}, 
+      #{sjxjbj,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.VehIsFlow" >
+    insert into MOT.VEH_IS_FLOW
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lsh != null" >
+        LSH,
+      </if>
+      <if test="jylsh != null" >
+        JYLSH,
+      </if>
+      <if test="jcxdh != null" >
+        JCXDH,
+      </if>
+      <if test="jyjgbh != null" >
+        JYJGBH,
+      </if>
+      <if test="jylb != null" >
+        JYLB,
+      </if>
+      <if test="sxbj != null" >
+        SXBJ,
+      </if>
+      <if test="hphm != null" >
+        HPHM,
+      </if>
+      <if test="hpzl != null" >
+        HPZL,
+      </if>
+      <if test="clpp1 != null" >
+        CLPP1,
+      </if>
+      <if test="clxh != null" >
+        CLXH,
+      </if>
+      <if test="clsbdh != null" >
+        CLSBDH,
+      </if>
+      <if test="cllx != null" >
+        CLLX,
+      </if>
+      <if test="syxz != null" >
+        SYXZ,
+      </if>
+      <if test="glbm != null" >
+        GLBM,
+      </if>
+      <if test="fzjg != null" >
+        FZJG,
+      </if>
+      <if test="stjg != null" >
+        STJG,
+      </if>
+      <if test="jyrq != null" >
+        JYRQ,
+      </if>
+      <if test="cjsj != null" >
+        CJSJ,
+      </if>
+      <if test="shr != null" >
+        SHR,
+      </if>
+      <if test="shcs != null" >
+        SHCS,
+      </if>
+      <if test="shkssj != null" >
+        SHKSSJ,
+      </if>
+      <if test="shjssj != null" >
+        SHJSSJ,
+      </if>
+      <if test="dysj != null" >
+        DYSJ,
+      </if>
+      <if test="lszt != null" >
+        LSZT,
+      </if>
+      <if test="gxsj != null" >
+        GXSJ,
+      </if>
+      <if test="jyw != null" >
+        JYW,
+      </if>
+      <if test="gcxx != null" >
+        GCXX,
+      </if>
+      <if test="jycs != null" >
+        JYCS,
+      </if>
+      <if test="sqshsj != null" >
+        SQSHSJ,
+      </if>
+      <if test="jcxlb != null" >
+        JCXLB,
+      </if>
+      <if test="wgshbj != null" >
+        WGSHBJ,
+      </if>
+      <if test="jyshbj != null" >
+        JYSHBJ,
+      </if>
+      <if test="lcms != null" >
+        LCMS,
+      </if>
+      <if test="sjxjbj != null" >
+        SJXJBJ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lsh != null" >
+        #{lsh,jdbcType=VARCHAR},
+      </if>
+      <if test="jylsh != null" >
+        #{jylsh,jdbcType=VARCHAR},
+      </if>
+      <if test="jcxdh != null" >
+        #{jcxdh,jdbcType=VARCHAR},
+      </if>
+      <if test="jyjgbh != null" >
+        #{jyjgbh,jdbcType=VARCHAR},
+      </if>
+      <if test="jylb != null" >
+        #{jylb,jdbcType=VARCHAR},
+      </if>
+      <if test="sxbj != null" >
+        #{sxbj,jdbcType=CHAR},
+      </if>
+      <if test="hphm != null" >
+        #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="hpzl != null" >
+        #{hpzl,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp1 != null" >
+        #{clpp1,jdbcType=VARCHAR},
+      </if>
+      <if test="clxh != null" >
+        #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="clsbdh != null" >
+        #{clsbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null" >
+        #{cllx,jdbcType=VARCHAR},
+      </if>
+      <if test="syxz != null" >
+        #{syxz,jdbcType=CHAR},
+      </if>
+      <if test="glbm != null" >
+        #{glbm,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="stjg != null" >
+        #{stjg,jdbcType=VARCHAR},
+      </if>
+      <if test="jyrq != null" >
+        #{jyrq,jdbcType=DATE},
+      </if>
+      <if test="cjsj != null" >
+        #{cjsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shr != null" >
+        #{shr,jdbcType=VARCHAR},
+      </if>
+      <if test="shcs != null" >
+        #{shcs,jdbcType=DECIMAL},
+      </if>
+      <if test="shkssj != null" >
+        #{shkssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shjssj != null" >
+        #{shjssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dysj != null" >
+        #{dysj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lszt != null" >
+        #{lszt,jdbcType=VARCHAR},
+      </if>
+      <if test="gxsj != null" >
+        #{gxsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jyw != null" >
+        #{jyw,jdbcType=VARCHAR},
+      </if>
+      <if test="gcxx != null" >
+        #{gcxx,jdbcType=VARCHAR},
+      </if>
+      <if test="jycs != null" >
+        #{jycs,jdbcType=DECIMAL},
+      </if>
+      <if test="sqshsj != null" >
+        #{sqshsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jcxlb != null" >
+        #{jcxlb,jdbcType=CHAR},
+      </if>
+      <if test="wgshbj != null" >
+        #{wgshbj,jdbcType=VARCHAR},
+      </if>
+      <if test="jyshbj != null" >
+        #{jyshbj,jdbcType=VARCHAR},
+      </if>
+      <if test="lcms != null" >
+        #{lcms,jdbcType=VARCHAR},
+      </if>
+      <if test="sjxjbj != null" >
+        #{sjxjbj,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.VehIsFlow" >
+    update MOT.VEH_IS_FLOW
+    <set >
+      <if test="jylsh != null" >
+        JYLSH = #{jylsh,jdbcType=VARCHAR},
+      </if>
+      <if test="jcxdh != null" >
+        JCXDH = #{jcxdh,jdbcType=VARCHAR},
+      </if>
+      <if test="jyjgbh != null" >
+        JYJGBH = #{jyjgbh,jdbcType=VARCHAR},
+      </if>
+      <if test="jylb != null" >
+        JYLB = #{jylb,jdbcType=VARCHAR},
+      </if>
+      <if test="sxbj != null" >
+        SXBJ = #{sxbj,jdbcType=CHAR},
+      </if>
+      <if test="hphm != null" >
+        HPHM = #{hphm,jdbcType=VARCHAR},
+      </if>
+      <if test="hpzl != null" >
+        HPZL = #{hpzl,jdbcType=VARCHAR},
+      </if>
+      <if test="clpp1 != null" >
+        CLPP1 = #{clpp1,jdbcType=VARCHAR},
+      </if>
+      <if test="clxh != null" >
+        CLXH = #{clxh,jdbcType=VARCHAR},
+      </if>
+      <if test="clsbdh != null" >
+        CLSBDH = #{clsbdh,jdbcType=VARCHAR},
+      </if>
+      <if test="cllx != null" >
+        CLLX = #{cllx,jdbcType=VARCHAR},
+      </if>
+      <if test="syxz != null" >
+        SYXZ = #{syxz,jdbcType=CHAR},
+      </if>
+      <if test="glbm != null" >
+        GLBM = #{glbm,jdbcType=VARCHAR},
+      </if>
+      <if test="fzjg != null" >
+        FZJG = #{fzjg,jdbcType=VARCHAR},
+      </if>
+      <if test="stjg != null" >
+        STJG = #{stjg,jdbcType=VARCHAR},
+      </if>
+      <if test="jyrq != null" >
+        JYRQ = #{jyrq,jdbcType=DATE},
+      </if>
+      <if test="cjsj != null" >
+        CJSJ = #{cjsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shr != null" >
+        SHR = #{shr,jdbcType=VARCHAR},
+      </if>
+      <if test="shcs != null" >
+        SHCS = #{shcs,jdbcType=DECIMAL},
+      </if>
+      <if test="shkssj != null" >
+        SHKSSJ = #{shkssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shjssj != null" >
+        SHJSSJ = #{shjssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dysj != null" >
+        DYSJ = #{dysj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lszt != null" >
+        LSZT = #{lszt,jdbcType=VARCHAR},
+      </if>
+      <if test="gxsj != null" >
+        GXSJ = #{gxsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jyw != null" >
+        JYW = #{jyw,jdbcType=VARCHAR},
+      </if>
+      <if test="gcxx != null" >
+        GCXX = #{gcxx,jdbcType=VARCHAR},
+      </if>
+      <if test="jycs != null" >
+        JYCS = #{jycs,jdbcType=DECIMAL},
+      </if>
+      <if test="sqshsj != null" >
+        SQSHSJ = #{sqshsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jcxlb != null" >
+        JCXLB = #{jcxlb,jdbcType=CHAR},
+      </if>
+      <if test="wgshbj != null" >
+        WGSHBJ = #{wgshbj,jdbcType=VARCHAR},
+      </if>
+      <if test="jyshbj != null" >
+        JYSHBJ = #{jyshbj,jdbcType=VARCHAR},
+      </if>
+      <if test="lcms != null" >
+        LCMS = #{lcms,jdbcType=VARCHAR},
+      </if>
+      <if test="sjxjbj != null" >
+        SJXJBJ = #{sjxjbj,jdbcType=CHAR},
+      </if>
+    </set>
+    where LSH = #{lsh,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.VehIsFlow" >
+    update MOT.VEH_IS_FLOW
+    set JYLSH = #{jylsh,jdbcType=VARCHAR},
+      JCXDH = #{jcxdh,jdbcType=VARCHAR},
+      JYJGBH = #{jyjgbh,jdbcType=VARCHAR},
+      JYLB = #{jylb,jdbcType=VARCHAR},
+      SXBJ = #{sxbj,jdbcType=CHAR},
+      HPHM = #{hphm,jdbcType=VARCHAR},
+      HPZL = #{hpzl,jdbcType=VARCHAR},
+      CLPP1 = #{clpp1,jdbcType=VARCHAR},
+      CLXH = #{clxh,jdbcType=VARCHAR},
+      CLSBDH = #{clsbdh,jdbcType=VARCHAR},
+      CLLX = #{cllx,jdbcType=VARCHAR},
+      SYXZ = #{syxz,jdbcType=CHAR},
+      GLBM = #{glbm,jdbcType=VARCHAR},
+      FZJG = #{fzjg,jdbcType=VARCHAR},
+      STJG = #{stjg,jdbcType=VARCHAR},
+      JYRQ = #{jyrq,jdbcType=DATE},
+      CJSJ = #{cjsj,jdbcType=TIMESTAMP},
+      SHR = #{shr,jdbcType=VARCHAR},
+      SHCS = #{shcs,jdbcType=DECIMAL},
+      SHKSSJ = #{shkssj,jdbcType=TIMESTAMP},
+      SHJSSJ = #{shjssj,jdbcType=TIMESTAMP},
+      DYSJ = #{dysj,jdbcType=TIMESTAMP},
+      LSZT = #{lszt,jdbcType=VARCHAR},
+      GXSJ = #{gxsj,jdbcType=TIMESTAMP},
+      JYW = #{jyw,jdbcType=VARCHAR},
+      GCXX = #{gcxx,jdbcType=VARCHAR},
+      JYCS = #{jycs,jdbcType=DECIMAL},
+      SQSHSJ = #{sqshsj,jdbcType=TIMESTAMP},
+      JCXLB = #{jcxlb,jdbcType=CHAR},
+      WGSHBJ = #{wgshbj,jdbcType=VARCHAR},
+      JYSHBJ = #{jyshbj,jdbcType=VARCHAR},
+      LCMS = #{lcms,jdbcType=VARCHAR},
+      SJXJBJ = #{sjxjbj,jdbcType=CHAR}
+    where LSH = #{lsh,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_FLOW
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.VEH_IS_FLOW
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.VEH_IS_FLOW
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.VEH_IS_FLOW
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <!-- 查询异常记录开始 -->
+  <select id="findBookInfoException" resultType="com.cs.appoint.entity.BookInfoSupervise">
+  	SELECT 
+  		lsh,
+  		JYJGBH as stationCode,
+  		station.id as stationId,
+  		HPHM as platNumber,
+  		HPZL as carTypeCode,
+  		CLSBDH as frameNumber,
+  		station.name as stationName,
+		carType.name as carTypeName,
+		null as bookNumber,
+		null as bookState 
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	left join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
+    WHERE NOT EXISTS
+    (select 1 from BOOK_INFO book where book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH )
+    <if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and flow.CJSJ between #{startDate} and #{endDate}
+  	</if>
+	UNION
+	SELECT 
+		lsh,
+		JYJGBH as stationCode,
+		station.id as stationId,
+		HPHM as platNumber,
+		HPZL as carTypeCode,
+		CLSBDH as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState 
+    FROM MOT.VEH_IS_FLOW flow
+	    join STATION station on station.code=flow.JYJGBH
+	    left join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+	    left join  BOOK_INFO book on book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH
+    WHERE book.book_state!=2
+    <if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and flow.CJSJ between #{startDate} and #{endDate}
+  	</if> 
+	UNION 
+	select 
+		null as lsh,
+		STATION.CODE as stationCode,
+		station.id as stationId,
+		plat_number as platNumber,
+		carType.Code as carTypeCode,
+		frame_number as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState
+    FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       left join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    WHERE book_state=2 and not exists
+       (select 1 from MOT.VEH_IS_FLOW flow where book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH )
+  	<if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
+  	</if>
+  </select>
+  <!-- 查询异常记录结束 -->
+  
+  <!-- 查询所有的预约及流水开始 -->
+  <select id="findAllBookInfo" resultType="com.cs.appoint.entity.BookInfoSupervise">
+  	SELECT 
+  		lsh,
+  		JYJGBH as stationCode,
+  		station.id as stationId,
+  		HPHM as platNumber,
+  		HPZL as carTypeCode,
+  		CLSBDH as frameNumber,
+  		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	left join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+    	left join  BOOK_INFO book on book.FRAME_NUMBER=flow.CLSBDH
+    <where>
+	    <if test="stationId!=null and stationId!=''">
+	  		and station.id=#{stationId}
+	  	</if>
+	  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+	  		and flow.CJSJ between #{startDate} and #{endDate}+1
+	  	</if>
+	  	<if test="platNumber!=null and platNumber!=''">
+	  		and book.PLAT_NUMBER = #{platNumber}
+	  	</if>
+    </where>
+  	UNION
+  	select
+  		null as lsh,
+  		STATION.CODE as stationCode,
+		station.id as stationId,
+		book.plat_number as platNumber,
+		carType.Code as carTypeCode,
+		book.frame_number as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		book.book_date as bookOrLoginDate 
+	FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       left join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    where not exists(select 1 from MOT.VEH_IS_FLOW flow where book.FRAME_NUMBER=flow.CLSBDH)
+    <if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
+  	</if>
+  	<if test="platNumber!=null and platNumber!=''">
+	  	and book.plat_number = #{platNumber}
+	</if>
+  </select>
+  <!-- 查询所有的预约及流水结束 -->
+  
+  <!-- 分组查询实际办理数量开始 -->
+  <select id="findFlowAmountGroupByStation" resultType="com.cs.appoint.dto.BookInfoAmount">
+  	select station.id as stationId,count(1) as amount from MOT.VEH_IS_FLOW flow
+  	join STATION station on station.code=flow.JYJGBH
+  	<if test="startDate!=null and endDate!=null">
+  		where CJSJ between #{startDate} and #{endDate}+1
+  	</if>
+  	group by station.id 
+  </select>
+  <!-- 分组查询实际办理数量结束 -->
+  
+  <!-- 分组查询异常数量开始 -->
+  <select id="findExceptionAmountGroupByStation" resultType="com.cs.appoint.dto.BookInfoAmount">
+  select stationId,count(1) as amount from(
+  	<!-- 预约表中没有数据，流水表中有数据 -->
+  	SELECT 
+  		station.id as stationId
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
+    WHERE NOT EXISTS
+    (select 1 from BOOK_INFO book where book.FRAME_NUMBER=flow.CLSBDH )
+    <!-- <if test="stationCode!=null and stationCode!=''">
+  		and flow.JYJGBH=#{stationCode}
+  	</if> -->
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and flow.CJSJ between #{startDate} and #{endDate}+1
+  	</if>
+	UNION ALL
+	<!-- 预约表和流水表都有数据，但预约表中的预约状态不是预约完成 -->
+	SELECT 
+		station.id as stationId
+    FROM MOT.VEH_IS_FLOW flow
+	    join STATION station on station.code=flow.JYJGBH
+	    join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+	    left join BOOK_INFO book on book.FRAME_NUMBER=flow.CLSBDH
+    WHERE book.book_state!=2
+    <!-- <if test="stationCode!=null and stationCode!=''">
+  		and flow.JYJGBH=#{stationCode}
+  	</if> -->
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and flow.CJSJ between #{startDate} and #{endDate}+1
+  	</if> 
+	UNION ALL
+	<!-- 预约表中有数据且状态为预约完成，流水表中没数据 --> 
+	select 
+		station.id as stationId
+    FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    WHERE book_state=2 and not exists
+       (select 1 from MOT.VEH_IS_FLOW flow where book.FRAME_NUMBER=flow.CLSBDH )
+  	<!-- <if test="stationId!=null and stationId!=''">
+  		and book.station_id=#{stationId}
+  	</if> -->
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
+  	</if>
+  	) group by stationId
+  </select>
+  <!-- 分组查询异常数量结束 -->
+  
+</mapper>

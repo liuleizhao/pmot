@@ -1,0 +1,149 @@
+.ins_checkbok {
+	position: relative;
+	top: -30px;
+	left: 60%;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+input[type="checkbox"] {
+	cursor: pointer;
+}
+
+.ins_checkbok input[type="checkbox"] {
+	width: 12px;
+	height: 12px;
+}
+
+.Prompt {
+	margin-left: 10%;
+}
+
+.insurer {
+	float: left;
+	cursor: pointer
+}
+
+#success tr,#error tr {
+	border: 1px solid #c7c7c7;
+}
+
+#riskForm tr td,#riskForm tr th {
+	line-height: 30px;
+	font-size: 16px;
+	font-weight: normal;
+}
+
+#success .content,#success .content tr,#success .content td/* ,#error,#error tr,#error td */
+	{
+	border: 0px;
+}
+
+#error tr td {
+	white-space: pre-wrap;
+	text-align: left;
+	padding: 5px 20px;
+}
+
+.content {
+	width: 37.5%;
+}
+
+.td_content {
+	background-color: #f2faff;
+}
+
+/* .mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	height: 100%;
+	width: 100%;
+	background: black;
+	opacity: 0.4;
+	filter: alpha(opacity =                 40);
+	padding-top: 20%;
+	
+	
+} */
+
+.mask {
+    background: #000;
+    filter: alpha(opacity=50); /* IE的透明度 */
+    opacity: 0.5;  /* 透明度 */
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 100; /* 此处的图层要大于页面 */
+    display:none;
+}
+
+.bgblack {
+	position: absolute;
+	left: 49%;
+	top: 40%;
+	z-index: 100;
+	height: 50px;
+	width: 50px;;
+	background: black;
+	opacity: 0.8;
+	filter: alpha(opacity =                 80);
+	border-radius: 10px;
+}
+
+.bgblack .sure_loading {
+	background: url(${ctx }/static/xtbg/images/wait.gif) 9px 9px no-repeat;
+	margin: 0;
+	padding: 0;
+	width: 50px;
+	height: 50px;
+}
+
+.risk_title {
+	background-color: #FFE0CC;
+}
+
+.risk_premium {
+	color: #FF7A22;
+}
+
+.mui-input-group .laydate-icon {
+	padding: 0 15px;
+	height: 30px;
+	border-bottom: 1px solid #c8c7cc;
+	width: 150px;
+}
+
+#vci_content table {
+	width:60%;
+	min-width:700px;
+	margin-left: 3%;
+	margin-bottom: 1%;
+}
+
+#vci_content table .select_td select {
+	width: 100%;
+}
+
+#vci_content table .mui-input-row:after {
+	width: 90%;
+}
+
+#vci_content table .triangle-down {
+	right: 10%;
+}
+
+#vci_content table tr,#vci_content table tr td {
+	text-align: center;
+}
+input[type="checkbox"]{
+	width: 12px;
+	height: 12px;
+}
+.choose_box div{
+	cursor:pointer;
+}

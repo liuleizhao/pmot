@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.system.dao.SmsInfoDao" >
+  <resultMap id="BaseResultMap" type="com.cs.system.entity.SmsInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BOOK_CHANNEL" property="bookChannel" jdbcType="DECIMAL" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="ID_TYPE" property="idType" jdbcType="VARCHAR" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="SMS_CODE" property="smsCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="CODE_TYPE" property="codeType" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BOOK_CHANNEL, CREATE_DATE, ID_TYPE, IP, MOBILE, RESULT, SMS_CODE, STATUS, CODE_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.SMS_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.SMS_INFO
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.system.entity.SmsInfo" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>  
+    insert into MOT.SMS_INFO (ID, BOOK_CHANNEL, CREATE_DATE, 
+      ID_TYPE, IP, MOBILE, 
+      RESULT, SMS_CODE, STATUS, 
+      CODE_TYPE)
+    values (#{id,jdbcType=VARCHAR}, #{bookChannel,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{idType,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{result,jdbcType=VARCHAR}, #{smsCode,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL}, 
+      #{codeType,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.system.entity.SmsInfo" >
+    insert into MOT.SMS_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="bookChannel != null" >
+        BOOK_CHANNEL,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="idType != null" >
+        ID_TYPE,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="result != null" >
+        RESULT,
+      </if>
+      <if test="smsCode != null" >
+        SMS_CODE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="codeType != null" >
+        CODE_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="bookChannel != null" >
+        #{bookChannel,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idType != null" >
+        #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCode != null" >
+        #{smsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="codeType != null" >
+        #{codeType,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.system.entity.SmsInfo" >
+    update MOT.SMS_INFO
+    <set >
+      <if test="bookChannel != null" >
+        BOOK_CHANNEL = #{bookChannel,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idType != null" >
+        ID_TYPE = #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        RESULT = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="smsCode != null" >
+        SMS_CODE = #{smsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="codeType != null" >
+        CODE_TYPE = #{codeType,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.system.entity.SmsInfo" >
+    update MOT.SMS_INFO
+    set BOOK_CHANNEL = #{bookChannel,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      ID_TYPE = #{idType,jdbcType=VARCHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      RESULT = #{result,jdbcType=VARCHAR},
+      SMS_CODE = #{smsCode,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL},
+      CODE_TYPE = #{codeType,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.SMS_INFO
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.SMS_INFO
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+    
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.SMS_INFO
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.SMS_INFO
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>
