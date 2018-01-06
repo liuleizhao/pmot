@@ -353,6 +353,40 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 得到几天后的时间
+	 */
+
+	public static Date getDateAfter(Date d, int day) {
+		Calendar now = Calendar.getInstance();
+		now.setTime(d);
+		now.set(Calendar.DATE, now.get(Calendar.DATE) + day);
+		return now.getTime();
+	}
+	/**
+	 * 以今天为基础,获取几天前的时间
+	 * 
+	 * @param day
+	 * @return
+	 */
+	public static String getDateBefore(int day) {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String beforeDate = sdf.format(getDateBefore(date, day));
+		return beforeDate;
+	}
+	
+	/**
+	 * 得到几天前
+	 */
+
+	public static Date getDateBefore(Date d, int day) {
+		Calendar now = Calendar.getInstance();
+		now.setTime(d);
+		now.set(Calendar.DATE, now.get(Calendar.DATE) - day);
+		return now.getTime();
+	}
+	
+	/**
 	 * 添加指定分钟数
 	 * @param timeStr
 	 * @param minutes

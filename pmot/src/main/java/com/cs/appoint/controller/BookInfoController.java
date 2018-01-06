@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cs.appoint.entity.BookInfo;
+import com.cs.appoint.service.BookInfoChangeService;
 import com.cs.appoint.service.BookInfoService;
-import com.cs.appoint.service.VehIsFlowInspectionLogService;
-import com.cs.appoint.webservice.BookInfoWebService;
 import com.cs.common.constant.CacheConstant;
 import com.cs.common.entityenum.BookChannel;
 import com.cs.common.entityenum.BookState;
@@ -24,7 +23,6 @@ import com.cs.common.utils.CacheUtil;
 import com.cs.mvc.dao.SqlCondition;
 import com.cs.mvc.web.BaseController;
 import com.cs.system.entity.User;
-import com.cs2.veh.service.IVehIsFlowService;
 import com.github.pagehelper.PageInfo;
 
 @Controller
@@ -33,18 +31,15 @@ public class BookInfoController extends BaseController {
 	
 	@Autowired
 	private BookInfoService bookInfoService;
+	
 	@Autowired
-	private BookInfoWebService bookInfoWebService;
-	@Autowired
-	private IVehIsFlowService ivehIsFlowService;
-	@Autowired
-	private VehIsFlowInspectionLogService vehIsFlowInspectionLogService;
+	private BookInfoChangeService bookInfoChangeService;
 	
 	private PageInfo<BookInfo> pageView;
 	
 	/**
 	 * @throws Exception
-	 * @Description: 查询检测站列表
+	 * @Description: 查询预约信息列表
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(HttpServletRequest request,
@@ -159,6 +154,10 @@ public class BookInfoController extends BaseController {
 			if(null != existBookInfo){
 				existBookInfo.setFrameNumber(bookInfo.getFrameNumber());
 				bookInfoService.updateByPrimaryKey(existBookInfo);
+				String bookNumber = existBookInfo.getBookNumber();
+				if(!bookNumber.startsWith("D") && !bookNumber.startsWith("G") && !bookNumber.startsWith("N")){
+					bookInfoChangeService.insert(existBookInfo);
+				}
 			}else
 			{
 				model.addAttribute("errorMessage", "修改失败，未找到对应的预约信息！");

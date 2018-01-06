@@ -30,8 +30,6 @@
 						</div>
 						<div class="conditions name ue-clear no_border">
 							<input id="queryBtn" type="submit" value="查询" class="input_button" /> 
-						</div>
-						<div class="conditions name ue-clear no_border">
 							<input id="updateBtn" type="button" value="更新" class="input_button" /> 
 						</div>
 					</div>

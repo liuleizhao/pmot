@@ -125,7 +125,7 @@
                          	<option value="新">新</option>
 						</select>
 						<div class="short-triangle-down"></div>
-						<input type="text" name="platNumber2" id="platNumber2" value="${fn:substring(bookInfo.platNumber,1,fn:length(bookInfo.platNumber))}" maxlength="7" onkeyup="toUpperCase(this)"/>
+						<input type="text" name="platNumber2" id="platNumber2" value="<c:if test="${empty bookInfo.platNumber }">B</c:if>${fn:substring(bookInfo.platNumber,1,fn:length(bookInfo.platNumber))}" maxlength="7" onkeyup="toUpperCase(this)"/>
 						<input type="checkbox" name="newflag" id="newflag" value="1"  style="position: relative;" />
 						<span style="margin-left: 5px;">是否新车</span>
 					</div>
@@ -142,14 +142,15 @@
 				<td class="text select_td">
 					<div class="mui-input-row">
 						<select  id="carTypeId" name="carTypeId" class="q_select">
-							<option value="5AA667F13C2143F0A41C6940E74B127E">大型汽车（黄底黑字）</option>
+							<option value="">请选择</option>
 							<option value="312AED23657445C194540C794DBDBDB9">小型汽车（蓝底白字）</option>
+							<option value="5AA667F13C2143F0A41C6940E74B127E">大型汽车（黄底黑字）</option>
 							<option value="B4394B3F2F3B4E78911713C3D54D4196">领馆汽车（黑底白字、红领字）</option>
 							<option value="A4FA9722C81C408B8A5BB65F8BD9C9B1">外籍汽车（黑底白字）</option>
 							<option value="0D7E3ABB86774FD1927EE05CF82FDA4B">低速车（黄底黑字黑框线）</option>
 							<option value="0AAA03BC4AE74531BF1FE45A03C38577">挂车</option>
 							<option value="D7FAFC5A68004845864C42345B58D7BC">教练汽车（黄底黑字黑框线）</option>
-							<option value="31CCBA351E0A4B7AA1BAFBDE2AA93161">警用汽车（警O牌）</option>
+							<option value="31CCBA351E0A4B7AA1BAFBDE2AA93161">警用汽车</option>
 							<option value="0EBEC3DB9EAA40A7B97DDD547FF58F51">大型新能源汽车（黄绿双拼色底黑字）</option>
 							<option value="763FF1EEE4BB4C3995B402E8A7D2C550">小型新能源汽车（渐变绿底黑字）</option>
 						</select>
@@ -259,6 +260,7 @@ $(function(){
 					 	throw ("旧车请请输入车架号后4位！");
 					}
 				}
+				$(this).validate.isNull($("#carTypeId").val(), '请选择号牌种类');
 				$(this).validate.submin_form();
 			} catch (e) {
 				Dialog.alert(e);

@@ -56,6 +56,16 @@
 								</select>
 							</div> 
 						</div>
+						<div class="conditions name ue-clear">
+							<div class="mui-input-row">
+								<label style="width:auto;">类型：</label>
+								<select name="isException" class="q_select">
+									<option value="">所有记录</option>
+									<option value="1" <c:if test="${bookInfoSupervise.isException==1}">selected="selected"</c:if> >异常记录</option>
+									<option value="0" <c:if test="${bookInfoSupervise.isException==0}">selected="selected"</c:if>>正常记录</option>
+								</select>
+							</div> 
+						</div>
 						<div class="conditions name ue-clear no_border">
 							<input type="submit" value="查询" class="input_button">
 						</div>
@@ -108,7 +118,7 @@
 	<script>
 		$(function(){
 			$("td:contains('异常记录')").parent("tr").css("background","#DB3E3E");
-			$("td:contains('未办理')").parent("tr").css("background","#BBB");
+// 			$("td:contains('未办理')").parent("tr").css("background","#BBB");
 		});
     </script>
 </body>

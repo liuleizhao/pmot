@@ -26,6 +26,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import com.cs.common.entityenum.InterfaceControlState;
+import com.cs.common.entityenum.InterfaceInvokeType;
 import com.cs.common.entityenum.Recordable;
 import com.cs.common.exception.InvalidXMLArgumentException;
 import com.cs.common.utils.ConvertUtils;
@@ -48,7 +49,6 @@ import com.cs.webservice.entity.InterfaceLog;
 import com.cs.webservice.service.InterfaceControlDetailService;
 import com.cs.webservice.service.InterfaceControlGeneralService;
 import com.cs.webservice.service.InterfaceInfoService;
-import com.cs.webservice.service.InterfaceInvokeCounterService;
 import com.cs.webservice.service.InterfaceLogService;
 
 public class WebService{
@@ -211,6 +211,7 @@ public class WebService{
 				log.setResponseDate(responseDate);
 				log.setResponseXml(ConvertUtils.decodeUTF8Xml(responseXml));
 				log.setRunTime((new Long((responseDate.getTime() - requestDate.getTime()))).intValue());
+				log.setInvokeType(InterfaceInvokeType.STATION);
 				interfaceLogService.insert(log);
 			}
 		}catch(Exception e){

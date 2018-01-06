@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.PlatNumberWhiteListDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.PlatNumberWhiteList" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PLAT_NUMBER" property="platNumber" jdbcType="VARCHAR" />
+    <result column="FRAME_NUMBER" property="frameNumber" jdbcType="VARCHAR" />
+    <result column="CAR_TYPE_ID" property="carTypeId" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CAR_TYPE_NAME" property="carTypeName" jdbcType="VARCHAR" />
+    <result column="STATION_NAME" property="stationName" jdbcType="VARCHAR" />
+    <result column="NEW_FLAG" property="newFlag" jdbcType="VARCHAR" />
+    <result column="CAR_TYPE_CODE" property="carTypeCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PLAT_NUMBER, FRAME_NUMBER, CAR_TYPE_ID, STATION_ID, CREATE_DATE, CAR_TYPE_NAME, 
+    STATION_NAME, NEW_FLAG, CAR_TYPE_CODE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.PLATNUMBER_WHITE_LIST
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.PLATNUMBER_WHITE_LIST
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.PlatNumberWhiteList" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey> 
+    insert into MOT.PLATNUMBER_WHITE_LIST (ID, PLAT_NUMBER, FRAME_NUMBER, 
+      CAR_TYPE_ID, STATION_ID, CREATE_DATE, 
+      CAR_TYPE_NAME, STATION_NAME, NEW_FLAG, 
+      CAR_TYPE_CODE)
+    values (#{id,jdbcType=VARCHAR}, #{platNumber,jdbcType=VARCHAR}, #{frameNumber,jdbcType=VARCHAR}, 
+      #{carTypeId,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{carTypeName,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{newFlag,jdbcType=VARCHAR}, 
+      #{carTypeCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.PlatNumberWhiteList" >
+    insert into MOT.PLATNUMBER_WHITE_LIST
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="platNumber != null" >
+        PLAT_NUMBER,
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER,
+      </if>
+      <if test="carTypeId != null" >
+        CAR_TYPE_ID,
+      </if>
+      <if test="stationId != null" >
+        STATION_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="carTypeName != null" >
+        CAR_TYPE_NAME,
+      </if>
+      <if test="stationName != null" >
+        STATION_NAME,
+      </if>
+      <if test="newFlag != null" >
+        NEW_FLAG,
+      </if>
+      <if test="carTypeCode != null" >
+        CAR_TYPE_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="platNumber != null" >
+        #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNumber != null" >
+        #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeId != null" >
+        #{carTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carTypeName != null" >
+        #{carTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationName != null" >
+        #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="newFlag != null" >
+        #{newFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeCode != null" >
+        #{carTypeCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.PlatNumberWhiteList" >
+    update MOT.PLATNUMBER_WHITE_LIST
+    <set >
+      <if test="platNumber != null" >
+        PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeId != null" >
+        CAR_TYPE_ID = #{carTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carTypeName != null" >
+        CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationName != null" >
+        STATION_NAME = #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="newFlag != null" >
+        NEW_FLAG = #{newFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypeCode != null" >
+        CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.PlatNumberWhiteList" >
+    update MOT.PLATNUMBER_WHITE_LIST
+    set PLAT_NUMBER = #{platNumber,jdbcType=VARCHAR},
+      FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      CAR_TYPE_ID = #{carTypeId,jdbcType=VARCHAR},
+      STATION_ID = #{stationId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      CAR_TYPE_NAME = #{carTypeName,jdbcType=VARCHAR},
+      STATION_NAME = #{stationName,jdbcType=VARCHAR},
+      NEW_FLAG = #{newFlag,jdbcType=VARCHAR},
+      CAR_TYPE_CODE = #{carTypeCode,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+      <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.PLATNUMBER_WHITE_LIST
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.PLATNUMBER_WHITE_LIST
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.PLATNUMBER_WHITE_LIST
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.PLATNUMBER_WHITE_LIST
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+</mapper>

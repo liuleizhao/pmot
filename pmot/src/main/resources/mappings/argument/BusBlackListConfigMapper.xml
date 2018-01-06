@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.argument.dao.BusBlackListConfigDao" >
+  <resultMap id="BaseResultMap" type="com.cs.argument.entity.BusBlackListConfig" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OPERATION_TYPE" property="operationType" jdbcType="DECIMAL" />
+    <result column="EFFECT_DAYS" property="effectDays" jdbcType="DECIMAL" />
+    <result column="RECORD_TYPE" property="recordType" jdbcType="DECIMAL" />
+    <result column="LIMIT_COUNT" property="limitCount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, OPERATION_TYPE, EFFECT_DAYS, RECORD_TYPE, LIMIT_COUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BUS_BLACKLIST_CONFIG
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.BUS_BLACKLIST_CONFIG
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.argument.entity.BusBlackListConfig" >
+    <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+   	 </selectKey> 
+    insert into MOT.BUS_BLACKLIST_CONFIG (ID, OPERATION_TYPE, EFFECT_DAYS, 
+      RECORD_TYPE, LIMIT_COUNT)
+    values (#{id,jdbcType=VARCHAR}, #{operationType,jdbcType=DECIMAL}, #{effectDays,jdbcType=DECIMAL}, 
+      #{recordType,jdbcType=DECIMAL}, #{limitCount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.argument.entity.BusBlackListConfig" >
+    insert into MOT.BUS_BLACKLIST_CONFIG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="operationType != null" >
+        OPERATION_TYPE,
+      </if>
+      <if test="effectDays != null" >
+        EFFECT_DAYS,
+      </if>
+      <if test="recordType != null" >
+        RECORD_TYPE,
+      </if>
+      <if test="limitCount != null" >
+        LIMIT_COUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=DECIMAL},
+      </if>
+      <if test="effectDays != null" >
+        #{effectDays,jdbcType=DECIMAL},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=DECIMAL},
+      </if>
+      <if test="limitCount != null" >
+        #{limitCount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.argument.entity.BusBlackListConfig" >
+    update MOT.BUS_BLACKLIST_CONFIG
+    <set >
+      <if test="operationType != null" >
+        OPERATION_TYPE = #{operationType,jdbcType=DECIMAL},
+      </if>
+      <if test="effectDays != null" >
+        EFFECT_DAYS = #{effectDays,jdbcType=DECIMAL},
+      </if>
+      <if test="recordType != null" >
+        RECORD_TYPE = #{recordType,jdbcType=DECIMAL},
+      </if>
+      <if test="limitCount != null" >
+        LIMIT_COUNT = #{limitCount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.argument.entity.BusBlackListConfig" >
+    update MOT.BUS_BLACKLIST_CONFIG
+    set OPERATION_TYPE = #{operationType,jdbcType=DECIMAL},
+      EFFECT_DAYS = #{effectDays,jdbcType=DECIMAL},
+      RECORD_TYPE = #{recordType,jdbcType=DECIMAL},
+      LIMIT_COUNT = #{limitCount,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   
+    <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BUS_BLACKLIST_CONFIG
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BUS_BLACKLIST_CONFIG
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.BUS_BLACKLIST_CONFIG
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.BUS_BLACKLIST_CONFIG
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  
+</mapper>

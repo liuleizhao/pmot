@@ -79,9 +79,15 @@
 						</div>
 						
 						
-						<div class="conditions time ue-clear i_div" style="width: 370px;">
-								<label class="criteria_title">预约起止日期：</label>
-								<div class="time-select">
+						<div class="conditions time ue-clear i_div" style="width: 500px;">
+								<label class="criteria_title">日期查询：</label>
+								<div class="time-select" style="width: 100px">
+									<select name="type" id="type" class="q_select" style="width: 100px">
+										<option value="0" <c:if test="${type eq 0 }">selected="selected"</c:if>>预约日期</option> 
+										<option value="1" <c:if test="${type eq 1 }">selected="selected"</c:if>>申请日期</option>
+									</select>
+								</div>
+								<div class="time-select" style="margin-left: 10px">
 									<input id="startDate" type="text" name="startDate" value="${startDate }" placeholder="开始时间" />
 									<i class="icon"></i>
 								</div>
@@ -216,7 +222,7 @@ $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 	
  	function returnBookNumber(bookNumber)
 	{
-		var diag = new Dialog();
+/* 		var diag = new Dialog();
 		diag.Title = "填写预约验证码",
 		diag.Width = 400;
 		diag.Height = 100;
@@ -235,7 +241,8 @@ $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 			window.location.href = "${ctx }/backend/appoint/bookInfo/returnNum?verifyCode="+verifyCode+"&bookNumber="+bookNumber;
 			diag.close();
 		};
-		diag.show();
+		diag.show(); */
+		window.location.href = "${ctx }/backend/appoint/bookInfo/returnNum?&bookNumber="+bookNumber; // verifyCode="+verifyCode+"
 	}
 </script>
 </html>

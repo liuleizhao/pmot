@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ import com.cs.system.entity.User;
 @Controller
 @RequestMapping(value = "/backend/book")
 public class BackBookController extends BaseController{
+	
+	private static Logger logger = LoggerFactory.getLogger(BackBookController.class);
 	
 	@Autowired
 	private StationService stationService;
@@ -103,9 +107,11 @@ public class BackBookController extends BaseController{
 				if(StringUtils.isNotBlank(errorMessage)){
 					model.addAttribute("errorMessage", errorMessage);
                 	return greenBookUI(request,model);
+				}else
+				{
+					model.addAttribute("bookInfo", bookInfo);
+					return "/backend/book/green_bookOk";
 				}
-				model.addAttribute("bookInfo", bookInfo);
-				return "/backend/book/green_bookOk";
 			}else{
 				errorMessage = "参数不全";
 				model.addAttribute("errorMessage", errorMessage);
@@ -114,6 +120,9 @@ public class BackBookController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "系统繁忙:" +e.getMessage();
+			logger.error("车牌号:"+bookInfo.getPlatNumber()+",车架号:"+bookInfo.getFrameNumber()
+					+"的用户预约控制层出现异常："+"\n"+e.getMessage()+"\n"+ e.getStackTrace().toString());
+			
 			model.addAttribute("errorMessage", errorMessage);
 			return greenBookUI(request,  model);
 		}

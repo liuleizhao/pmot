@@ -505,17 +505,19 @@
   		station.name as stationName,
 		carType.name as carTypeName,
 		null as bookNumber,
-		null as bookState 
+		null as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		1 as isException 
     FROM MOT.VEH_IS_FLOW flow
     	join STATION station on station.code=flow.JYJGBH
-    	left join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
+    	join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
     WHERE NOT EXISTS
-    (select 1 from BOOK_INFO book where book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH )
+    (select 1 from BOOK_INFO book where flow.lsh=book.check_serial_number)
     <if test="stationId!=null and stationId!=''">
   		and station.id=#{stationId}
   	</if>
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and flow.CJSJ between #{startDate} and #{endDate}
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
   	</if>
 	UNION
 	SELECT 
@@ -528,17 +530,19 @@
 		station.name as stationName,
 		carType.name as carTypeName,
 		book.book_number as bookNumber,
-		book.book_state as bookState 
+		book.book_state as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		1 as isException 
     FROM MOT.VEH_IS_FLOW flow
 	    join STATION station on station.code=flow.JYJGBH
-	    left join ARG_CAR_TYPE carType on carType.code=flow.hpzl
-	    left join  BOOK_INFO book on book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH
+	    join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+	    join book_info book on flow.lsh=book.check_serial_number
     WHERE book.book_state!=2
     <if test="stationId!=null and stationId!=''">
   		and station.id=#{stationId}
   	</if>
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and flow.CJSJ between #{startDate} and #{endDate}
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
   	</if> 
 	UNION 
 	select 
@@ -551,85 +555,29 @@
 		station.name as stationName,
 		carType.name as carTypeName,
 		book.book_number as bookNumber,
-		book.book_state as bookState
+		book.book_state as bookState,
+		book.book_date as bookOrLoginDate,
+		1 as isException
     FROM MOT.BOOK_INFO book
        join STATION station on station.id=book.station_id
-       left join ARG_CAR_TYPE carType on carType.id=book.car_type_id
-    WHERE book_state=2 and not exists
-       (select 1 from MOT.VEH_IS_FLOW flow where book.PLAT_NUMBER=flow.hphm and book.FRAME_NUMBER=flow.CLSBDH )
+       join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    WHERE book.book_state=2 and book.check_serial_number is null
   	<if test="stationId!=null and stationId!=''">
   		and station.id=#{stationId}
   	</if>
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
+  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
   	</if>
   </select>
   <!-- 查询异常记录结束 -->
-  
-  <!-- 查询所有的预约及流水开始 -->
-  <select id="findAllBookInfo" resultType="com.cs.appoint.entity.BookInfoSupervise">
-  	SELECT 
-  		lsh,
-  		JYJGBH as stationCode,
-  		station.id as stationId,
-  		HPHM as platNumber,
-  		HPZL as carTypeCode,
-  		CLSBDH as frameNumber,
-  		station.name as stationName,
-		carType.name as carTypeName,
-		book.book_number as bookNumber,
-		book.book_state as bookState,
-		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate
-    FROM MOT.VEH_IS_FLOW flow
-    	join STATION station on station.code=flow.JYJGBH
-    	left join ARG_CAR_TYPE carType on carType.code=flow.hpzl
-    	left join  BOOK_INFO book on book.FRAME_NUMBER=flow.CLSBDH
-    <where>
-	    <if test="stationId!=null and stationId!=''">
-	  		and station.id=#{stationId}
-	  	</if>
-	  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-	  		and flow.CJSJ between #{startDate} and #{endDate}+1
-	  	</if>
-	  	<if test="platNumber!=null and platNumber!=''">
-	  		and book.PLAT_NUMBER = #{platNumber}
-	  	</if>
-    </where>
-  	UNION
-  	select
-  		null as lsh,
-  		STATION.CODE as stationCode,
-		station.id as stationId,
-		book.plat_number as platNumber,
-		carType.Code as carTypeCode,
-		book.frame_number as frameNumber,
-		station.name as stationName,
-		carType.name as carTypeName,
-		book.book_number as bookNumber,
-		book.book_state as bookState,
-		book.book_date as bookOrLoginDate 
-	FROM MOT.BOOK_INFO book
-       join STATION station on station.id=book.station_id
-       left join ARG_CAR_TYPE carType on carType.id=book.car_type_id
-    where not exists(select 1 from MOT.VEH_IS_FLOW flow where book.FRAME_NUMBER=flow.CLSBDH)
-    <if test="stationId!=null and stationId!=''">
-  		and station.id=#{stationId}
-  	</if>
-  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
-  	</if>
-  	<if test="platNumber!=null and platNumber!=''">
-	  	and book.plat_number = #{platNumber}
-	</if>
-  </select>
-  <!-- 查询所有的预约及流水结束 -->
   
   <!-- 分组查询实际办理数量开始 -->
   <select id="findFlowAmountGroupByStation" resultType="com.cs.appoint.dto.BookInfoAmount">
   	select station.id as stationId,count(1) as amount from MOT.VEH_IS_FLOW flow
   	join STATION station on station.code=flow.JYJGBH
   	<if test="startDate!=null and endDate!=null">
-  		where CJSJ between #{startDate} and #{endDate}+1
+  		<!-- where CJSJ between #{startDate} and #{endDate}+1 -->
+  		where to_char(CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
   	</if>
   	group by station.id 
   </select>
@@ -645,12 +593,9 @@
     	join STATION station on station.code=flow.JYJGBH
     	join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
     WHERE NOT EXISTS
-    (select 1 from BOOK_INFO book where book.FRAME_NUMBER=flow.CLSBDH )
-    <!-- <if test="stationCode!=null and stationCode!=''">
-  		and flow.JYJGBH=#{stationCode}
-  	</if> -->
+    (select 1 from BOOK_INFO book where flow.lsh=book.check_serial_number )
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and flow.CJSJ between #{startDate} and #{endDate}+1
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
   	</if>
 	UNION ALL
 	<!-- 预约表和流水表都有数据，但预约表中的预约状态不是预约完成 -->
@@ -659,13 +604,10 @@
     FROM MOT.VEH_IS_FLOW flow
 	    join STATION station on station.code=flow.JYJGBH
 	    join ARG_CAR_TYPE carType on carType.code=flow.hpzl
-	    left join BOOK_INFO book on book.FRAME_NUMBER=flow.CLSBDH
+	    join book_info book on flow.lsh=book.check_serial_number
     WHERE book.book_state!=2
-    <!-- <if test="stationCode!=null and stationCode!=''">
-  		and flow.JYJGBH=#{stationCode}
-  	</if> -->
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and flow.CJSJ between #{startDate} and #{endDate}+1
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
   	</if> 
 	UNION ALL
 	<!-- 预约表中有数据且状态为预约完成，流水表中没数据 --> 
@@ -674,16 +616,198 @@
     FROM MOT.BOOK_INFO book
        join STATION station on station.id=book.station_id
        join ARG_CAR_TYPE carType on carType.id=book.car_type_id
-    WHERE book_state=2 and not exists
-       (select 1 from MOT.VEH_IS_FLOW flow where book.FRAME_NUMBER=flow.CLSBDH )
-  	<!-- <if test="stationId!=null and stationId!=''">
-  		and book.station_id=#{stationId}
-  	</if> -->
+    WHERE book.book_state=2 and book.check_serial_number is null
   	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
-  		and to_date(book.BOOK_DATE,'yyyy-mm-dd') between #{startDate} and #{endDate}
+  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
   	</if>
   	) group by stationId
   </select>
   <!-- 分组查询异常数量结束 -->
   
+  <!-- 查询正常的业务记录  -->
+  <select id="findBookInfoCorrect" resultType="com.cs.appoint.entity.BookInfoSupervise">
+  	SELECT 
+  		lsh,
+  		JYJGBH as stationCode,
+  		station.id as stationId,
+  		HPHM as platNumber,
+  		HPZL as carTypeCode,
+  		CLSBDH as frameNumber,
+  		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		0 as isException
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+    	join BOOK_INFO book on flow.lsh=book.check_serial_number
+    <where>
+    	book.book_state = 2
+	    <if test="stationId!=null and stationId!=''">
+	  		and station.id=#{stationId}
+	  	</if>
+	  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+	  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+	  	</if>
+    </where>
+    UNION
+  	select
+  		null as lsh,
+  		STATION.CODE as stationCode,
+		station.id as stationId,
+		book.plat_number as platNumber,
+		carType.Code as carTypeCode,
+		book.frame_number as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		book.book_date as bookOrLoginDate,
+		0 as isException 
+	FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    <where>
+    	book.book_state!=2 and book.check_serial_number is null
+    	<if test="stationId!=null and stationId!=''">
+	  		and station.id=#{stationId}
+	  	</if>
+	    <if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+	  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+	  	</if>
+    </where>
+  </select>
+  
+  <!-- 查询所有的预约及流水开始 -->
+  <select id="findAllBookInfo" resultType="com.cs.appoint.entity.BookInfoSupervise">
+  	SELECT 
+  		lsh,
+  		JYJGBH as stationCode,
+  		station.id as stationId,
+  		HPHM as platNumber,
+  		HPZL as carTypeCode,
+  		CLSBDH as frameNumber,
+  		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		0 as isException
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+    	join BOOK_INFO book on flow.lsh=book.check_serial_number
+    <where>
+    	book.book_state = 2
+	    <if test="stationId!=null and stationId!=''">
+	  		and station.id=#{stationId}
+	  	</if>
+	  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+	  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+	  	</if>
+    </where>
+    UNION
+  	select
+  		null as lsh,
+  		STATION.CODE as stationCode,
+		station.id as stationId,
+		book.plat_number as platNumber,
+		carType.Code as carTypeCode,
+		book.frame_number as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		book.book_date as bookOrLoginDate,
+		0 as isException 
+	FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    <where>
+    	book.book_state!=2 and book.check_serial_number is null
+    	<if test="stationId!=null and stationId!=''">
+	  		and station.id=#{stationId}
+	  	</if>
+	    <if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+	  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+	  	</if>
+    </where>
+    UNION
+    SELECT 
+  		lsh,
+  		JYJGBH as stationCode,
+  		station.id as stationId,
+  		HPHM as platNumber,
+  		HPZL as carTypeCode,
+  		CLSBDH as frameNumber,
+  		station.name as stationName,
+		carType.name as carTypeName,
+		null as bookNumber,
+		null as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		1 as isException 
+    FROM MOT.VEH_IS_FLOW flow
+    	join STATION station on station.code=flow.JYJGBH
+    	join ARG_CAR_TYPE carType on carType.code=flow.hpzl 
+    WHERE NOT EXISTS
+    (select 1 from BOOK_INFO book where flow.lsh=book.check_serial_number)
+    <if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
+  	</if>
+	UNION
+	SELECT 
+		lsh,
+		JYJGBH as stationCode,
+		station.id as stationId,
+		HPHM as platNumber,
+		HPZL as carTypeCode,
+		CLSBDH as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		to_char(flow.CJSJ,'yyyy-mm-dd') as bookOrLoginDate,
+		1 as isException 
+    FROM MOT.VEH_IS_FLOW flow
+	    join STATION station on station.code=flow.JYJGBH
+	    join ARG_CAR_TYPE carType on carType.code=flow.hpzl
+	    join book_info book on flow.lsh=book.check_serial_number
+    WHERE book.book_state!=2
+    <if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and to_char(flow.CJSJ,'yyyy-mm-dd') between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd')
+  	</if> 
+	UNION 
+	select 
+		null as lsh,
+		STATION.CODE as stationCode,
+		station.id as stationId,
+		plat_number as platNumber,
+		carType.Code as carTypeCode,
+		frame_number as frameNumber,
+		station.name as stationName,
+		carType.name as carTypeName,
+		book.book_number as bookNumber,
+		book.book_state as bookState,
+		book.book_date as bookOrLoginDate,
+		1 as isException
+    FROM MOT.BOOK_INFO book
+       join STATION station on station.id=book.station_id
+       join ARG_CAR_TYPE carType on carType.id=book.car_type_id
+    WHERE book.book_state=2 and book.check_serial_number is null
+  	<if test="stationId!=null and stationId!=''">
+  		and station.id=#{stationId}
+  	</if>
+  	<if test="startDate!=null and startDate!=''  and endDate!=null and endDate!=''">
+  		and book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+  	</if>
+  </select>
+  <!-- 查询所有的预约及流水结束 -->
 </mapper>

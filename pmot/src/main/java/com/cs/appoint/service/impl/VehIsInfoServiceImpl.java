@@ -14,21 +14,23 @@ import com.cs.appoint.dao.VehIsInfDao;
 import com.cs.appoint.entity.BookInfo;
 import com.cs.appoint.entity.VehIsInfo;
 import com.cs.appoint.service.ForwardService;
-import com.cs.appoint.service.SupervisionService;
 import com.cs.appoint.service.VehIsInfoService;
 import com.cs.argument.dao.CarTypeDao;
 import com.cs.argument.entity.CarType;
 import com.cs.argument.entity.Station;
 import com.cs.common.constant.Constants;
 import com.cs.common.entityenum.AppointStateEnum;
+import com.cs.common.entityenum.InterfaceInvokeType;
 import com.cs.common.utils.ConvertUtils;
 import com.cs.common.utils.DateUtil;
 import com.cs.common.utils.DateUtils;
+import com.cs.common.utils.RequestUtils;
 import com.cs.mvc.dao.BaseDao;
 import com.cs.mvc.dao.SqlCondition;
 import com.cs.mvc.init.InitData;
 import com.cs.mvc.service.BaseServiceSupport;
-import com.cs.system.service.GlobalConfigService;
+import com.cs.system.dao.SupervisionInfLogDao;
+import com.cs.system.entity.SupervisionInfLog;
 import com.cs.webservice.entity.InterfaceInvokeCounter;
 import com.cs.webservice.service.InterfaceInvokeCounterService;
 
@@ -45,16 +47,13 @@ public class VehIsInfoServiceImpl extends BaseServiceSupport<VehIsInfo, String> 
 	private CarTypeDao carTypeDao;
 	
 	@Autowired
-	private SupervisionService supervisionService;
-	
-	@Autowired
-	private GlobalConfigService configService;
-	
-	@Autowired
 	private ForwardService forwardService;
 	
 	@Autowired
 	private InterfaceInvokeCounterService interfaceInvokeCounterService;
+	
+	@Autowired
+	private SupervisionInfLogDao supervisionInfLogDao;
 	
 	@Override
 	protected BaseDao<VehIsInfo, String> getBaseDao() throws Exception {
@@ -130,6 +129,15 @@ public class VehIsInfoServiceImpl extends BaseServiceSupport<VehIsInfo, String> 
 	 */
 	public String sendXml(String platNumber, String carTypeCode,
 			String chassisNumber, String stionNum ) throws Exception {
+		return sendXml(platNumber,carTypeCode,chassisNumber,stionNum,null);
+	}
+	
+	
+	@Override
+	public String sendXml(String platNumber, String carTypeCode,
+			String chassisNumber, String stionNum,
+			InterfaceInvokeType invokeType) throws Exception {
+		Date requestDate = new Date();
 		String jyjgbh = stionNum;// 检测站编号
 		String jkxlh = Constants.JKXLH;
 		String jkid = Constants.GET_VEHICLE_INFO_JKID;// 下载车辆数据的接口ID
@@ -158,18 +166,35 @@ public class VehIsInfoServiceImpl extends BaseServiceSupport<VehIsInfo, String> 
 		String ResponseXml = null;
 		//1、判断是否处于工作时间
 		String currentTime = DateUtils.getTime();
-		if(currentTime.compareTo("17:00:00")>0 || currentTime.compareTo("10:00:00")<0){
-			ResponseXml = supervisionService.queryObjectOut(xtlb, jkxlh, jkid,
-					queryXmlDoc);
+		if(currentTime.compareTo("17:00:00")>0 || currentTime.compareTo("09:00:00")<0){
+			ResponseXml = RequestUtils.queryObjectOut(xtlb, jkxlh, jkid, queryXmlDoc);
 		}else{
 			//2、判断是否超过调用限制量
 			if( count > maxCount ){
 				ResponseXml = forwardService.getCarInfo(queryXmlDoc);
 			}else{
-				ResponseXml = supervisionService.queryObjectOut(xtlb, jkxlh, jkid,
-						queryXmlDoc);
+				ResponseXml = RequestUtils.queryObjectOut(xtlb, jkxlh, jkid, queryXmlDoc);
 			}
 		}
+		
+		//记录日志
+		Date responseDate = new Date();//响应时间
+		SupervisionInfLog supervisionInfLog=new SupervisionInfLog();
+		supervisionInfLog.setInterfaceNum(jkid);
+		supervisionInfLog.setRequestXml(queryXmlDoc);
+		supervisionInfLog.setResponseXml(ConvertUtils.decodeUTF8Xml(ResponseXml));
+		supervisionInfLog.setResponseTime(responseDate);
+		supervisionInfLog.setRequestTime(requestDate);
+		supervisionInfLog.setRunTime((new Long((responseDate.getTime() - requestDate.getTime()))).intValue());
+		if(invokeType == null){
+			invokeType = InterfaceInvokeType.STATION;
+		}
+		supervisionInfLog.setInvokeType(invokeType);
+		supervisionInfLogDao.insert(supervisionInfLog);
+		
+		// 接口调用次数+1
+		interfaceInvokeCounterService.plusOne();
+		
 		return ResponseXml;
 	}
 	
@@ -190,6 +215,16 @@ public class VehIsInfoServiceImpl extends BaseServiceSupport<VehIsInfo, String> 
 				+ "</clsbdh>\n<jyjgbh>" + jyjgbh
 				+ "</jyjgbh>\n</QueryCondition>\n</root>";
 		return xmlDoc;
+	}
+
+	public static void main(String[] args) {
+		String currentTime = DateUtils.getTime();
+		currentTime = "00:00:01";
+		if(currentTime.compareTo("17:00:00")>0 || currentTime.compareTo("10:00:00")<0){
+			System.out.println("不在工作时间");
+		}else{
+			System.out.println("开始干活啦");
+		}
 	}
 
 }

@@ -33,7 +33,10 @@ public class Constants {
 	public final static String CAR_TYPE_CODE_PREFIX = "CAR_TYPE_CODE_PREFIX_";
 	
 	/** 存储号牌种类，ID前缀_ */
-	public final static String CAR_TYPE_ID_PREFIX = "CAR_TYPE_ID_PREFIX__";
+	public final static String CAR_TYPE_ID_PREFIX = "CAR_TYPE_ID_PREFIX_";
+	
+	/** 存储检测站，ID前缀 */
+	public final static String STATION_ID_PREFIX = "CAR_TYPE_ID_PREFIX_";
 	
 	/** 下载机动车信息接口ID  */
 	public final static String GET_VEHICLE_INFO_JKID = "18C49";

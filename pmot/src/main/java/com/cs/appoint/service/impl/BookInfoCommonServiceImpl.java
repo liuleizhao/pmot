@@ -6,15 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cs.appoint.entity.BookInfo;
+import com.cs.appoint.service.BookInfoChangeService;
 import com.cs.appoint.service.BookInfoService;
 import com.cs.appoint.service.BookInfoCommonService;
 import com.cs.argument.entity.Station;
+import com.cs.common.entityenum.BookState;
 
 @Service
 public class BookInfoCommonServiceImpl implements BookInfoCommonService{
 	
 	@Autowired
 	private BookInfoService bookInfoService;
+	@Autowired
+	private BookInfoChangeService bookInfoChangeService;
 	
 	@Override
 	public String unifiedValidate(BookInfo bookInfo,Station station,String type) {
@@ -32,12 +36,22 @@ public class BookInfoCommonServiceImpl implements BookInfoCommonService{
 			if(count >= maxNumber ){
 				return "当前检测站预约已达预约上限，如有需要请联系中心人员！";
 			}
-			//判断是否该车是否已经预约
+			//判断是否该车是否在外网已经预约
 			if(StringUtils.isNotBlank(bookInfo.getNewflag()) && "0".equals(bookInfo.getNewflag())){
 				BookInfo existBookInfo = bookInfoService.checkIsExistsAppoint(bookInfo);
 				if(existBookInfo != null){
-					errorMessage = "号牌种类为：" + existBookInfo.getCarTypeName() + "和号牌号码为：" + existBookInfo.getPlatNumber() + "已预约,预约日期为:"+existBookInfo.getBookDate()+"，请携带相关证件到'"+existBookInfo.getStationName()+"'办理!";
-					return errorMessage;
+					//判断是否外网预约
+					String bookNumber = existBookInfo.getBookNumber();
+					if(!bookNumber.startsWith("D") && !bookNumber.startsWith("G") && !bookNumber.startsWith("N")){
+						existBookInfo.setBookState(BookState.YYQX);
+						bookInfoService.updateByPrimaryKey(existBookInfo);
+						//插入状态更改表
+						bookInfoChangeService.insert(existBookInfo);
+					}else{
+						errorMessage = "号牌种类为：" + existBookInfo.getCarTypeName() + "和号牌号码为：" + existBookInfo.getPlatNumber() + "已预约,预约日期为:"+existBookInfo.getBookDate()+"，请携带相关证件到'"+existBookInfo.getStationName()+"'办理!";
+						return errorMessage;
+					}
+				
 				}
 			}
             // 验证号牌号码，车架号是否存在

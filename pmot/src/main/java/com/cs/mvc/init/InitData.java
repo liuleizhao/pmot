@@ -13,7 +13,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import com.cs.argument.entity.CarType;
+import com.cs.argument.entity.Station;
 import com.cs.argument.service.CarTypeService;
+import com.cs.argument.service.StationService;
 import com.cs.common.constant.Constants;
 import com.cs.common.entityenum.Recordable;
 import com.cs.system.entity.GlobalConfig;
@@ -41,6 +43,8 @@ public class InitData implements ApplicationListener<ContextRefreshedEvent> {
 	private GlobalConfigService globalConfigService;
 	@Autowired
 	private CarTypeService carTypeService;
+	@Autowired
+	private StationService stationService;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -50,6 +54,8 @@ public class InitData implements ApplicationListener<ContextRefreshedEvent> {
 				reloadGlobalConfig();
 				//接口信息
 				reloadInterfaceInfo();
+				initCarType();
+				initStation();
 				System.out.println("----------------------初始化数据成功----------------------");
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,11 +78,31 @@ public class InitData implements ApplicationListener<ContextRefreshedEvent> {
 			}
 			global.putAll(newConfigMap);
 		}
-		
+	}
+	
+	/**
+	 * 初始化号牌种类数据
+	 * @throws Exception
+	 */
+	public void initCarType() throws Exception{
 		List<CarType> carTypes = carTypeService.findAllData();
 		if(carTypes != null){
 			for(CarType c : carTypes){
 				global.put(Constants.CAR_TYPE_ID_PREFIX+c.getId(),c.getCode()); //以号牌种类ID为Key，号牌种类Code为value
+				global.put(Constants.CAR_TYPE_CODE_PREFIX+c.getCode(), c.getId());//以号牌种类Code为Key，号牌种类ID为value
+			}
+		}
+	}
+	
+	/**
+	 * 初始化检测站数据
+	 * @throws Exception
+	 */
+	public void initStation() throws Exception{
+		List<Station> stations = stationService.findAllData();
+		if(stations != null){
+			for(Station s : stations){
+				global.put(Constants.STATION_ID_PREFIX+s.getId(), s.getCode());//以station的ID为Key，Code为Value
 			}
 		}
 	}

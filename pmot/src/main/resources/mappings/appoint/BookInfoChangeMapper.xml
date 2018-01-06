@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.appoint.dao.BookInfoChangeDao" >
+  <resultMap id="BaseResultMap" type="com.cs.appoint.entity.BookInfoChange" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
+    <result column="BOOK_STATE" property="bookState" jdbcType="DECIMAL" />
+    <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="CHECK_STATION" property="checkStation" jdbcType="VARCHAR" />
+    <result column="CHECK_SERIAL_NUMBER" property="checkSerialNumber" jdbcType="VARCHAR" />
+    <result column="CHECK_OPERATION_MARK" property="checkOperationMark" jdbcType="DECIMAL" />
+    <result column="CHECK_STATE" property="checkState" jdbcType="DECIMAL" />
+    <result column="FRAME_NUMBER" property="frameNumber" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BOOK_NUMBER, BOOK_STATE, CHECK_TIME, CHECK_STATION, CHECK_SERIAL_NUMBER, CHECK_OPERATION_MARK, 
+    CHECK_STATE, FRAME_NUMBER,CREATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BOOK_INFO_CHANGE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.BOOK_INFO_CHANGE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.appoint.entity.BookInfoChange" >
+  	<selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+    </selectKey>
+    insert into MOT.BOOK_INFO_CHANGE (ID, BOOK_NUMBER, BOOK_STATE, 
+      CHECK_TIME, CHECK_STATION, CHECK_SERIAL_NUMBER, 
+      CHECK_OPERATION_MARK, CHECK_STATE,FRAME_NUMBER, CREATE_DATE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{bookNumber,jdbcType=VARCHAR}, #{bookState,jdbcType=DECIMAL}, 
+      #{checkTime,jdbcType=TIMESTAMP}, #{checkStation,jdbcType=VARCHAR}, #{checkSerialNumber,jdbcType=VARCHAR}, 
+      #{checkOperationMark,jdbcType=DECIMAL}, #{checkState,jdbcType=DECIMAL},#{frameNumber,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.appoint.entity.BookInfoChange" >
+    insert into MOT.BOOK_INFO_CHANGE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER,
+      </if>
+      <if test="bookState != null" >
+        BOOK_STATE,
+      </if>
+      <if test="checkTime != null" >
+        CHECK_TIME,
+      </if>
+      <if test="checkStation != null" >
+        CHECK_STATION,
+      </if>
+      <if test="checkSerialNumber != null" >
+        CHECK_SERIAL_NUMBER,
+      </if>
+      <if test="checkOperationMark != null" >
+        CHECK_OPERATION_MARK,
+      </if>
+      <if test="checkState != null" >
+        CHECK_STATE,
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumber != null" >
+        #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bookState != null" >
+        #{bookState,jdbcType=DECIMAL},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStation != null" >
+        #{checkStation,jdbcType=VARCHAR},
+      </if>
+      <if test="checkSerialNumber != null" >
+        #{checkSerialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="checkOperationMark != null" >
+        #{checkOperationMark,jdbcType=DECIMAL},
+      </if>
+      <if test="checkState != null" >
+        #{checkState,jdbcType=DECIMAL},
+      </if>
+      <if test="frameNumber != null" >
+        #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.appoint.entity.BookInfoChange" >
+    update MOT.BOOK_INFO_CHANGE
+    <set >
+      <if test="bookNumber != null" >
+        BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="bookState != null" >
+        BOOK_STATE = #{bookState,jdbcType=DECIMAL},
+      </if>
+      <if test="checkTime != null" >
+        CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStation != null" >
+        CHECK_STATION = #{checkStation,jdbcType=VARCHAR},
+      </if>
+      <if test="checkSerialNumber != null" >
+        CHECK_SERIAL_NUMBER = #{checkSerialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="checkOperationMark != null" >
+        CHECK_OPERATION_MARK = #{checkOperationMark,jdbcType=DECIMAL},
+      </if>
+      <if test="checkState != null" >
+        CHECK_STATE = #{checkState,jdbcType=DECIMAL},
+      </if>
+      <if test="frameNumber != null" >
+        FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.appoint.entity.BookInfoChange" >
+    update MOT.BOOK_INFO_CHANGE
+    set BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      BOOK_STATE = #{bookState,jdbcType=DECIMAL},
+      CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
+      CHECK_STATION = #{checkStation,jdbcType=VARCHAR},
+      CHECK_SERIAL_NUMBER = #{checkSerialNumber,jdbcType=VARCHAR},
+      CHECK_OPERATION_MARK = #{checkOperationMark,jdbcType=DECIMAL},
+      CHECK_STATE = #{checkState,jdbcType=DECIMAL},
+      FRAME_NUMBER = #{frameNumber,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BOOK_INFO_CHANGE
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.BOOK_INFO_CHANGE
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.BOOK_INFO_CHANGE
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+</mapper>

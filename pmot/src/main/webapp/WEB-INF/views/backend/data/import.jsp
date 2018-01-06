@@ -22,7 +22,7 @@
 	.label{vertical-align: middle;height: 30px;line-height: 30px;}
 	.radio{position: relative;top: 2px;width:15px!important;height:15px!important;border: 0px;background: #eef4fd;}
 	input[type="file" i]{align-items: baseline;color: inherit;text-align: start;}
-	.title{height: 33px;border: 1px solid #c1d3de;width: 100%;background: url("/mot/static/backend/xtbg/images/righttitlebig.png");}
+	.title{height: 33px;border: 1px solid #c1d3de;width: 100%;background: url("/pmot/static/backend/xtbg/images/righttitlebig.png");}
 	.title h2{margin-left: 7px;padding-left: 22px;font-weight: bold;font-size: 14px;color: #000000;float: left;padding-top: 0px;margin-top: 6px;background: url("/mot/static/backend/xtbg/images/titleico.png")no-repeat left center;}
 	form{border: 1px solid rgb(193, 211, 222);}
 </style>

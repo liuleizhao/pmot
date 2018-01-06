@@ -23,4 +23,6 @@ public interface BookInfoWebService {
 	public String getVehicleInfo(String bookNumber,String verifyCode);
 	
 	public boolean validBookTime(BookInfo bookInfo,Date nowDate) throws Exception;
+	
+	public String preGetVehicleInfo(String platNumber,String carType,String frameNumber,String verifyCode);
 }

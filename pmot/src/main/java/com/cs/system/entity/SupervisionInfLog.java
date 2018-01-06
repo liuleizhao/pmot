@@ -2,6 +2,7 @@ package com.cs.system.entity;
 
 import java.util.Date;
 
+import com.cs.common.entityenum.InterfaceInvokeType;
 import com.cs.mvc.dao.BaseEntity;
 
 public class SupervisionInfLog extends BaseEntity {
@@ -19,6 +20,9 @@ public class SupervisionInfLog extends BaseEntity {
 	private Date responseTime;
 
 	private Integer runTime;
+	
+	/** 调用类型 */
+    private InterfaceInvokeType invokeType;
 
 	public Date getRequestTime() {
 		return requestTime;
@@ -66,5 +70,12 @@ public class SupervisionInfLog extends BaseEntity {
 
 	public void setResponseTime(Date responseTime) {
 		this.responseTime = responseTime;
+	}
+	public InterfaceInvokeType getInvokeType() {
+		return invokeType;
+	}
+
+	public void setInvokeType(InterfaceInvokeType invokeType) {
+		this.invokeType = invokeType;
 	}
 }

@@ -1,14 +1,10 @@
 package com.cs.webservice.service.impl;
 
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cs.mvc.dao.BaseDao;
-import com.cs.mvc.dao.SqlCondition;
 import com.cs.mvc.service.BaseServiceSupport;
 import com.cs.webservice.dao.InterfaceLogDao;
 import com.cs.webservice.entity.InterfaceLog;
@@ -30,14 +26,7 @@ public class InterfaceLogServiceImpl extends BaseServiceSupport<InterfaceLog,Str
 
 	@Override
 	public InterfaceLog findLatestByIp(String ip) throws Exception {
-		SqlCondition sqlCondition = new SqlCondition();
-		sqlCondition.addSingleNotNullCriterion("IP = ", ip);
-		sqlCondition.addDescOrderbyColumn("REQUEST_DATE");
-		List<InterfaceLog> list = this.findByCondition(sqlCondition);
-		if(CollectionUtils.isNotEmpty(list)){
-			return list.get(0);
-		}
-		return null;
+		return logDao.findLatestByIp(ip);
 	}
 
 	public static void main(String[] args) {

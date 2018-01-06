@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import com.cs.appoint.dao.BookInfoDao;
 import com.cs.appoint.dto.BookInfoAmount;
 import com.cs.appoint.entity.BookInfo;
 import com.cs.appoint.entity.CompApplyFrom;
+import com.cs.appoint.service.BookInfoChangeService;
 import com.cs.appoint.service.BookInfoService;
 import com.cs.appoint.service.CompApplyFromService;
 import com.cs.appoint.vo.ComApplyBookInfoVO;
@@ -37,6 +41,8 @@ import com.cs.system.entity.User;
 @Transactional
 public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> implements BookInfoService{
 
+	private static Logger logger = LoggerFactory.getLogger(BookInfoServiceImpl.class);
+	
 	@Autowired
 	private BookInfoDao bookInfoDao;
 	
@@ -50,6 +56,9 @@ public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> im
 	
 	@Autowired
 	private CompApplyFromService mApplyFromService;
+	
+	@Autowired
+	private BookInfoChangeService bookInfoChangeService;
 	
 	@Override
 	protected BaseDao<BookInfo, String> getBaseDao() throws Exception {
@@ -88,6 +97,9 @@ public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> im
 		try {
 			bookInfoDao.insert(bookInfo);
 		} catch (Exception e) {
+			e.getStackTrace();
+			logger.error("车牌号:"+bookInfo.getPlatNumber()+",车架号:"+bookInfo.getFrameNumber()
+					+"的用户预约写入出现异常："+"\n"+e.getMessage()+"\n"+ e.getStackTrace().toString());
 			mesage = "系统出现异常："+e.getMessage();
 		}
 		return mesage;
@@ -119,12 +131,14 @@ public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> im
 				message =  "预约日期是当天才能废除，预约号："+bookNumber+"的预约日期为："+bookInfo.getBookDate()+"！" ;
 				return message;
 			}
-			if(!bookInfo.getVerifyCode().equals(verifyCode)){
+/*			if(!bookInfo.getVerifyCode().equals(verifyCode)){
 				message = "验证码与预约成功时的验证码不一致，废除失败！";
 				return message;
-			}
+			}*/
 			bookInfo.setBookState(BookState.ZF);
 			updateByPrimaryKey(bookInfo);
+			// 添加预约信息记录表
+			bookInfoChangeService.insert(bookInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			message = "系统出现异常：" + e.getMessage();
@@ -201,46 +215,55 @@ public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> im
 			IdType idType = idTypeService.selectByPrimaryKey(bookInfo.getIdTypeId());
 			Station station = stationService.selectByPrimaryKey(backendUser.getStationId());
 			for(ComApplyBookInfoVO comBook:comBooks){
-				BookInfo existBookInfo = null;
-				if(comBook.getNewflag().equals("0")){  //旧车
-					existBookInfo = this.checkBooking(comBook.getCarTypeId(), comBook.getPlatNumber());
-				}
+				//不管什么情况，先添加
+				BookInfo book = new BookInfo();
+				book.setBookChannel(bookInfo.getBookChannel());
+				book.setBookerName(bookInfo.getBookerName());
+				book.setCompApplyFormId(bookInfo.getCompApplyFormId());
+				book.setIdNumber(bookInfo.getIdNumber());
+				book.setOtherIdNumber(bookInfo.getOtherIdNumber());
+				book.setMobile(bookInfo.getMobile());
+				book.setRequestIp(bookInfo.getRequestIp());
 				
-				if(null == existBookInfo){
-					BookInfo book = new BookInfo();
-					book.setBookChannel(bookInfo.getBookChannel());
-					book.setBookerName(bookInfo.getBookerName());
-					book.setCompApplyFormId(bookInfo.getCompApplyFormId());
-					book.setIdNumber(bookInfo.getIdNumber());
-					book.setOtherIdNumber(bookInfo.getOtherIdNumber());
-					book.setMobile(bookInfo.getMobile());
-					book.setRequestIp(bookInfo.getRequestIp());
-					
-					book.setStationId(station.getId());
-					book.setStationName(station.getName());
-					book.setIdTypeId(idType.getId());
-					book.setIdTypeName(idType.getName());
-					book.setUserId(backendUser.getId());
-					book.setUserName(backendUser.getName());
-					
-					book.setBookState(BookState.YYZ);
-					book.setCreateDate(new Date());
-					book.setBookNumber("D"+createBookNum(book.getCreateDate()));  //D标识大客户
-					String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
-					book.setVerifyCode(verifyCode);
-					
-					CarType carType = carTypeService.selectByPrimaryKey(comBook.getCarTypeId());
-					book.setCarTypeId(carType.getId());
-					book.setCarTypeName(carType.getName());
-					book.setBookDate(comBook.getBookDate());
-					book.setPlatNumber(comBook.getPlatNumber().toUpperCase());
-					book.setFrameNumber(comBook.getFrameNumber().toUpperCase());
-					book.setNewflag(comBook.getNewflag());
-					
-					
-					bookInfoList.add(book);
-				}else{
-					existBookInfos.add(existBookInfo);
+				book.setStationId(station.getId());
+				book.setStationName(station.getName());
+				book.setIdTypeId(idType.getId());
+				book.setIdTypeName(idType.getName());
+				book.setUserId(backendUser.getId());
+				book.setUserName(backendUser.getName());
+				
+				book.setBookState(BookState.YYZ);
+				book.setCreateDate(new Date());
+				book.setBookNumber("D"+createBookNum(book.getCreateDate()));  //D标识大客户
+				String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+				book.setVerifyCode(verifyCode);
+				
+				CarType carType = carTypeService.selectByPrimaryKey(comBook.getCarTypeId());
+				book.setCarTypeId(carType.getId());
+				book.setCarTypeName(carType.getName());
+				book.setBookDate(comBook.getBookDate());
+				book.setPlatNumber(comBook.getPlatNumber().toUpperCase());
+				book.setFrameNumber(comBook.getFrameNumber().toUpperCase());
+				book.setNewflag(comBook.getNewflag());
+				bookInfoList.add(book);
+				
+				//去除已存在的
+				BookInfo existBookInfo = null;
+				if(book.getNewflag().equals("0")){  //旧车
+					existBookInfo = this.checkBooking(book.getCarTypeId(), book.getPlatNumber());
+				}
+				if(null != existBookInfo){
+					//判断不是外网预约，删除改预约并添加已存在列表
+					String bookNumber = existBookInfo.getBookNumber();
+					if(bookNumber.startsWith("D") || bookNumber.startsWith("G") || bookNumber.startsWith("N")){
+						existBookInfos.add(existBookInfo);
+						bookInfoList.remove(book);
+					}else{
+						existBookInfo.setBookState(BookState.YYQX);
+						this.updateByPrimaryKey(existBookInfo);
+						//插入状态更改表
+						bookInfoChangeService.insert(existBookInfo);
+					}
 				}
 			}
 			//更新添加预约量
@@ -271,5 +294,26 @@ public class BookInfoServiceImpl extends BaseServiceSupport<BookInfo, String> im
 		}
 		return null;
 	
+	}
+	
+	@Override
+	public List<BookInfo> findByBreakPromiseAndBookDate(String date) throws Exception {
+		SqlCondition sqlCondition = new SqlCondition();
+		sqlCondition.addSingleCriterion("BOOK_STATE = ",BookState.YYZ);
+		sqlCondition.addSingleCriterion("BOOK_DATE = ",date);
+		List<BookInfo> bookInfos = bookInfoDao.findByCondition(sqlCondition);
+		if(CollectionUtils.isNotEmpty(bookInfos)){ //存在
+			return bookInfos;
+		}
+		return null;
+	}
+	
+	@Override
+	public List<BookInfo> queryBlackTRecord(List<String> bookNumberList) throws Exception {
+		List<BookInfo> bookInfos = new ArrayList<BookInfo>();
+		SqlCondition sqlCondition = new SqlCondition();
+		sqlCondition.addSingleCriterion(" BOOK_NUMBER in ", bookNumberList);
+		bookInfos = bookInfoDao.findByCondition(sqlCondition);
+		return bookInfos;
 	}
 }

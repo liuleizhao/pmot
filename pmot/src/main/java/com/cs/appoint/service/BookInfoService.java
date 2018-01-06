@@ -70,4 +70,20 @@ public interface BookInfoService extends BaseService<BookInfo, String>{
     List<BookInfo> batchAddCompAplyy(BookInfo bookInfo, List<ComApplyBookInfoVO> comBooks,User backendUser,CompApplyFrom compApplyFrom) throws Exception ;
     
 	public BookInfo checkBooking(String carTypeId,String platNumber) throws Exception;
+	
+	/**
+	 * 根据YYYY-MM-DD,查失约
+	 * @param date
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BookInfo> findByBreakPromiseAndBookDate(String date) throws Exception ;
+
+	/**
+	 * 根据预约号码查询导致拉黑的预约数据
+	 * @param bookNumberList  
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BookInfo> queryBlackTRecord(List<String> bookNumberList)throws Exception;
 }

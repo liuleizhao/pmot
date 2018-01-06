@@ -21,6 +21,7 @@ import com.cs.argument.entity.CarType;
 import com.cs.argument.entity.Station;
 import com.cs.argument.service.CarTypeService;
 import com.cs.argument.service.StationService;
+import com.cs.common.constant.Constants;
 import com.cs.common.entityenum.BookState;
 import com.cs.common.entityenum.GlobalConfigKey;
 import com.cs.common.exception.InvalidBookInfoException;
@@ -35,7 +36,6 @@ import com.cs.system.dao.FreeVerificationBookConfigDao;
 import com.cs.system.entity.FreeVerificationBookConfig;
 import com.cs.webservice.entity.InterfaceControlGeneral;
 import com.cs.webservice.service.InterfaceControlGeneralService;
-import com.cs.webservice.service.InterfaceInvokeCounterService;
 
 @Service
 @Transactional
@@ -54,8 +54,6 @@ public class BookInfoWebServiceImpl implements BookInfoWebService {
 	private InterfaceControlGeneralService controlGeneralService;
 	@Autowired
 	private BookInfoCompatibleService bookInfoCompatibleService;
-	@Autowired
-	private InterfaceInvokeCounterService interfaceInvokeCounterService;
 	
 	/**
 	 * 根据预约号、当前IP对应的检测站、当前日期 查询是否有预约信息
@@ -160,8 +158,10 @@ public class BookInfoWebServiceImpl implements BookInfoWebService {
 			//3、校验预约信息是否在相应时间段
 			if(this.validBookTime(bookInfo,new Date())){
 				//4、更新预约状态为预约完成
-				bookInfo.setBookState(BookState.YYWC);
-				bookInfoService.updateByBookNumber(BookState.YYWC.getIndex(), bookInfo.getBookNumber());
+				if(!bookInfo.getBookState().equals(BookState.YYWC)){
+					bookInfo.setBookState(BookState.YYWC);
+					bookInfoService.updateByBookNumber(BookState.YYWC.getIndex(), bookInfo.getBookNumber());
+				}
 				//5、如果存在预约信息，返回返回号牌号码、车架号、号牌种类等基本车辆信息
 				CarType carType = carTypeService.selectByPrimaryKey(bookInfo.getCarTypeId());
 				VehIsInfo vehIsInfo = new VehIsInfo();
@@ -204,10 +204,6 @@ public class BookInfoWebServiceImpl implements BookInfoWebService {
 				}else{
 					Station station = stationService.selectByPrimaryKey(bookInfo.getStationId());
 					String outerResponse = vehIsInfoService.sendXml(bookInfo.getPlatNumber(), carType.getCode(), bookInfo.getFrameNumber(), station.getCode());
-					
-					// 接口调用次数+1
-					interfaceInvokeCounterService.plusOne();
-					
 					String detailinfo = WebServiceXmlUtil.getTagValue("body",ConvertUtils.decodeUTF8Xml(outerResponse));
 					String code = WebServiceXmlUtil.getTagValue("code", outerResponse);
 					if(!"1".equals(code)){
@@ -296,5 +292,128 @@ public class BookInfoWebServiceImpl implements BookInfoWebService {
 		
 		return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, 
 				"服务器端提示信息：监管平台无法返回车辆信息，请确认号牌信息无误后，等待5-10秒再试", motoBaseinfo);
+	}
+	
+	@Override
+	public String preGetVehicleInfo(String platNumber, String carType,
+			String frameNumber, String verifyCode) {
+		try{
+			//1、校验是否为摩托车(摩托车不用预约，预约号和验证码以中划线开头)
+			if("07".equals(carType) || "24".equals(carType)){
+				return getMotoVehicleInfo(platNumber,carType,frameNumber);
+			}
+			String ip = WebServiceIpUtil.getRequestIp();
+			InterfaceControlGeneral general = controlGeneralService.findByIp(ip);
+			String carTypeId = InitData.getGlobalValue(Constants.CAR_TYPE_CODE_PREFIX+carType);
+			if(carTypeId == null){
+				return WebServiceXmlUtil.buildResponseXml(ResultCode.FAIL, "服务器端提示信息：号牌种类有误！");
+			}
+			SqlCondition sqlCondition = new SqlCondition();
+			sqlCondition.addSingleNotNullCriterion("CAR_TYPE_ID = ", carTypeId);
+			sqlCondition.addSingleNotNullCriterion("FRAME_NUMBER = ", frameNumber);
+			if(frameNumber.length() == 4){ //旧车有号牌号码
+				sqlCondition.addSingleNotNullCriterion("PLAT_NUMBER = ", platNumber);
+			}
+			sqlCondition.addSingleNotNullCriterion("STATION_ID = ", general.getStationId());
+			sqlCondition.addSingleNotNullCriterion("BOOK_DATE = ", DateUtil.getDayStr(new Date()));
+			List<BookState> bookStates = new ArrayList<BookState>();
+			bookStates.add(BookState.YYZ);
+			bookStates.add(BookState.YYWC);
+			sqlCondition.addSingleNotNullCriterion("BOOK_STATE in ",bookStates);
+			sqlCondition.addDescOrderbyColumn("CREATE_DATE");
+			List<BookInfo> bookInfos = bookInfoService.findByCondition(sqlCondition);
+			if(CollectionUtils.isEmpty(bookInfos)){
+				throw new InvalidBookInfoException("服务器端提示信息：预约号不存在，请查看数据是否已导入专网！");
+			}
+			//预约记录
+			BookInfo bookInfo = bookInfos.get(0);
+			if(!this.validBookTime(bookInfo,new Date())){
+				return WebServiceXmlUtil.buildResponseXml(ResultCode.FAIL, "服务器端提示信息：不在预约时间段内");
+			}
+			//更新预约状态为完成
+			if(!bookInfo.getBookState().equals(BookState.YYWC)){
+				bookInfo.setBookState(BookState.YYWC);
+				bookInfoService.updateByBookNumber(BookState.YYWC.getIndex(), bookInfo.getBookNumber());
+			}
+			if(frameNumber.length() > 4){//新车
+				return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：通过预约验证！");
+			}else{
+				SqlCondition vehIsInfoCondition = new SqlCondition(); 
+				vehIsInfoCondition.addSingleNotNullCriterion("FULL_HPHM = ", platNumber);
+				vehIsInfoCondition.addSingleNotNullCriterion("HPZL = ", carType);
+				vehIsInfoCondition.addSingleNotNullCriterion("CLSBDH  LIKE ", "%"+frameNumber);
+				vehIsInfoCondition.addSingleNotNullCriterion("STATION_ID = ", bookInfo.getStationId());
+				vehIsInfoCondition.addSingleNotNullCriterion("BOOK_NUMBER = ", bookInfo.getBookNumber());
+				List<VehIsInfo> vehIsInfoList = vehIsInfoService.findByCondition(vehIsInfoCondition);
+				if(CollectionUtils.isNotEmpty(vehIsInfoList)){
+					String detailinfo = WebServiceXmlUtil.getTagValue("body",ConvertUtils.decodeUTF8Xml(vehIsInfoList.get(0).getResponseXml()));//车辆详细信息报文
+					return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：数据读取成功！", detailinfo);
+				}else{
+					String stationCode = InitData.getGlobalValue(Constants.STATION_ID_PREFIX+bookInfo.getStationId());
+					String outerResponse = vehIsInfoService.sendXml(bookInfo.getPlatNumber(), carType, bookInfo.getFrameNumber(), stationCode);
+					String detailinfo = WebServiceXmlUtil.getTagValue("body",ConvertUtils.decodeUTF8Xml(outerResponse));
+					String code = WebServiceXmlUtil.getTagValue("code", outerResponse);
+					if(!"1".equals(code)){
+						return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：监管平台无法返回车辆信息，请确认号牌信息无误后，等待5-10秒再试");
+					}
+					//车辆读取成功后保存到数据库
+					VehIsInfo newVehIsInfo = (VehIsInfo) ConvertUtils.Xml2Bean(outerResponse, null, VehIsInfo.class,new ArrayList<String>());
+					newVehIsInfo.setBookNumber(bookInfo.getBookNumber());
+					newVehIsInfo.setStationId(bookInfo.getStationId());
+					newVehIsInfo.setDownloadTime(new Date());
+					newVehIsInfo.setResponseXml(outerResponse);
+					newVehIsInfo.setFullHphm(bookInfo.getPlatNumber());
+					vehIsInfoService.insert(newVehIsInfo);
+					return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：数据读取成功！", detailinfo);
+				}
+			}
+		}catch(InvalidBookInfoException e){
+			return WebServiceXmlUtil.buildResponseXml(ResultCode.FAIL, e.getMessage());
+		}catch(Exception e){
+			e.printStackTrace();
+			return WebServiceXmlUtil.buildResponseXml(ResultCode.SYSTEM_ERROR);
+		}
+	}
+	
+	/**
+	 * 获取摩托车车辆信息
+	 * @param motoPlatNumber	号牌号码
+	 * @param motoCarType		号牌种类
+	 * @param motoFrameNumber	车架号
+	 * @return
+	 * @throws Exception
+	 */
+	private String getMotoVehicleInfo(String motoPlatNumber, String motoCarType,String motoFrameNumber) throws Exception{
+		SqlCondition motoCondition = new SqlCondition();
+		motoCondition.addSingleNotNullCriterion("FULL_HPHM = ", motoPlatNumber);
+		motoCondition.addSingleNotNullCriterion("HPZL = ", motoCarType);
+		motoCondition.addSingleNotNullCriterion("CLSBDH LIKE ", "%"+motoFrameNumber);
+		motoCondition.addSingleNotNullCriterion("TO_CHAR(DOWNLOAD_TIME,'yyyy-mm-dd') = ", DateUtil.getDayStr(new Date()));
+		List<VehIsInfo> motoVehIsInfoList = vehIsInfoService.findByCondition(motoCondition);
+		if(CollectionUtils.isNotEmpty(motoVehIsInfoList)){
+			String detailinfo = WebServiceXmlUtil.getTagValue("body",ConvertUtils.decodeUTF8Xml(motoVehIsInfoList.get(0).getResponseXml()));//车辆详细信息报文
+			return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：数据读取成功！", detailinfo);
+		}else{
+			String ip = WebServiceIpUtil.getRequestIp();
+			InterfaceControlGeneral general = controlGeneralService.findByIp(ip);
+			String stationId = general.getStationId();
+			String stationCode = InitData.getGlobalValue(Constants.STATION_ID_PREFIX+general.getStationId());
+			String outerResponse = vehIsInfoService.sendXml(motoPlatNumber, motoCarType, motoFrameNumber, stationCode);
+			String code = WebServiceXmlUtil.getTagValue("code", outerResponse);
+			if(!"1".equals(code)){
+				return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS,
+						"服务器端提示信息：监管平台无法返回车辆信息，请确认号牌信息无误后，等待5-10秒再试");
+			}else{
+				String detailinfo = WebServiceXmlUtil.getTagValue("body",ConvertUtils.decodeUTF8Xml(outerResponse));
+				//车辆读取成功后保存到数据库
+				VehIsInfo newVehIsInfo = (VehIsInfo) ConvertUtils.Xml2Bean(detailinfo, null, VehIsInfo.class,new ArrayList<String>());
+				newVehIsInfo.setStationId(stationId);
+				newVehIsInfo.setDownloadTime(new Date());
+				newVehIsInfo.setResponseXml(outerResponse);
+				newVehIsInfo.setFullHphm(motoPlatNumber);
+				vehIsInfoService.insert(newVehIsInfo);
+				return WebServiceXmlUtil.buildResponseXml(ResultCode.SUCCESS, "服务器端提示信息：数据读取成功！", detailinfo);
+			}
+		}
 	}
 }

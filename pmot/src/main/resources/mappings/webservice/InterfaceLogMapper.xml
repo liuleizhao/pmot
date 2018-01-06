@@ -10,9 +10,10 @@
     <result column="RESPONSE_DATE" property="responseDate" jdbcType="TIMESTAMP" />
     <result column="RESPONSE_XML" property="responseXml" jdbcType="VARCHAR" />
     <result column="RUN_TIME" property="runTime" jdbcType="DECIMAL" />
+    <result column="INVOKE_TYPE" property="invokeType" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, JKID, IP, REQUEST_DATE, REQUEST_XML, RESPONSE_DATE, RESPONSE_XML, RUN_TIME
+    ID, JKID, IP, REQUEST_DATE, REQUEST_XML, RESPONSE_DATE, RESPONSE_XML, RUN_TIME, INVOKE_TYPE
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -30,10 +31,10 @@
     </selectKey>  
     insert into MOT.INTERFACE_LOG (ID, JKID, IP, 
       REQUEST_DATE, REQUEST_XML, RESPONSE_DATE, 
-      RESPONSE_XML, RUN_TIME)
+      RESPONSE_XML, RUN_TIME, INVOKE_TYPE)
     values (#{id,jdbcType=VARCHAR}, #{jkid,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
       #{requestDate,jdbcType=TIMESTAMP}, #{requestXml,jdbcType=VARCHAR}, #{responseDate,jdbcType=TIMESTAMP}, 
-      #{responseXml,jdbcType=VARCHAR}, #{runTime,jdbcType=DECIMAL})
+      #{responseXml,jdbcType=VARCHAR}, #{runTime,jdbcType=DECIMAL}, #{invokeType,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.cs.webservice.entity.InterfaceLog" >
     insert into MOT.INTERFACE_LOG
@@ -62,6 +63,9 @@
       <if test="runTime != null" >
         RUN_TIME,
       </if>
+      <if test="invokeType != null" >
+        INVOKE_TYPE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,6 +91,9 @@
       </if>
       <if test="runTime != null" >
         #{runTime,jdbcType=DECIMAL},
+      </if>
+      <if test="invokeType != null" >
+      	#{invokeType,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -114,6 +121,9 @@
       <if test="runTime != null" >
         RUN_TIME = #{runTime,jdbcType=DECIMAL},
       </if>
+      <if test="invokeType != null" >
+      	INVOKE_TYPE = #{invokeType,jdbcType=DECIMAL},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -125,7 +135,8 @@
       REQUEST_XML = #{requestXml,jdbcType=VARCHAR},
       RESPONSE_DATE = #{responseDate,jdbcType=TIMESTAMP},
       RESPONSE_XML = #{responseXml,jdbcType=VARCHAR},
-      RUN_TIME = #{runTime,jdbcType=DECIMAL}
+      RUN_TIME = #{runTime,jdbcType=DECIMAL},
+      INVOKE_TYPE = #{invokeType,jdbcType=DECIMAL}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   
@@ -188,5 +199,12 @@
     </if>
   </select>
   
-	
+	<select id="findLatestByIp" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from MOT.INTERFACE_LOG
+    <where>
+    	REQUEST_DATE = (select max(REQUEST_DATE) from MOT.INTERFACE_LOG where ip=#{ip}) and ip=#{ip}
+    </where>
+  </select>
 </mapper>

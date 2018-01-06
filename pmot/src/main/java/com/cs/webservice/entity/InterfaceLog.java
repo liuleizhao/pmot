@@ -2,6 +2,7 @@ package com.cs.webservice.entity;
 
 import java.util.Date;
 
+import com.cs.common.entityenum.InterfaceInvokeType;
 import com.cs.mvc.dao.BaseEntity;
 
 /**
@@ -35,6 +36,9 @@ public class InterfaceLog extends BaseEntity{
 
     /** 运行时间 */
     private Integer runTime;
+    
+    /** 调用类型 */
+    private InterfaceInvokeType invokeType;
 
     public String getId() {
         return id;
@@ -99,4 +103,13 @@ public class InterfaceLog extends BaseEntity{
     public void setRunTime(Integer runTime) {
         this.runTime = runTime;
     }
+
+	public InterfaceInvokeType getInvokeType() {
+		return invokeType;
+	}
+
+	public void setInvokeType(InterfaceInvokeType invokeType) {
+		this.invokeType = invokeType;
+	}
+    
 }

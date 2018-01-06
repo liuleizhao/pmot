@@ -56,4 +56,11 @@ public interface VehIsFlowDao extends BaseDao<VehIsFlow,String> {
 	 * @date 2017-11-16 下午3:29:55
 	 */
 	public List<BookInfoAmount> findExceptionAmountGroupByStation(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	
+	/**
+	 * 查询正常的业务记录
+	 * @param bookInfoSupervise
+	 * @return
+	 */
+	public List<BookInfoSupervise> findBookInfoCorrect(BookInfoSupervise bookInfoSupervise);
 }

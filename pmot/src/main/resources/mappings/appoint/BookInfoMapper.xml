@@ -12,14 +12,14 @@
     <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
     <result column="BOOK_STATE" property="bookState" jdbcType="DECIMAL" />
     <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
-    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
     <result column="BOOK_CHANNEL" property="bookChannel" jdbcType="DECIMAL" />
     <result column="BOOKER_NAME" property="bookerName" jdbcType="VARCHAR" />
     <result column="ID_TYPE_ID" property="idTypeId" jdbcType="VARCHAR" />
     <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR" />
     <result column="USE_CHARATER" property="useCharater" jdbcType="VARCHAR" />
     <result column="VEHICLE_TYPE" property="vehicleType" jdbcType="VARCHAR" />
-    <result column="CHECK_TIME" property="checkTime" jdbcType="DATE" />
+    <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP" />
     <result column="CHECK_STATION" property="checkStation" jdbcType="VARCHAR" />
     <result column="CHECK_SERIAL_NUMBER" property="checkSerialNumber" jdbcType="VARCHAR" />
     <result column="CHECK_OPERATION_MARK" property="checkOperationMark" jdbcType="DECIMAL" />
@@ -58,7 +58,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.cs.appoint.entity.BookInfo" >
-      <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+     <selectKey keyProperty="id" resultType="String" order="BEFORE">  
        select sys_guid() from dual  
     </selectKey> 
     insert into MOT.BOOK_INFO (ID, CAR_TYPE_ID, PLAT_NUMBER, 
@@ -77,9 +77,9 @@
     values (#{id,jdbcType=VARCHAR}, #{carTypeId,jdbcType=VARCHAR}, #{platNumber,jdbcType=VARCHAR}, 
       #{frameNumber,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{bookDate,jdbcType=VARCHAR}, 
       #{bookTime,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, #{bookState,jdbcType=DECIMAL}, 
-      #{bookNumber,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{bookChannel,jdbcType=DECIMAL}, 
+      #{bookNumber,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{bookChannel,jdbcType=DECIMAL}, 
       #{bookerName,jdbcType=VARCHAR}, #{idTypeId,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, 
-      #{useCharater,jdbcType=VARCHAR}, #{vehicleType,jdbcType=VARCHAR}, #{checkTime,jdbcType=DATE}, 
+      #{useCharater,jdbcType=VARCHAR}, #{vehicleType,jdbcType=VARCHAR}, #{checkTime,jdbcType=TIMESTAMP}, 
       #{checkStation,jdbcType=VARCHAR}, #{checkSerialNumber,jdbcType=VARCHAR}, #{checkOperationMark,jdbcType=DECIMAL}, 
       #{checkState,jdbcType=DECIMAL}, #{engineNumber,jdbcType=VARCHAR}, #{driverType,jdbcType=DECIMAL}, 
       #{fuelType,jdbcType=DECIMAL}, #{carTypeName,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, 
@@ -232,7 +232,7 @@
         #{bookNumber,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null" >
-        #{createDate,jdbcType=DATE},
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="bookChannel != null" >
         #{bookChannel,jdbcType=DECIMAL},
@@ -253,7 +253,7 @@
         #{vehicleType,jdbcType=VARCHAR},
       </if>
       <if test="checkTime != null" >
-        #{checkTime,jdbcType=DATE},
+        #{checkTime,jdbcType=TIMESTAMP},
       </if>
       <if test="checkStation != null" >
         #{checkStation,jdbcType=VARCHAR},
@@ -342,7 +342,7 @@
         BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null" >
-        CREATE_DATE = #{createDate,jdbcType=DATE},
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
       </if>
       <if test="bookChannel != null" >
         BOOK_CHANNEL = #{bookChannel,jdbcType=DECIMAL},
@@ -363,7 +363,7 @@
         VEHICLE_TYPE = #{vehicleType,jdbcType=VARCHAR},
       </if>
       <if test="checkTime != null" >
-        CHECK_TIME = #{checkTime,jdbcType=DATE},
+        CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
       </if>
       <if test="checkStation != null" >
         CHECK_STATION = #{checkStation,jdbcType=VARCHAR},
@@ -433,14 +433,14 @@
       STATION_ID = #{stationId,jdbcType=VARCHAR},
       BOOK_STATE = #{bookState,jdbcType=DECIMAL},
       BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
-      CREATE_DATE = #{createDate,jdbcType=DATE},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
       BOOK_CHANNEL = #{bookChannel,jdbcType=DECIMAL},
       BOOKER_NAME = #{bookerName,jdbcType=VARCHAR},
       ID_TYPE_ID = #{idTypeId,jdbcType=VARCHAR},
       ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
       USE_CHARATER = #{useCharater,jdbcType=VARCHAR},
       VEHICLE_TYPE = #{vehicleType,jdbcType=VARCHAR},
-      CHECK_TIME = #{checkTime,jdbcType=DATE},
+      CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
       CHECK_STATION = #{checkStation,jdbcType=VARCHAR},
       CHECK_SERIAL_NUMBER = #{checkSerialNumber,jdbcType=VARCHAR},
       CHECK_OPERATION_MARK = #{checkOperationMark,jdbcType=DECIMAL},
@@ -463,7 +463,6 @@
   </update>
   
   
-     
   <!-- 自定义 -->
   <sql id="conditions" >
   	<where>
@@ -540,11 +539,14 @@
     where BOOK_NUMBER = #{1} and BOOK_STATE != 3 and BOOK_STATE != 4 and BOOK_STATE != 5
   </update>
   
+  <!-- 查询指定日期内的预约量 -->
   <select id="findFinishedBookAmountGroupByStation" resultType="com.cs.appoint.dto.BookInfoAmount">
-  	select station_id as stationId,count(1) as amount from MOT.BOOK_INFO where book_state in(1,2) 
-  	<if test="startDate!=null and endDate!=null">
-  		and to_date(book_date,'yyyy-mm-dd') between #{startDate} and #{endDate}+1
-  	</if>
+  	select station_id as stationId,count(1) as amount from MOT.BOOK_INFO 
+  	<where>
+	  	<if test="startDate!=null and endDate!=null">
+	  		book_date between to_char(#{startDate},'yyyy-mm-dd') and to_char(#{endDate},'yyyy-mm-dd') 
+	  	</if>
+  	</where> 
   	group by station_id 
   </select>
   
@@ -556,6 +558,7 @@
     	not exists(select 1 from MOT.veh_is_info where BOOK_INFO.book_number=veh_is_info.book_number)
     	and book_state=1 and book_date = #{bookDate}
     </where>
+    order by dbms_random.value()
   </select>
   <!-- 查询当天检测站专网的预约量 -->
   <select id="queryCurrentAppoint" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -619,13 +622,14 @@
   <select id="findByBookDateListWithoutVehInfo" parameterType="java.util.List" resultMap="BaseResultMap">
   	select
   	<include refid="Base_Column_List" />
-    from mot.BOOK_INFO
+    from MOT.BOOK_INFO
     <where>
-    	not exists(select 1 from mot.veh_is_info where BOOK_INFO.book_number=veh_is_info.book_number)
+    	not exists(select 1 from MOT.veh_is_info where BOOK_INFO.book_number=veh_is_info.book_number)
     	and book_state=1 and book_date in 
     	<foreach collection="list" item="item" separator="," open="(" close=")"> 
     		#{item}
     	</foreach>
     </where>
+    order by dbms_random.value()
   </select>
 </mapper>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.argument.dao.BreakPromiseRecordDao" >
+  <resultMap id="BaseResultMap" type="com.cs.argument.entity.BreakPromiseRecord" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR" />
+    <result column="ID_TYPE" property="idType" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="BOOK_NUMBER" property="bookNumber" jdbcType="VARCHAR" />
+    <result column="RECORD_TYPE" property="recordType" jdbcType="DECIMAL" />
+    <result column="RECORD_VALUE" property="recordValue" jdbcType="VARCHAR" />
+    <result column="BOOK_OPERATION" property="bookOperation" jdbcType="DECIMAL" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="STATE" property="state" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ID_NUMBER, ID_TYPE, NAME, BOOK_NUMBER, RECORD_TYPE, RECORD_VALUE, 
+    BOOK_OPERATION, CREATE_DATE, STATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BREAK_PROMISE_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from MOT.BREAK_PROMISE_RECORD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cs.argument.entity.BreakPromiseRecord" >
+      <selectKey keyProperty="id" resultType="String" order="BEFORE">  
+       select sys_guid() from dual  
+   	 </selectKey> 
+    insert into MOT.BREAK_PROMISE_RECORD (ID, ID_NUMBER, ID_TYPE, 
+      NAME, BOOK_NUMBER, 
+      RECORD_TYPE, RECORD_VALUE, BOOK_OPERATION, 
+      CREATE_DATE, STATE)
+    values (#{id,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{idType,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{bookNumber,jdbcType=VARCHAR}, 
+      #{recordType,jdbcType=DECIMAL}, #{recordValue,jdbcType=VARCHAR}, #{bookOperation,jdbcType=DECIMAL}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{state,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cs.argument.entity.BreakPromiseRecord" >
+    insert into MOT.BREAK_PROMISE_RECORD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="idNumber != null" >
+        ID_NUMBER,
+      </if>
+      <if test="idType != null" >
+        ID_TYPE,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="bookNumber != null" >
+        BOOK_NUMBER,
+      </if>
+      <if test="recordType != null" >
+        RECORD_TYPE,
+      </if>
+      <if test="recordValue != null" >
+        RECORD_VALUE,
+      </if>
+      <if test="bookOperation != null" >
+        BOOK_OPERATION,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null" >
+        #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+
+      <if test="bookNumber != null" >
+        #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        #{recordType,jdbcType=DECIMAL},
+      </if>
+      <if test="recordValue != null" >
+        #{recordValue,jdbcType=VARCHAR},
+      </if>
+      <if test="bookOperation != null" >
+        #{bookOperation,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cs.argument.entity.BreakPromiseRecord" >
+    update MOT.BREAK_PROMISE_RECORD
+    <set >
+      <if test="idNumber != null" >
+        ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        ID_TYPE = #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+
+      <if test="bookNumber != null" >
+        BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="recordType != null" >
+        RECORD_TYPE = #{recordType,jdbcType=DECIMAL},
+      </if>
+      <if test="recordValue != null" >
+        RECORD_VALUE = #{recordValue,jdbcType=VARCHAR},
+      </if>
+      <if test="bookOperation != null" >
+        BOOK_OPERATION = #{bookOperation,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cs.argument.entity.BreakPromiseRecord" >
+    update MOT.BREAK_PROMISE_RECORD
+    set ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      BOOK_NUMBER = #{bookNumber,jdbcType=VARCHAR},
+      RECORD_TYPE = #{recordType,jdbcType=DECIMAL},
+      RECORD_VALUE = #{recordValue,jdbcType=VARCHAR},
+      BOOK_OPERATION = #{bookOperation,jdbcType=DECIMAL},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      STATE = #{state,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    
+    <!-- 自定义 -->
+  <sql id="conditions" >
+  	<where>
+  	 <foreach collection="sqlCriterions" item="criterionItem" separator="and" >
+  	 	<choose>
+  	 		<when test="criterionItem.noValue">
+  	 			${criterionItem.condition}
+  	 		</when>
+  	 		<when test="criterionItem.singleValue">
+  	 			${criterionItem.condition} #{criterionItem.value}
+  	 		</when>
+  	 		<when test="criterionItem.betweenValue">
+  	 			${criterionItem.condition} #{criterionItem.value} and #{criterionItem.secondValue}
+  	 		</when>
+  	 		<when test="criterionItem.listValue">
+  	 			 ${criterionItem.condition}
+                  <foreach collection="criterionItem.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+  	 		</when>
+  	 	</choose>
+      </foreach>
+  	</where>
+  </sql>
+
+  <select id="findAllData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BREAK_PROMISE_RECORD
+  </select>
+  
+   <select id="findAllDataByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MOT.BREAK_PROMISE_RECORD
+    <if test="_parameter != null">
+    	order by ${_parameter}
+    </if>
+  </select>
+  
+  <select id="findByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultMap="BaseResultMap">
+	select 
+	<if test="distinct" >
+      distinct
+    </if>
+	<include refid="Base_Column_List" />
+	  from MOT.BREAK_PROMISE_RECORD
+	<if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+    <if test="orderbyClause != null and orderby" >
+    	order by
+    <foreach collection="orderbyClause" item="listItem" separator=",">
+      	 ${listItem}
+    </foreach>
+    </if>
+  </select>
+  
+  <select id="countByCondition" parameterType="com.cs.mvc.dao.SqlCondition" resultType="java.lang.Integer">
+   	select count(*) from MOT.BREAK_PROMISE_RECORD
+    <if test="_parameter != null" >
+      <include refid="conditions" />
+    </if>
+  </select>
+  
+  <!-- 批量插入 -->
+  <insert id="batchAdd" parameterType="java.util.List">
+    insert into MOT.BREAK_PROMISE_RECORD (  
+          ID, ID_NUMBER, ID_TYPE, NAME, BOOK_NUMBER, RECORD_TYPE,
+          RECORD_VALUE, BOOK_OPERATION, CREATE_DATE, STATE
+         )  
+         select sys_guid(),a.*  
+         From (  
+               <foreach collection="list" item="item" index="index" separator="union all">   
+               (   
+                 select   
+                       #{item.idNumber},   
+                       #{item.idType},   
+                       #{item.name},   
+                       #{item.bookNumber},   
+                       #{item.recordType},
+                       #{item.recordValue},
+                       #{item.bookOperation},
+                       #{item.createDate},
+                       #{item.state}
+                       From dual   
+                   )   
+                </foreach> 
+            )a
+  </insert>
+  
+</mapper>

@@ -18,16 +18,15 @@ import com.cs.argument.dao.StationDao;
 import com.cs.argument.entity.CarType;
 import com.cs.argument.entity.Station;
 import com.cs.common.constant.Constants;
+import com.cs.common.entityenum.InterfaceInvokeType;
 import com.cs.common.utils.ConvertUtils;
 import com.cs.common.utils.DateUtils;
 import com.cs.common.utils.RedisUtil;
-import com.cs.webservice.entity.InterfaceLog;
-import com.cs.webservice.service.InterfaceInvokeCounterService;
-import com.cs.webservice.service.InterfaceLogService;
+import com.cs.mvc.init.InitData;
 
 public class DownloadVehIsInfoTimer {
 	private static long interval = 0L;
-	private static final int errorThreshold = 10;//错误阈值（车辆信息错误次数超过该值则认定为错误信息）
+	private static final int errorThreshold = 3;//错误阈值（车辆信息错误次数超过该值则认定为错误信息）
 	
 	@Autowired
 	private CarTypeDao carTypeDao;
@@ -39,10 +38,6 @@ public class DownloadVehIsInfoTimer {
 	private BookInfoDao bookInfoDao;
 	@Autowired
 	private VehIsInfoService vehIsInfoService;
-	@Autowired
-	private InterfaceLogService interfaceLogService;
-	@Autowired
-	private InterfaceInvokeCounterService interfaceInvokeCounterService;
 	
 	public void download() throws Exception{
 		if(new Date().getTime() < interval){
@@ -54,14 +49,14 @@ public class DownloadVehIsInfoTimer {
 		Date currentDate = new Date();
 		dateStrList.add(DateUtils.formatDate(currentDate));
 		dateStrList.add(DateUtils.formatDate(DateUtils.addDays(currentDate, 1)));
-		dateStrList.add(DateUtils.formatDate(DateUtils.addDays(currentDate, 2)));
+//		dateStrList.add(DateUtils.formatDate(DateUtils.addDays(currentDate, 2)));
 		List<BookInfo> bookInfoList = bookInfoDao.findByBookDateListWithoutVehInfo(dateStrList);
 		if(CollectionUtils.isEmpty(bookInfoList)){//没有新的预约数据…………
 			return;
 		}
 		
 		//2、每次从中取30条
-		int increment = 30;
+		int increment = 10;
 		for(int i=0; i<bookInfoList.size(); i+=increment){
 			List<BookInfo> successList = new ArrayList<BookInfo>();//成功记录
 			List<BookInfo> failList = new ArrayList<BookInfo>();//失败记录
@@ -76,11 +71,10 @@ public class DownloadVehIsInfoTimer {
 //					RedisUtil.delByKey(Constants.ERROR_VEHINFO_RECORD+bookInfo.getId());
 					continue;
 				}
-				CarType carType = carTypeDao.selectByPrimaryKey(bookInfo.getCarTypeId());
-				Station station = stationDao.selectByPrimaryKey(bookInfo.getStationId());
-				
-				Date requestDate = new Date();//请求时间
-				String responseXml = vehIsInfoService.sendXml(bookInfo.getPlatNumber(),carType.getCode(),bookInfo.getFrameNumber(), station.getCode());
+				String carTypeCode = InitData.getGlobalValue(Constants.CAR_TYPE_ID_PREFIX+bookInfo.getCarTypeId());
+				String stationCode = InitData.getGlobalValue(Constants.STATION_ID_PREFIX+bookInfo.getStationId());
+				Thread.sleep(8000);//暂停8秒钟，防止过快访问监管平台
+				String responseXml = vehIsInfoService.sendXml(bookInfo.getPlatNumber(),carTypeCode,bookInfo.getFrameNumber(), stationCode,InterfaceInvokeType.TIMER);
 				if (validateResponseXml(responseXml)) {//下载成功
 					VehIsInfo vehIsInfo = (VehIsInfo) ConvertUtils.Xml2Bean(responseXml, null, VehIsInfo.class,new ArrayList<String>());
 					vehIsInfo.setBookNumber(bookInfo.getBookNumber());// 定时器读出来的数据自动绑定预约号
@@ -95,45 +89,16 @@ public class DownloadVehIsInfoTimer {
 						failList.add(bookInfo);
 					}
 				}
-				
-				// 接口调用次数+1
-				interfaceInvokeCounterService.plusOne();
-				//记录日志
-				InterfaceLog log = new InterfaceLog();
-				Date responseDate = new Date();//响应时间
-				log.setJkid("JK01");
-				log.setIp("190.205.101.3");
-				log.setRequestDate(requestDate);
-				log.setRequestXml(buildQueryXml(bookInfo.getPlatNumber(),carType.getCode(),bookInfo.getFrameNumber(), station.getCode()));
-				log.setResponseDate(responseDate);
-				log.setResponseXml(ConvertUtils.decodeUTF8Xml(responseXml));
-				log.setRunTime((new Long((responseDate.getTime() - requestDate.getTime()))).intValue());
-				interfaceLogService.insert(log);
 			}
 			if(CollectionUtils.isEmpty(successList) && failList.size()==increment){//如果成功集合为空，说明30条记录全部出错
-				String correctPlatNumber = "粤B993U5";
+				String correctPlatNumber = "BM063M";
 				String correctCarTypeCode = "02";
-				String correctFrameNumber = "LHGCR1622H8020612";
+				String correctFrameNumber = "LEFCJCDC3AHP42722";
 				String correctStationCode = "4400000142";
 				
 				boolean flag = false;
 				for(int j=0; j<5; j++){
-					Date requestDate = new Date();
-					String responseXml = vehIsInfoService.sendXml(correctPlatNumber,correctCarTypeCode,correctFrameNumber,correctStationCode);
-					
-					// 接口调用次数+1
-					interfaceInvokeCounterService.plusOne();
-					//记录日志
-					InterfaceLog log = new InterfaceLog();
-					Date responseDate = new Date();//响应时间
-					log.setJkid("JK01");
-					log.setIp("190.205.101.3");
-					log.setRequestDate(requestDate);
-					log.setRequestXml(buildQueryXml(correctPlatNumber,correctCarTypeCode,correctFrameNumber,correctStationCode));
-					log.setResponseDate(responseDate);
-					log.setResponseXml(ConvertUtils.decodeUTF8Xml(responseXml));
-					log.setRunTime((new Long((responseDate.getTime() - requestDate.getTime()))).intValue());
-					interfaceLogService.insert(log);
+					String responseXml = vehIsInfoService.sendXml(correctPlatNumber,correctCarTypeCode,correctFrameNumber,correctStationCode,InterfaceInvokeType.TIMER);
 					if(validateResponseXml(responseXml)){
 						flag = true;
 						break;//如果5次有1次正确,说明监管平台接口仍然有用
@@ -167,11 +132,12 @@ public class DownloadVehIsInfoTimer {
 				count = Integer.parseInt(countStr)+1;
 			}
 			if(count >= errorThreshold){
-				//超过错误阈值，保存到Redis，30分钟内不再获取该预约记录的车辆信息
-				RedisUtil.setValue(Constants.ERROR_VEHINFO_RECORD+bookInfo.getId(), "1", 30*60);
+				//超过错误阈值，保存到Redis，1小时内不再获取该预约记录的车辆信息
+				RedisUtil.setValue(Constants.ERROR_VEHINFO_RECORD+bookInfo.getId(), "1", 60*60);
 				RedisUtil.delByKey(Constants.DOWNLOAD_VEHINFO_FAIL_COUNT+bookInfo.getId());
 			}else{
-				RedisUtil.setValue(Constants.DOWNLOAD_VEHINFO_FAIL_COUNT+bookInfo.getId(), count+"", 60*60);
+				//错误次数保留2个小时
+				RedisUtil.setValue(Constants.DOWNLOAD_VEHINFO_FAIL_COUNT+bookInfo.getId(), count+"", 2*60*60);
 			}
 		}
 	}
@@ -192,25 +158,5 @@ public class DownloadVehIsInfoTimer {
 			return true;
 		}
 		return false;
-	}
-	
-	private String buildQueryXml(String platNumber, String carTypeCode,
-			String chassisNumber, String jyjgbh) {
-		String xmlDoc = "<?xml version=\"1.0\" encoding=\"GBK\"?>\n<root>"
-				+ "\n<QueryCondition>\n<hphm>" + platNumber + "</hphm>\n<hpzl>"
-				+ carTypeCode + "</hpzl>\n<clsbdh>" + chassisNumber
-				+ "</clsbdh>\n<jyjgbh>" + jyjgbh
-				+ "</jyjgbh>\n</QueryCondition>\n</root>";
-		return xmlDoc;
-	}
-	
-	public static void main(String[] args) {
-		List<String> dateStrList = new ArrayList<String>();
-		Date currentDate = new Date();
-		dateStrList.add(DateUtils.formatDate(currentDate));
-		dateStrList.add(DateUtils.formatDate(DateUtils.addDays(currentDate, 1)));
-		dateStrList.add(DateUtils.formatDate(DateUtils.addDays(currentDate, 2)));
-		
-		System.out.println(dateStrList);
 	}
 }

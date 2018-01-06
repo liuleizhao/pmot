@@ -325,7 +325,7 @@ public class JDBCExcel {
 					}catch (SQLException e) {
 						if( 1 != e.getErrorCode()){//排除重复id的
 							errorMap.put(String.valueOf(VO.get("ID")), e.getMessage());
-						}/*if(tableName.equals("BOOK_INFO")){
+						}/*if(tableName.equals("BOOK_INFO")){ //外网导入专网只插入，不做更新
 							//System.out.println("更新BOOK_INFO："+String.valueOf(VO.get("ID")));
 							try {
 								for (int i = 0; i < updColist.size(); i++) {
@@ -378,9 +378,10 @@ public class JDBCExcel {
 		
 		//处理 不到出预约状态<预约中 2><取消 4>
 		if(tableName.equals("BOOK_INFO")){
-			ps = conn.prepareStatement("SELECT "+param+" FROM "+tableName+" WHERE CREATE_DATE >= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND CREATE_DATE <= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND BOOK_NUMBER NOT LIKE 'G%' AND BOOK_NUMBER NOT LIKE 'D%' AND BOOK_STATE <> 1 AND BOOK_STATE <> 4");
+			ps = conn.prepareStatement("SELECT "+param+" FROM BOOK_INFO b RIGHT JOIN (SELECT c.BOOK_NUMBER FROM BOOK_INFO_CHANGE c where c.CREATE_DATE > TO_DATE(?,'YYYY-MM-DD HH24:MI:SS') AND c.CREATE_DATE < TO_DATE(?,'YYYY-MM-DD HH24:MI:SS') group by c.BOOK_NUMBER)f  ON b.BOOK_NUMBER = f.BOOK_NUMBER");
+			//ps = conn.prepareStatement("SELECT "+param+" FROM "+tableName+" WHERE CREATE_DATE >= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND CREATE_DATE <= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND BOOK_NUMBER NOT LIKE 'G%' AND BOOK_NUMBER NOT LIKE 'D%'");
 		}else{
-			ps = conn.prepareStatement("SELECT "+param+" FROM "+tableName+" WHERE CREATE_DATE >= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND CREATE_DATE <= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND BOOK_NUMBER NOT LIKE 'G%' AND BOOK_NUMBER NOT LIKE 'D%'");
+			ps = conn.prepareStatement("SELECT "+param+" FROM "+tableName+" WHERE CREATE_DATE >= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss') AND CREATE_DATE <= TO_DATE(?,'yyyy-mm-dd hh24:mi:ss')");
 		}
 		ps.setString(1,beginDate);
 		ps.setString(2,endDate);

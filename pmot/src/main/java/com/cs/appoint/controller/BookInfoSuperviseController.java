@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.cs.appoint.dto.BookInfoAmount;
 import com.cs.appoint.entity.BookInfoSupervise;
 import com.cs.appoint.service.BookInfoService;
+import com.cs.appoint.service.BookInfoSuperviseService;
 import com.cs.appoint.service.VehIsFlowService;
 import com.cs.argument.entity.Station;
 import com.cs.argument.service.StationService;
@@ -41,6 +42,8 @@ public class BookInfoSuperviseController extends BaseController {
 	private VehIsFlowService vehIsFlowService;
 	@Autowired
 	private StationService stationService;
+	@Autowired
+	private BookInfoSuperviseService superviseService;
 	
 	/**
 	 * 事后监管统计入口页
@@ -66,8 +69,8 @@ public class BookInfoSuperviseController extends BaseController {
 		Date endDate = bookInfoSupervise.getEndDate();
 		//获取各个检测站的  预约数量、实际办理数量、异常记录数量
 		List<BookInfoAmount> bookAmount = bookInfoService.findFinishedBookAmountGroupByStation(startDate, endDate);
-		List<BookInfoAmount> flowAmount = vehIsFlowService.findFlowAmountGroupByStation(startDate, endDate);
-		List<BookInfoAmount> exceptionAmount = vehIsFlowService.findExceptionAmountGroupByStation(startDate, endDate);
+		List<BookInfoAmount> flowAmount = superviseService.findFlowAmountGroupByStation(startDate, endDate);
+		List<BookInfoAmount> exceptionAmount = superviseService.findExceptionAmountGroupByStation(startDate, endDate);
 		
 		List<Station> stationList = stationService.findAllData();
 		if(CollectionUtils.isNotEmpty(stationList)){
@@ -116,7 +119,7 @@ public class BookInfoSuperviseController extends BaseController {
 			bookInfoSupervise.setStartDate(date);
 			bookInfoSupervise.setEndDate(date);
 		}
-		PageInfo<BookInfoSupervise> pageView = vehIsFlowService.findPagedBookInfo(bookInfoSupervise, 
+		PageInfo<BookInfoSupervise> pageView = superviseService.findPagedBookInfo(bookInfoSupervise, 
 				getCurrentPage(request), getCurrentPageSize(request));
 		request.setAttribute("pageView", pageView);
 		return "backend/appoint/supervise_detail";
